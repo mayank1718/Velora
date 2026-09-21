@@ -5,10 +5,13 @@ import { createProductValidator } from "../validators/product.validate.js";
 import {
   addVariantController,
   createProductController,
+  deleteProductController,
+  deleteVariantController,
   editVariantController,
   getSellerProductController,
 } from "../controllers/product.controller.js";
 import { addVariantValidator } from "../validators/variant.validator.js";
+import { editVariantValidator } from "../validators/editVariant.validate.js";
 
 const productRouter = Router();
 
@@ -53,7 +56,31 @@ productRouter.post(
 productRouter.patch(
   "/:productId/variants/:variantId",
   sellerMiddleware,
+  upload.array("images", 6),
+  editVariantValidator,
   editVariantController,
+);
+
+/*
+ @access = private
+ @desc = delete variant
+ @api = DELETE /products/:productId/variants/:variantId
+*/
+productRouter.patch(
+  "/:productId/variants/:variantId",
+  sellerMiddleware,
+  deleteVariantController,
+);
+
+/*
+ @access = private
+ @desc =delete product
+ @api = DELETE /products/:productId/
+*/
+productRouter.patch(
+  "/:productId/variants/:variantId",
+  sellerMiddleware,
+  deleteProductController,
 );
 
 export default productRouter;

@@ -170,3 +170,57 @@ export const editVariantController = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteVariantController = async (req, res, next) => {
+  try {
+    const { productId, variantId } = req.params;
+
+    const product = await productModel.findOne({
+      _id: productId,
+      seller: req.user.userId,
+      "variants._id": variantId,
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product or variant not found",
+        success: false,
+      });
+    }
+
+    product.variants.pull(variantId);
+
+    await product.save();
+
+    return res.status(200).json({
+      message: "Variant deleted successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log("Failed to delete variant:", error);
+    next(error);
+  }
+};
+
+export const deleteProductController = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const product = await productModel.findOneAndDelete({
+      _id: productId,
+      seller: req.user.userId,
+    });
+    if (!product) {
+      return res.status(404).json({
+        message: "product not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: "product deleted successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log("failed to delete product", error);
+    next(error);
+  }
+};
