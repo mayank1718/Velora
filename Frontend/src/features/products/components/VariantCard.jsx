@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+import { useParams } from "react-router-dom";
 
 // Currency symbols
 const CURRENCY_SYMBOLS = {
@@ -15,9 +16,12 @@ const CURRENCY_SYMBOLS = {
   JPY: "¥",
 };
 
-const VariantCard = ({ variant, index = 0 }) => {
+const VariantCard = ({
+  variant,
+  handleDelete,
+}) => {
   const [imgError, setImgError] = useState(false);
-
+  const { productId } = useParams();
   const {
     _id,
     stock = 0,
@@ -115,13 +119,15 @@ const VariantCard = ({ variant, index = 0 }) => {
         {/* Card Actions: Edit & Delete (visual placeholders as requested) */}
         <div className="flex items-center justify-end gap-2 pt-1">
           <button
-            disabled
             title="Edit variant (coming soon)"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] uppercase tracking-[0.14em] font-medium bg-[#FFFFFF] border border-[#E5E5E5] text-[#737373]  hover:bg-[#FFFFFF]">
             <Edit2 className="w-3 h-3 stroke-[1.75]" />
             <span>Edit</span>
           </button>
           <button
+            onClick={() => {
+              handleDelete(productId, _id);
+            }}
             title="Delete variant (coming soon)"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] uppercase tracking-[0.14em] font-medium bg-[#FFFFFF] border border-[#E5E5E5] text-[#737373]  hover:bg-[#FFFFFF]">
             <Trash2 className="w-3 h-3 stroke-[1.75]" />

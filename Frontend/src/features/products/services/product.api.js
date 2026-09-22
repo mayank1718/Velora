@@ -26,6 +26,7 @@ export const addVariant = async (productId, formData) => {
 export const editVariant = async (formData, productId, variantId) => {
   const response = await productApiInstance.patch(
     `/${productId}/variants/${variantId}`,
+    formData,
   );
   return response.data;
 };

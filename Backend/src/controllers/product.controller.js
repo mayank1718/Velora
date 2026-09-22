@@ -174,10 +174,12 @@ export const editVariantController = async (req, res, next) => {
 export const deleteVariantController = async (req, res, next) => {
   try {
     const { productId, variantId } = req.params;
-
+     console.log("userId", req.user._id);
+     console.log("productId", productId);
+     console.log("variantId", variantId);
     const product = await productModel.findOne({
       _id: productId,
-      seller: req.user.userId,
+      seller: req.user._id,
       "variants._id": variantId,
     });
 

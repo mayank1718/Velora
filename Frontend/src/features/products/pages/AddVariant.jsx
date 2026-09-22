@@ -163,9 +163,10 @@ const AddVariant = () => {
     }
   };
 
-  const handleDelete = async (productId,variantId) => {
-    await handleDeleteVariant(productId,variantId)
-  }
+  const handleDelete = async (productId, variantId) => {
+    await handleDeleteVariant(productId, variantId);
+    setProductVariants((prev) => prev.filter((variant) => variant._id !== variantId));
+  };
 
   return (
     <div className="min-h-screen bg-[#FAFAF9] text-[#171717] flex flex-col justify-between selection:bg-[#171717] selection:text-white">
@@ -294,7 +295,10 @@ const AddVariant = () => {
 
               {/* Right Column: Existing Variants List (5 cols on desktop) */}
               <div className="lg:col-span-5 space-y-4">
-                <VariantList variants={productVariants} handleDelete={handleDelete} />
+                <VariantList
+                  variants={productVariants}
+                  handleDelete={handleDelete}
+                />
               </div>
             </div>
           </>

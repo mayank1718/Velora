@@ -34,8 +34,7 @@ const VariantList = ({ variants = [], handleDelete }) => {
             <VariantCard
               key={variant._id || `variant-${index}`}
               variant={variant}
-              index={index}
-              
+              index={index} 
               handleDelete={handleDelete}
             />
           ))}
