@@ -66,7 +66,7 @@ productRouter.patch(
  @desc = delete variant
  @api = DELETE /products/:productId/variants/:variantId
 */
-productRouter.patch(
+productRouter.delete(
   "/:productId/variants/:variantId",
   sellerMiddleware,
   deleteVariantController,
@@ -77,8 +77,8 @@ productRouter.patch(
  @desc =delete product
  @api = DELETE /products/:productId/
 */
-productRouter.patch(
-  "/:productId/variants/:variantId",
+productRouter.delete(
+  "/:productId",
   sellerMiddleware,
   deleteProductController,
 );

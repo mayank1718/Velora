@@ -195,6 +195,7 @@ export const deleteVariantController = async (req, res, next) => {
     return res.status(200).json({
       message: "Variant deleted successfully",
       success: true,
+      product,
     });
   } catch (error) {
     console.log("Failed to delete variant:", error);

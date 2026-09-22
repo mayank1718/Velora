@@ -3,7 +3,7 @@ import VariantCard from "./VariantCard";
 import EmptyVariantState from "./EmptyVariantState";
 import { Layers, Sparkles } from "lucide-react";
 
-const VariantList = ({ variants = [] }) => {
+const VariantList = ({ variants = [], handleDelete }) => {
   const count = Array.isArray(variants) ? variants.length : 0;
 
   return (
@@ -35,6 +35,8 @@ const VariantList = ({ variants = [] }) => {
               key={variant._id || `variant-${index}`}
               variant={variant}
               index={index}
+              
+              handleDelete={handleDelete}
             />
           ))}
         </div>

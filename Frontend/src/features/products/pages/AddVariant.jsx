@@ -10,7 +10,7 @@ import {
   X,
   Loader2,
 } from "lucide-react";
-import { useProduct } from "../hooks/usePeoduct";
+import { useProduct } from "../hooks/useProduct";
 import ProductInfo from "../components/ProductInfo";
 import VariantForm from "../components/VariantForm";
 import VariantList from "../components/VariantList";
@@ -18,8 +18,12 @@ import VariantList from "../components/VariantList";
 const AddVariant = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
-  const { sellerProducts, handelGetSellerProduct, handleAddVariant } =
-    useProduct();
+  const {
+    sellerProducts,
+    handelGetSellerProduct,
+    handleAddVariant,
+    handleDeleteVariant,
+  } = useProduct();
 
   const [localProduct, setLocalProduct] = useState(null);
   const [productVariants, setProductVariants] = useState([]);
@@ -159,6 +163,10 @@ const AddVariant = () => {
     }
   };
 
+  const handleDelete = async (productId,variantId) => {
+    await handleDeleteVariant(productId,variantId)
+  }
+
   return (
     <div className="min-h-screen bg-[#FAFAF9] text-[#171717] flex flex-col justify-between selection:bg-[#171717] selection:text-white">
       {/* Top Header Navigation */}
@@ -286,7 +294,7 @@ const AddVariant = () => {
 
               {/* Right Column: Existing Variants List (5 cols on desktop) */}
               <div className="lg:col-span-5 space-y-4">
-                <VariantList variants={productVariants} />
+                <VariantList variants={productVariants} handleDelete={handleDelete} />
               </div>
             </div>
           </>

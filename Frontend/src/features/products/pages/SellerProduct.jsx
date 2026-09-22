@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Store, ShieldCheck, Sparkles } from "lucide-react";
-import { useProduct } from "../hooks/usePeoduct";
+import { useProduct } from "../hooks/useProduct";
 import DashboardHeader from "../components/DashboardHeader";
 import ProductToolbar from "../components/ProductToolbar";
 import ProductGrid from "../components/ProductGrid";

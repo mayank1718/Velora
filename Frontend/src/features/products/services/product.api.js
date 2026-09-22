@@ -22,3 +22,22 @@ export const addVariant = async (productId, formData) => {
   );
   return response.data;
 };
+
+export const editVariant = async (formData, productId, variantId) => {
+  const response = await productApiInstance.patch(
+    `/${productId}/variants/${variantId}`,
+  );
+  return response.data;
+};
+
+export const deleteVariant = async (productId, variantId) => {
+  const response = await productApiInstance.delete(
+    `/${productId}/variants/${variantId}`,
+  );
+  return response.data;
+};
+
+export const deleteProduct = async (productId) => {
+  const response = await productApiInstance.delete(`/${productId}`);
+  return response.data;
+};

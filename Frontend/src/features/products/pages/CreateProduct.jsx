@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SellerLayout from "../components/SellerLayout";
 import ImageUploader from "../components/ImageUploader";
-import { useProduct } from "../hooks/usePeoduct";
+import { useProduct } from "../hooks/useProduct";
 import {
   ChevronDown,
   Loader2,
