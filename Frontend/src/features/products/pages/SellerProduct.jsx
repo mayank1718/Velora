@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Store, ShieldCheck, Sparkles } from "lucide-react";
 import { useProduct } from "../hooks/useProduct";
@@ -10,14 +10,19 @@ import ProductSkeleton from "../components/ProductSkeleton";
 import ErrorState from "../components/ErrorState";
 
 const SellerProduct = () => {
-  const { handelGetSellerProduct, loading, sellerProducts } = useProduct();
+  const {
+    handelGetSellerProduct,
+    handleDeleteProduct,
+    loading,
+    sellerProducts,
+  } = useProduct();
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
 
   // Fetch seller products on mount
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setError(null);
     try {
       const res = await handelGetSellerProduct();
@@ -28,7 +33,7 @@ const SellerProduct = () => {
       console.error("Error fetching seller products:", err);
       setError("An unexpected error occurred while loading products.");
     }
-  };
+  });
 
   useEffect(() => {
     fetchProducts();
@@ -66,7 +71,7 @@ const SellerProduct = () => {
     // Category filter
     if (selectedCategory && selectedCategory !== "all") {
       list = list.filter(
-        (p) => p.category?.toLowerCase() === selectedCategory.toLowerCase()
+        (p) => p.category?.toLowerCase() === selectedCategory.toLowerCase(),
       );
     }
 
@@ -104,6 +109,18 @@ const SellerProduct = () => {
     setSortBy("newest");
   };
 
+  const handleProductDelete = async (productId) => {
+    if (!window.confirm("Delete this product and all of its variants?")) {
+      return false;
+    }
+
+    const deleted = await handleDeleteProduct(productId);
+    if (!deleted) {
+      setError("Failed to delete the product. Please try again.");
+    }
+    return deleted;
+  };
+
   return (
     <div className="min-h-screen bg-[#FAFAF9] text-[#171717] flex flex-col justify-between selection:bg-[#171717] selection:text-white">
       {/* Top Header Navigation */}
@@ -111,8 +128,7 @@ const SellerProduct = () => {
         {/* Back / Navigation Action */}
         <Link
           to="/seller/products"
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.14em] font-medium text-[#737373] hover:text-[#171717] transition-colors group"
-        >
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.14em] font-medium text-[#737373] hover:text-[#171717] transition-colors group">
           <ArrowLeft
             className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5 text-[#737373] group-hover:text-[#171717]"
             strokeWidth={1.75}
@@ -176,7 +192,7 @@ const SellerProduct = () => {
             />
           ) : (
             /* Product Grid */
-            <ProductGrid products={filteredProducts} />
+            <ProductGrid products={filteredProducts} onDeleteProduct={handleProductDelete} />
           )}
         </div>
       </main>
@@ -190,18 +206,22 @@ const SellerProduct = () => {
         </div>
 
         <div className="flex items-center gap-6">
-          <Link to="/seller/create-product" className="hover:text-[#171717] transition-colors">
+          <Link
+            to="/seller/create-product"
+            className="hover:text-[#171717] transition-colors">
             Create Product
           </Link>
           <a
             href="#seller-guidelines"
             onClick={(e) => e.preventDefault()}
-            className="hover:text-[#171717] transition-colors"
-          >
+            className="hover:text-[#171717] transition-colors">
             Seller Policy
           </a>
           <div className="hidden sm:flex items-center gap-1.5 text-[#737373]/80">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={1.5} />
+            <ShieldCheck
+              className="w-3.5 h-3.5 text-[#D4AF37]"
+              strokeWidth={1.5}
+            />
             <span className="text-[10px]">Encrypted Session</span>
           </div>
         </div>

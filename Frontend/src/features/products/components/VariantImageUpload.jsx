@@ -140,7 +140,8 @@ const VariantImageUpload = ({
         <div className="space-y-2.5">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
             {images.map((file, index) => {
-              const previewUrl = typeof file === "string" ? file : URL.createObjectURL(file);
+              const previewUrl =
+                typeof file === "string" ? file : file?.url || "";
 
               return (
                 <div
@@ -179,7 +180,7 @@ const VariantImageUpload = ({
                     </div>
 
                     <div className="text-[9px] text-white/90 truncate font-mono tracking-tight">
-                      {file.name || `Image ${index + 1}`}
+                      {file?.name || `Image ${index + 1}`}
                     </div>
                   </div>
 

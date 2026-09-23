@@ -123,7 +123,7 @@ export const editVariantController = async (req, res, next) => {
 
     const product = await productModel.findOne({
       _id: productId,
-      seller: req.user.userId,
+      seller: req.user._id,
       "variants._id": variantId,
     });
 
@@ -210,7 +210,7 @@ export const deleteProductController = async (req, res, next) => {
     const { productId } = req.params;
     const product = await productModel.findOneAndDelete({
       _id: productId,
-      seller: req.user.userId,
+      seller: req.user._id,
     });
     if (!product) {
       return res.status(404).json({

@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Image as ImageIcon,
   Edit2,
   Trash2,
-  Layers,
-  CheckCircle2,
-  AlertCircle,
 } from "lucide-react";
 import { useParams } from "react-router-dom";
 
@@ -19,6 +16,7 @@ const CURRENCY_SYMBOLS = {
 const VariantCard = ({
   variant,
   handleDelete,
+  handleEdit,
 }) => {
   const [imgError, setImgError] = useState(false);
   const { productId } = useParams();
@@ -49,7 +47,7 @@ const VariantCard = ({
   return (
     <div className="bg-[#FFFFFF] border border-[#E5E5E5] hover:border-[#171717]/30 transition-all p-4 sm:p-5 flex flex-col sm:flex-row gap-4 items-start group">
       {/* Thumbnail Image */}
-      <div className="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 bg-[#FAFAF9] border border-[#E5E5E5] overflow-hidden relative self-center sm:self-start">
+      <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 bg-[#FAFAF9] border border-[#E5E5E5] overflow-hidden relative self-center sm:self-start">
         {primaryImage && !imgError ? (
           <img
             src={primaryImage}
@@ -119,16 +117,21 @@ const VariantCard = ({
         {/* Card Actions: Edit & Delete (visual placeholders as requested) */}
         <div className="flex items-center justify-end gap-2 pt-1">
           <button
-            title="Edit variant (coming soon)"
+            type="button"
+            onClick={() => {
+              handleEdit?.(variant);
+            }}
+            title="Edit variant"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] uppercase tracking-[0.14em] font-medium bg-[#FFFFFF] border border-[#E5E5E5] text-[#737373]  hover:bg-[#FFFFFF]">
             <Edit2 className="w-3 h-3 stroke-[1.75]" />
             <span>Edit</span>
           </button>
           <button
+            type="button"
             onClick={() => {
               handleDelete(productId, _id);
             }}
-            title="Delete variant (coming soon)"
+            title="Delete variant"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] uppercase tracking-[0.14em] font-medium bg-[#FFFFFF] border border-[#E5E5E5] text-[#737373]  hover:bg-[#FFFFFF]">
             <Trash2 className="w-3 h-3 stroke-[1.75]" />
             <span>Delete</span>

@@ -20,8 +20,35 @@ const INITIAL_FORM_STATE = {
   images: [],
 };
 
-const VariantForm = ({ onSubmit, isSubmitting = false, onCancel }) => {
-  const [formData, setFormData] = useState(INITIAL_FORM_STATE);
+const getFormState = (variant) => {
+  if (!variant) {
+    return {
+      ...INITIAL_FORM_STATE,
+      attributes: [...INITIAL_FORM_STATE.attributes],
+    };
+  }
+
+  const attributes = Array.isArray(variant.attributes)
+    ? variant.attributes
+    : Object.entries(variant.attributes || {}).map(([key, value]) => ({ key, value }));
+
+  return {
+    priceAmount: String(variant.price?.amount ?? ""),
+    currency: variant.price?.currency || "INR",
+    stock: String(variant.stock ?? ""),
+    attributes: attributes.length ? attributes : [{ key: "", value: "" }],
+    images: Array.isArray(variant.images) ? variant.images : [],
+  };
+};
+
+const VariantForm = ({
+  onSubmit,
+  isSubmitting = false,
+  onCancel,
+  initialVariant = null,
+  isEditing = false,
+}) => {
+  const [formData, setFormData] = useState(() => getFormState(initialVariant));
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
@@ -187,7 +214,7 @@ const VariantForm = ({ onSubmit, isSubmitting = false, onCancel }) => {
   };
 
   const handleResetForm = () => {
-    setFormData(INITIAL_FORM_STATE);
+    setFormData(getFormState(null));
     setErrors({});
     setTouched({});
     if (onCancel) {
@@ -243,7 +270,7 @@ const VariantForm = ({ onSubmit, isSubmitting = false, onCancel }) => {
           </span>
         </div>
         <h2 className="text-base font-medium text-[#171717] tracking-tight">
-          Add New Variant
+          {isEditing ? "Edit Variant" : "Add New Variant"}
         </h2>
         <p className="text-xs text-[#737373] mt-1 leading-relaxed">
           Set up pricing, stock availability, dynamic specification attributes, and imagery for this variant.
@@ -405,12 +432,14 @@ const VariantForm = ({ onSubmit, isSubmitting = false, onCancel }) => {
             {isSubmitting ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin text-[#D4AF37]" strokeWidth={2} />
-                <span>Adding Variant...</span>
+                <span>{isEditing ? "Saving Variant..." : "Adding Variant..."}</span>
               </>
             ) : (
               <>
-                <Plus className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={2} />
-                <span>Add Variant</span>
+                {!isEditing && (
+                  <Plus className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={2} />
+                )}
+                <span>{isEditing ? "Save Variant" : "Add Variant"}</span>
               </>
             )}
           </button>

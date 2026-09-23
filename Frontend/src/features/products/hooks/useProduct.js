@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { ProductContext } from "../Product.context";
 import {
   addVariant,
@@ -37,7 +37,7 @@ export const useProduct = () => {
     }
   };
 
-  const handelGetSellerProduct = async () => {
+  const handelGetSellerProduct = useCallback(async () => {
     setLoading(true);
     try {
       const data = await getSellerProduct();
@@ -50,7 +50,7 @@ export const useProduct = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [setLoading, setSellerProducts]);
 
   const handleAddVariant = async (productId, formData) => {
     console.log(formData);

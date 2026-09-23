@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Plus, Eye, ArrowRight, Image as ImageIcon, Circle } from "lucide-react";
+import {
+  Plus,
+  Eye,
+  ArrowRight,
+  Image as ImageIcon,
+  Circle,
+  Trash2,
+} from "lucide-react";
 
 // Format category slug to readable title
 export const formatCategory = (category) => {
@@ -11,7 +18,7 @@ export const formatCategory = (category) => {
     .join(" ");
 };
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onDeleteProduct }) => {
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
 
@@ -36,6 +43,10 @@ const ProductCard = ({ product }) => {
   const handleViewProduct = (e) => {
     e.stopPropagation();
     navigate(`/seller/products/${_id}`);
+  };
+
+  const handleDelete = async () => {
+    await onDeleteProduct?.(_id);
   };
 
   return (
@@ -131,6 +142,15 @@ const ProductCard = ({ product }) => {
           >
             <Eye className="w-3.5 h-3.5 text-[#737373]" strokeWidth={1.75} />
             <span>View</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleDelete}
+            title="Delete product"
+            className="inline-flex items-center justify-center p-2.5 border border-[#E5E5E5] bg-white text-[#737373] hover:text-red-600 hover:border-red-200 transition-colors"
+          >
+            <Trash2 className="w-3.5 h-3.5" strokeWidth={1.75} />
           </button>
         </div>
       </div>

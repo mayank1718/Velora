@@ -22,6 +22,7 @@ const AddVariant = () => {
     sellerProducts,
     handelGetSellerProduct,
     handleAddVariant,
+    handleEditVariant,
     handleDeleteVariant,
   } = useProduct();
 
@@ -31,6 +32,7 @@ const AddVariant = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
   const [apiError, setApiError] = useState(null);
+  const [editingVariant, setEditingVariant] = useState([]);
 
   // 1. Fetch / resolve current product
   useEffect(() => {
@@ -76,7 +78,7 @@ const AddVariant = () => {
     return () => {
       isMounted = false;
     };
-  }, [productId]);
+  }, [handelGetSellerProduct, productId, sellerProducts]);
 
   // 2. Handle Variant Submission
   const handleVariantSubmit = async (formDataPayload) => {
@@ -164,8 +166,48 @@ const AddVariant = () => {
   };
 
   const handleDelete = async (productId, variantId) => {
-    await handleDeleteVariant(productId, variantId);
-    setProductVariants((prev) => prev.filter((variant) => variant._id !== variantId));
+    const deleted = await handleDeleteVariant(productId, variantId);
+    if (deleted) {
+      setProductVariants((prev) =>
+        prev.filter((variant) => variant._id !== variantId),
+      );
+    }
+  };
+
+  const handleEdit = async (formDataPayload) => {
+    setIsSubmitting(true);
+    setApiError(null);
+    try {
+      const formData = new FormData();
+      formData.append("price", JSON.stringify(formDataPayload.price));
+      formData.append("stock", formDataPayload.stock);
+      formData.append("attributes", JSON.stringify(formDataPayload.attributes));
+      formDataPayload.images?.forEach((image) => {
+        if (image instanceof File) formData.append("images", image);
+      });
+
+      const product = await handleEditVariant(
+        formData,
+        productId,
+        editingVariant?._id,
+      );
+
+      if (!product) throw new Error("Failed to update variant");
+      setProductVariants(
+        Array.isArray(product.variants) ? product.variants : [],
+      );
+      setEditingVariant(null);
+      setToastMessage({
+        type: "success",
+        text: "Variant updated successfully.",
+      });
+      return true;
+    } catch (err) {
+      setApiError(err.message || "Failed to update variant.");
+      return false;
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -231,9 +273,9 @@ const AddVariant = () => {
             }`}>
             <div className="flex items-center gap-2.5">
               {toastMessage.type === "success" ? (
-                <CheckCircle2 className="w-4 h-4 text-[#D4AF37] flex-shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
               ) : (
-                <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+                <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
               )}
               <span className="text-xs font-medium tracking-tight">
                 {toastMessage.text}
@@ -253,7 +295,7 @@ const AddVariant = () => {
         {apiError && (
           <div className="p-3.5 bg-red-50/30 border border-red-300 text-red-700 text-xs flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+              <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
               <span>{apiError}</span>
             </div>
             <button
@@ -287,9 +329,15 @@ const AddVariant = () => {
               {/* Left / Main Column: Add Variant Form (7 cols on desktop) */}
               <div className="lg:col-span-7">
                 <VariantForm
-                  onSubmit={handleVariantSubmit}
+                  key={editingVariant?._id || "new-variant"}
+                  onSubmit={editingVariant ? handleEdit : handleVariantSubmit}
                   isSubmitting={isSubmitting}
-                  onCancel={() => navigate("/seller/products")}
+                  initialVariant={editingVariant}
+                  isEditing={Boolean(editingVariant)}
+                  onCancel={() => {
+                    if (editingVariant) setEditingVariant(null);
+                    else navigate("/seller/products");
+                  }}
                 />
               </div>
 
@@ -298,6 +346,7 @@ const AddVariant = () => {
                 <VariantList
                   variants={productVariants}
                   handleDelete={handleDelete}
+                  handleEdit={setEditingVariant}
                 />
               </div>
             </div>
