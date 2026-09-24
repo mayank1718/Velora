@@ -1,0 +1,90 @@
+import { useContext } from "react";
+import { CartContext } from "../cart.context";
+import {
+  addToCart,
+  decreaseOneFromCart,
+  increaseOneFromCart,
+  removeFromCart,
+} from "../services/buyer.api";
+
+export const useCart = () => {
+  const Context = useContext(CartContext);
+  const { loading, setLoading, cart, setCart } = Context;
+
+  const handleAddItemToCart = async (productId, variantId) => {
+    setLoading(true);
+    try {
+      const data = await addToCart(productId, variantId);
+      const cartData = Array.isArray(data?.cart) ? data.cart : [];
+      setCart(cartData);
+      return cartData;
+    } catch (error) {
+      console.log("Failed to add item in cart:", error);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleIncreaseItem = async (productId, variantId) => {
+    setLoading(true);
+
+    try {
+      const data = await increaseOneFromCart(productId, variantId);
+
+      const cartData = Array.isArray(data?.cart) ? data.cart : [];
+
+      setCart(cartData);
+
+      return cartData;
+    } catch (error) {
+      console.log("Failed to increase item:", error);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handledecreaseItem = async (productId, variantId) => {
+    setLoading(true);
+
+    try {
+      const data = await decreaseOneFromCart(productId, variantId);
+
+      const cartData = Array.isArray(data?.cart) ? data.cart : [];
+
+      setCart(cartData);
+
+      return cartData;
+    } catch (error) {
+      console.log("Failed to increase item:", error);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRemoveItemFromCart = async (productId, variantId) => {
+    setLoading(true);
+    try {
+      const data = await removeFromCart(productId, variantId);
+      const cartData = Array.isArray(data?.cart) ? data.cart : [];
+      setCart(cartData);
+      return cartData;
+    } catch (error) {
+      console.log("failed to remove item from cart", error);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    loading,
+    cart,
+    handleAddItemToCart,
+    handleIncreaseItem,
+    handledecreaseItem,
+    handleRemoveItemFromCart,
+  };
+};
