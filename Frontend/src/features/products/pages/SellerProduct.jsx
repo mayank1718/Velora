@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Store, ShieldCheck, Sparkles } from "lucide-react";
-import { useProduct } from "../hooks/useProduct";
+import { ArrowLeft, Store, ShieldCheck } from "lucide-react";
 import DashboardHeader from "../components/DashboardHeader";
 import ProductToolbar from "../components/ProductToolbar";
 import ProductGrid from "../components/ProductGrid";
 import EmptyProductState from "../components/EmptyProductState";
 import ProductSkeleton from "../components/ProductSkeleton";
 import ErrorState from "../components/ErrorState";
+import { useSeller } from "../hooks/useSeller";
 
 const SellerProduct = () => {
   const {
@@ -15,7 +15,7 @@ const SellerProduct = () => {
     handleDeleteProduct,
     loading,
     sellerProducts,
-  } = useProduct();
+  } = useSeller();
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");

@@ -9,10 +9,10 @@ import EmptyProductState from "../components/EmptyProductState";
 import ErrorState from "../components/ErrorState";
 import { ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useBuyer } from "../hooks/useBuyer";
+import { useProduct } from "../hooks/useProduct";
 
 const Dashboard = () => {
-  const { loading, error, allProducts, handleGetAllProducts } = useBuyer();
+  const { loading, error, allProducts, handleGetAllProducts } = useProduct()
 
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");

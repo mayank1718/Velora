@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useBuyer } from "../hooks/useBuyer";
 import BuyerNavbar from "../components/BuyerNavbar";
 import ErrorState from "../components/ErrorState";
 import ProductGallery from "../components/product-details/ProductGallery";
@@ -8,10 +7,11 @@ import ProductInfo from "../components/product-details/ProductInfo";
 import ProductDetailsInfo from "../components/product-details/ProductDetailsInfo";
 import ProductDetailsSkeleton from "../components/product-details/ProductDetailsSkeleton";
 import { ChevronRight, ArrowLeft, ShieldCheck, PackageX } from "lucide-react";
+import { useProduct } from "../hooks/useProduct";
 
 const ProductDetails = () => {
   const { productId } = useParams();
-  const { loading, error, product, handleGetProductDetails } = useBuyer();
+  const { loading, error, product, handleGetProductDetails } = useProduct();
 
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);

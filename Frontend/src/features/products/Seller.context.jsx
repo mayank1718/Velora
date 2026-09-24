@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { createContext } from "react";
 
-export const ProductContext = createContext();
+export const SellerContext = createContext();
 
-export const ProductContextProvider = ({ children }) => {
+export const SellerContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [sellerProducts, setSellerProducts] = useState([]);
   const [variants, setVariants] = useState([]);
   return (
-    <ProductContext.Provider
+    <SellerContext.Provider
       value={{
         loading,
         setLoading,
@@ -18,6 +18,6 @@ export const ProductContextProvider = ({ children }) => {
         setVariants,
       }}>
       {children}
-    </ProductContext.Provider>
+    </SellerContext.Provider>
   );
 };

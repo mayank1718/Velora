@@ -11,20 +11,6 @@ import {
 const BuyerRouter = Router();
 
 /**
-  @access - public
-  @desc - to fetch all product
-  @api - GET /api/buyer
- */
-BuyerRouter.get("/", getProductController);
-
-/**
-  @access - public
-  @desc - to fetch product details
-  @api - GET /api/buyer/:productId
- */
-BuyerRouter.get("/:productId", getProductDetailsController);
-
-/**
  * @access - private
  * @desc - to add product variant to cart
  * @api - POST /api/buyer/cart/:productId/:variantId

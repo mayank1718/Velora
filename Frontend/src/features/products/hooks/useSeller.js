@@ -1,5 +1,5 @@
 import { useCallback, useContext } from "react";
-import { ProductContext } from "../Product.context";
+import { SellerContext } from "../Seller.context";
 import {
   addVariant,
   createProduct,
@@ -7,10 +7,10 @@ import {
   deleteVariant,
   editVariant,
   getSellerProduct,
-} from "../services/product.api";
+} from "../services/seller.api";
 
-export const useProduct = () => {
-  const context = useContext(ProductContext);
+export const useSeller = () => {
+  const context = useContext(SellerContext);
   const {
     loading,
     setLoading,

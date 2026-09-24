@@ -1,16 +1,56 @@
 import axios from "axios";
 
-const buyerApiInstance = axios.create({
+const productApiInstanse = axios.create({
   baseURL: "http://localhost:3000/api/products",
   withCredentials: true,
 });
 
+const buyerApiInstance = axios.create({
+  baseURL: "http://localhost:3000/api/buyer",
+});
+
+// products api
 export const getAllProducts = async () => {
-  const response = await buyerApiInstance.get("/");
+  const response = await productApiInstanse.get("/");
   return response.data;
 };
 
 export const getProductDetails = async (productId) => {
-  const response = await buyerApiInstance.get(`/${productId}`);
+  const response = await productApiInstanse.get(`/${productId}`);
   return response.data;
 };
+
+export const getRelatedProducts = async (productId) => {
+  const response = await productApiInstanse.get(`/${productId}/related`);
+  return response.data;
+};
+
+//buyer api
+export const addToCart = async (productId, variantId) => {
+  const response = await buyerApiInstance.post(
+    `/cart/${productId}/${variantId}`,
+  );
+  return response.data;
+};
+
+export const increaseOneFromCart = async (productId, variantId) => {
+  const response = await buyerApiInstance.patch(
+    `/cart/${productId}/${variantId}/increase`,
+  );
+  return response.data;
+};
+
+export const decreaseOneFromCart = async (productId, variantId) => {
+  const response = await buyerApiInstance.patch(
+    `/cart/${productId}/${variantId}/decrease`,
+  );
+  return response.data;
+};
+
+export const removeFromCart = async (productId, variantId) => {
+  const response = await buyerApiInstance.delete(
+    `/cart/${productId}/${variantId}`,
+  );
+  return response.data;
+};
+

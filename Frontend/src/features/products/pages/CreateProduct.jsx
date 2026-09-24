@@ -1,19 +1,15 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SellerLayout from "../components/SellerLayout";
 import ImageUploader from "../components/ImageUploader";
-import { useProduct } from "../hooks/useProduct";
 import {
   ChevronDown,
   Loader2,
   Check,
-  Plus,
   Sparkles,
-  Tag,
-  FileText,
-  Layers,
   ArrowRight,
 } from "lucide-react";
+import { useSeller } from "../hooks/useSeller";
 
 // Curated luxury e-commerce categories
 const PRODUCT_CATEGORIES = [
@@ -29,7 +25,7 @@ const PRODUCT_CATEGORIES = [
 
 const CreateProduct = () => {
   const navigate = useNavigate();
-  const { handleCreateProduct, loading } = useProduct();
+  const { handleCreateProduct, loading } = useSeller();
 
   // Form State
   const [productInput, setProductInput] = useState({

@@ -1,8 +1,12 @@
 import { useContext, useCallback } from "react";
 import { BuyerContext } from "../dashboard.context";
-import { getAllProducts, getProductDetails } from "../services/buyer.api";
+import {
+  getAllProducts,
+  getProductDetails,
+  getRelatedProducts,
+} from "../services/buyer.api";
 
-export const useBuyer = () => {
+export const useProduct = () => {
   const context = useContext(BuyerContext);
 
   const {
@@ -14,6 +18,10 @@ export const useBuyer = () => {
     setError,
     product,
     setProduct,
+    relatedProducts,
+    setRelatedProducts,
+    relatedLoading,
+    setRelatedLoading,
   } = context;
 
   const handleGetAllProducts = useCallback(async () => {
@@ -62,7 +70,35 @@ export const useBuyer = () => {
         setLoading(false);
       }
     },
-    [setLoading, setError, setProduct]
+    [setLoading, setError, setProduct],
+  );
+
+  const handleGetRelatedProducts = useCallback(
+    async (productId) => {
+      setRelatedLoading(true);
+      setError(null);
+      try {
+        const data = await getRelatedProducts(productId);
+        const relatedProducts = Array.isArray(data?.products)
+          ? data.products
+          : [];
+
+        setRelatedProducts(relatedProducts);
+
+        return relatedProducts;
+      } catch (err) {
+        console.error("Failed to fetch related products:", err);
+        const errorMessage =
+          err?.response?.data?.message ||
+          err?.message ||
+          "Unable to load related products. Please try again.";
+        setError(errorMessage);
+        return [];
+      } finally {
+        setRelatedLoading(false);
+      }
+    },
+    [setLoading, setError],
   );
 
   return {
@@ -73,5 +109,8 @@ export const useBuyer = () => {
     handleGetProductDetails,
     handleGetAllProducts,
     product,
+    handleGetRelatedProducts,
+    relatedProducts,
+    relatedLoading,
   };
 };

@@ -1,86 +1,30 @@
 import { Router } from "express";
-import { sellerMiddleware } from "../middlewares/seller.middleware.js";
-import { upload } from "../middlewares/upload.middleware.js";
-import { createProductValidator } from "../validators/product.validate.js";
-import {
-  addVariantController,
-  createProductController,
-  deleteProductController,
-  deleteVariantController,
-  editVariantController,
-  getSellerProductController,
-} from "../controllers/product.controller.js";
-import { addVariantValidator } from "../validators/variant.validator.js";
-import { editVariantValidator } from "../validators/editVariant.validate.js";
+import { getProductController, getProductDetailsController, getRelatedProductsController } from "../controllers/product.controller.js";
 
 const productRouter = Router();
 
-/*
- @access = private
- @desc = to create product
- @api = POST /api/products/create
+/**
+  @access - public
+  @desc - to fetch all product
+  @api - GET /api/buyer
  */
-productRouter.post(
-  "/create",
-  sellerMiddleware,
-  upload.array("images", 6),
-  createProductValidator,
-  createProductController,
-);
+BuyerRouter.get("/", getProductController);
 
-/*
- @access = private
- @desc = to get seller product
- @api = GET /api/products/seller
+/**
+  @access - public
+  @desc - to fetch product details
+  @api - GET /api/buyer/:productId
  */
-productRouter.get("/seller", sellerMiddleware, getSellerProductController);
+BuyerRouter.get("/:productId", getProductDetailsController);
 
-/* 
- @access = private
- @desc = add variant
- @api = POST /api/products/add/:productId/variant 
-*/
-productRouter.post(
-  "/add/:productId/variant",
-  sellerMiddleware,
-  upload.array("images", 6),
-  addVariantValidator,
-  addVariantController,
-);
-
-/*
- @access = private
- @desc = edit variant
- @api = PATCH /products/:productId/variants/:variantId
-*/
-productRouter.patch(
-  "/:productId/variants/:variantId",
-  sellerMiddleware,
-  upload.array("images", 6),
-  editVariantValidator,
-  editVariantController,
-);
-
-/*
- @access = private
- @desc = delete variant
- @api = DELETE /products/:productId/variants/:variantId
-*/
-productRouter.delete(
-  "/:productId/variants/:variantId",
-  sellerMiddleware,
-  deleteVariantController,
-);
-
-/*
- @access = private
- @desc =delete product
- @api = DELETE /products/:productId/
-*/
-productRouter.delete(
-  "/:productId",
-  sellerMiddleware,
-  deleteProductController,
+/**
+ * @access - public
+ * @desc - to fetch related products
+ * @api - GET /api/products/:productId/related
+ */
+BuyerRouter.get(
+  "/:productId/related",
+  getRelatedProductsController
 );
 
 export default productRouter;

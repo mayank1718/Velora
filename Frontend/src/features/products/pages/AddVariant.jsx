@@ -8,12 +8,11 @@ import {
   CheckCircle2,
   AlertCircle,
   X,
-  Loader2,
 } from "lucide-react";
-import { useProduct } from "../hooks/useProduct";
 import ProductInfo from "../components/ProductInfo";
 import VariantForm from "../components/VariantForm";
 import VariantList from "../components/VariantList";
+import { useSeller } from "../hooks/useSeller";
 
 const AddVariant = () => {
   const { productId } = useParams();
@@ -24,7 +23,7 @@ const AddVariant = () => {
     handleAddVariant,
     handleEditVariant,
     handleDeleteVariant,
-  } = useProduct();
+  } = useSeller();
 
   const [localProduct, setLocalProduct] = useState(null);
   const [productVariants, setProductVariants] = useState([]);

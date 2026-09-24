@@ -1,22 +1,22 @@
 import axios from "axios";
 
-const productApiInstance = axios.create({
-  baseURL: "http://localhost:3000/api/products",
+const sellerApiInstance = axios.create({
+  baseURL: "http://localhost:3000/api/seller",
   withCredentials: true,
 });
 
 export const createProduct = async (formData) => {
-  const response = await productApiInstance.post("/create", formData);
+  const response = await sellerApiInstance.post("/create", formData);
   return response.data;
 };
 
 export const getSellerProduct = async () => {
-  const response = await productApiInstance.get("/seller");
+  const response = await sellerApiInstance.get("/");
   return response.data;
 };
 
 export const addVariant = async (productId, formData) => {
-  const response = await productApiInstance.post(
+  const response = await sellerApiInstance.post(
     `/add/${productId}/variant`,
     formData,
   );
@@ -24,7 +24,7 @@ export const addVariant = async (productId, formData) => {
 };
 
 export const editVariant = async (formData, productId, variantId) => {
-  const response = await productApiInstance.patch(
+  const response = await sellerApiInstance.patch(
     `/${productId}/variants/${variantId}`,
     formData,
   );
@@ -32,13 +32,13 @@ export const editVariant = async (formData, productId, variantId) => {
 };
 
 export const deleteVariant = async (productId, variantId) => {
-  const response = await productApiInstance.delete(
+  const response = await sellerApiInstance.delete(
     `/${productId}/variants/${variantId}`,
   );
   return response.data;
 };
 
 export const deleteProduct = async (productId) => {
-  const response = await productApiInstance.delete(`/${productId}`);
+  const response = await sellerApiInstance.delete(`/${productId}`);
   return response.data;
 };
