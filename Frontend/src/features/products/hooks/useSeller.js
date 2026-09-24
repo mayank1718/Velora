@@ -53,7 +53,6 @@ export const useSeller = () => {
   }, [setLoading, setSellerProducts]);
 
   const handleAddVariant = async (productId, formData) => {
-    console.log(formData);
     try {
       const data = await addVariant(productId, formData);
       const newVariant = data?.variant || data;
