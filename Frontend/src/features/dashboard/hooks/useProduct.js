@@ -22,6 +22,8 @@ export const useProduct = () => {
     setRelatedProducts,
     relatedLoading,
     setRelatedLoading,
+    relatedError,
+    setRelatedError,
   } = context;
 
   const handleGetAllProducts = useCallback(async () => {
@@ -76,29 +78,31 @@ export const useProduct = () => {
   const handleGetRelatedProducts = useCallback(
     async (productId) => {
       setRelatedLoading(true);
-      setError(null);
+      setRelatedError(null);
       try {
         const data = await getRelatedProducts(productId);
-        const relatedProducts = Array.isArray(data?.products)
+        const relatedList = Array.isArray(data?.products)
           ? data.products
-          : [];
+          : Array.isArray(data)
+            ? data
+            : [];
 
-        setRelatedProducts(relatedProducts);
-
-        return relatedProducts;
+        setRelatedProducts(relatedList);
+        return relatedList;
       } catch (err) {
         console.error("Failed to fetch related products:", err);
         const errorMessage =
           err?.response?.data?.message ||
           err?.message ||
           "Unable to load related products. Please try again.";
-        setError(errorMessage);
+        setRelatedError(errorMessage);
+        setRelatedProducts([]);
         return [];
       } finally {
         setRelatedLoading(false);
       }
     },
-    [setLoading, setError],
+    [setRelatedLoading, setRelatedProducts, setRelatedError],
   );
 
   return {
@@ -112,5 +116,7 @@ export const useProduct = () => {
     handleGetRelatedProducts,
     relatedProducts,
     relatedLoading,
+    relatedError,
+    setRelatedError,
   };
 };

@@ -6,22 +6,35 @@ import ProductGallery from "../components/product-details/ProductGallery";
 import ProductInfo from "../components/product-details/ProductInfo";
 import ProductDetailsInfo from "../components/product-details/ProductDetailsInfo";
 import ProductDetailsSkeleton from "../components/product-details/ProductDetailsSkeleton";
-import { ChevronRight, ArrowLeft, ShieldCheck, PackageX } from "lucide-react";
+import ProductCard from "../components/ProductCard";
+import ProductSkeleton from "../components/ProductSkeleton";
+import { ChevronRight, ArrowLeft, ShieldCheck, PackageX, RefreshCw } from "lucide-react";
 import { useProduct } from "../hooks/useProduct";
 
 const ProductDetails = () => {
   const { productId } = useParams();
-  const { loading, error, product, handleGetProductDetails } = useProduct();
+  const {
+    loading,
+    error,
+    product,
+    handleGetProductDetails,
+    relatedProducts,
+    relatedLoading,
+    relatedError,
+    handleGetRelatedProducts,
+  } = useProduct();
 
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Fetch product details on mount or ID change
+  // Fetch product details and related products on mount or ID change
   useEffect(() => {
     if (productId) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       handleGetProductDetails(productId);
+      handleGetRelatedProducts(productId);
     }
-  }, [productId, handleGetProductDetails]);
+  }, [productId, handleGetProductDetails, handleGetRelatedProducts]);
 
   // Sync default variant and image once product data arrives
   useEffect(() => {
@@ -45,13 +58,13 @@ const ProductDetails = () => {
   };
 
   // Compile all available images (main product images + variant specific images if distinct)
- const galleryImages = useMemo(() => {
-   if (selectedVariant?.images?.length > 0) {
-     return selectedVariant.images;
-   }
+  const galleryImages = useMemo(() => {
+    if (selectedVariant?.images?.length > 0) {
+      return selectedVariant.images;
+    }
 
-   return product?.images || [];
- }, [product, selectedVariant]);
+    return product?.images || [];
+  }, [product, selectedVariant]);
 
   return (
     <div className="min-h-screen bg-[#FAFAF9] text-[#171717] flex flex-col justify-between selection:bg-[#171717] selection:text-white">
@@ -143,6 +156,46 @@ const ProductDetails = () => {
               variantsCount={product.variants?.length || 0}
               description={product.description}
             />
+
+            {/* Related Products Section */}
+            <section className="mt-14 sm:mt-20 pt-10 sm:pt-14 border-t border-[#E5E5E5]/80">
+              <div className="flex items-center justify-between mb-6 sm:mb-8">
+                <div>
+                  <h2 className="text-lg sm:text-xl font-medium tracking-tight text-[#171717]">
+                    Related Products
+                  </h2>
+                  <p className="text-xs text-[#737373] mt-0.5">
+                    Discover complementary pieces from the same collection
+                  </p>
+                </div>
+              </div>
+
+              {relatedLoading ? (
+                <ProductSkeleton count={4} />
+              ) : relatedError ? (
+                <div className="py-8 px-6 bg-white border border-[#E5E5E5] rounded-xl text-center shadow-xs max-w-lg mx-auto">
+                  <p className="text-xs text-rose-600 mb-3">{relatedError}</p>
+                  <button
+                    onClick={() => handleGetRelatedProducts(productId)}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#171717] text-white text-xs font-medium uppercase tracking-[0.14em] rounded-full hover:bg-[#262626] transition-all">
+                    <RefreshCw className="w-3 h-3" />
+                    <span>Try Again</span>
+                  </button>
+                </div>
+              ) : !relatedProducts || relatedProducts.length === 0 ? (
+                <div className="py-12 px-6 text-center bg-white border border-[#E5E5E5] rounded-xl shadow-xs">
+                  <p className="text-xs text-[#737373] font-medium">
+                    No related products found.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5 md:gap-6">
+                  {relatedProducts.slice(0, 8).map((relProduct) => (
+                    <ProductCard key={relProduct._id} product={relProduct} />
+                  ))}
+                </div>
+              )}
+            </section>
           </div>
         )}
       </main>
