@@ -20,7 +20,7 @@ const sellerRouter = Router();
  @desc = to create product
  @api = POST /api/seller/create
  */
-productRouter.post(
+sellerRouter.post(
   "/create",
   sellerMiddleware,
   upload.array("images", 6),
@@ -33,14 +33,14 @@ productRouter.post(
  @desc = to get seller product
  @api = GET /api/seller
  */
-productRouter.get("/product", sellerMiddleware, getSellerProductController);
+sellerRouter.get("/product", sellerMiddleware, getSellerProductController);
 
 /* 
  @access = private
  @desc = add variant
  @api = POST /api/seller/add/:productId/variant 
 */
-productRouter.post(
+sellerRouter.post(
   "/add/:productId/variant",
   sellerMiddleware,
   upload.array("images", 6),
@@ -53,7 +53,7 @@ productRouter.post(
  @desc = edit variant
  @api = PATCH /seller/:productId/variants/:variantId
 */
-productRouter.patch(
+sellerRouter.patch(
   "/:productId/variants/:variantId",
   sellerMiddleware,
   upload.array("images", 6),
@@ -66,7 +66,7 @@ productRouter.patch(
  @desc = delete variant
  @api = DELETE /seller/:productId/variants/:variantId
 */
-productRouter.delete(
+sellerRouter.delete(
   "/:productId/variants/:variantId",
   sellerMiddleware,
   deleteVariantController,
@@ -77,7 +77,7 @@ productRouter.delete(
  @desc =delete product
  @api = DELETE /seller/:productId/
 */
-productRouter.delete(
+sellerRouter.delete(
   "/:productId",
   sellerMiddleware,
   deleteProductController,

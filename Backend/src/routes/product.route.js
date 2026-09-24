@@ -8,21 +8,21 @@ const productRouter = Router();
   @desc - to fetch all product
   @api - GET /api/buyer
  */
-BuyerRouter.get("/", getProductController);
+productRouter.get("/", getProductController);
 
 /**
   @access - public
   @desc - to fetch product details
   @api - GET /api/buyer/:productId
  */
-BuyerRouter.get("/:productId", getProductDetailsController);
+productRouter.get("/:productId", getProductDetailsController);
 
 /**
  * @access - public
  * @desc - to fetch related products
  * @api - GET /api/products/:productId/related
  */
-BuyerRouter.get(
+productRouter.get(
   "/:productId/related",
   getRelatedProductsController
 );
