@@ -41,18 +41,29 @@ export const useBuyer = () => {
     }
   }, [setLoading, setError, setAllProducts]);
 
-  const handleGetProductDetails = async (productId) => {
-    setLoading(true);
-    try {
-      const data = await getProductDetails(productId);
-      setProduct(data.product);
-      return data.product;
-    } catch (error) {
-      console.log("failed to fetch product details", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleGetProductDetails = useCallback(
+    async (productId) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getProductDetails(productId);
+        const prod = data?.product || data;
+        setProduct(prod);
+        return prod;
+      } catch (err) {
+        console.error("failed to fetch product details", err);
+        const errorMessage =
+          err?.response?.data?.message ||
+          err?.message ||
+          "Unable to load product details. Please try again.";
+        setError(errorMessage);
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [setLoading, setError, setProduct]
+  );
 
   return {
     loading,
