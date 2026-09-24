@@ -1,6 +1,26 @@
 import productModel from "../models/product.model.js";
 import cartModel from "../models/cart.model.js";
 
+export const getCartController = async (req, res, next) => {
+  try {
+    const cartItem = await cartModel.find({ user: req.user.userId });
+    if (!cartItem) {
+      return res.status(404).json({
+        message: "item not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: "cart item fetched successfully",
+      success: true,
+      cart: cartItem,
+    });
+  } catch (error) {
+    console.log("failed to fetch cart item", error);
+    next(error);
+  }
+};
+
 export const addToCartController = async (req, res, next) => {
   try {
     const { productId, variantId } = req.params;
@@ -23,9 +43,9 @@ export const addToCartController = async (req, res, next) => {
         success: false,
       });
     }
-    let cart = await cartModel.findOne({ user: req.user._id });
+    let cart = await cartModel.findOne({ user: req.user.userId });
     if (!cart) {
-      cart = await cartModel.create({ user: req.user._id, items: [] });
+      cart = await cartModel.create({ user: req.user.userId, items: [] });
     } else {
       const existingItemIndex = cart.items.findIndex(
         (item) =>
@@ -40,11 +60,13 @@ export const addToCartController = async (req, res, next) => {
           });
         }
         cart.items[existingItemIndex].quantity += 1;
+        cart.items[existingItemIndex].price = variant.price * cart.items[existingItemIndex].quantity;
       } else {
         cart.items.push({
           product: productId,
           variant: variantId,
           quantity: 1,
+          price: variant.price,
         });
       }
     }
@@ -88,7 +110,7 @@ export const increaseOneController = async (req, res, next) => {
     }
 
     const cart = await cartModel.findOne({
-      user: req.user._id,
+      user: req.user.userId,
     });
 
     if (!cart) {
@@ -152,7 +174,7 @@ export const decreaseOneController = async (req, res, next) => {
     }
 
     const cart = await cartModel.findOne({
-      user: req.user._id,
+      user: req.user.userId,
     });
 
     if (!cart) {
@@ -210,7 +232,7 @@ export const removeCartItemController = async (req, res, next) => {
     }
 
     const cart = await cartModel.findOne({
-      user: req.user._id,
+      user: req.user.Id,
     });
 
     if (!cart) {
@@ -247,4 +269,3 @@ export const removeCartItemController = async (req, res, next) => {
     next(error);
   }
 };
-

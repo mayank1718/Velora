@@ -1,13 +1,25 @@
-import { Router } from "express";
+﻿import { Router } from "express";
 import {
   addToCartController,
   decreaseOneController,
+  getCartController,
   increaseOneController,
   removeCartItemController,
 } from "../controllers/buyer.controller.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
 
 const BuyerRouter = Router();
+
+/**
+ * @access - private
+ * @desc - to fetch user's cart
+ * @api - GET /api/buyer/cart
+ */
+BuyerRouter.get(
+  "/cart",
+  authMiddleware,
+  getCartController
+);
 
 /**
  * @access - private
