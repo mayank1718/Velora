@@ -11,11 +11,15 @@ import ProductDetails from "../features/dashboard/pages/ProductDetails";
 export const routes = createBrowserRouter([
   {
     path: "/",
-    element: <Dashboard />,
+    element: (
+      <Protected role="buyer" authRequired={false}>
+        <Dashboard />
+      </Protected>
+    ),
   },
   {
     path: "/products/:productId",
-    element : <ProductDetails />
+    element: <ProductDetails />,
   },
   {
     path: "/login",

@@ -45,9 +45,12 @@ const Login = () => {
       password: formData.password,
     });
 
-    if (result) {
-      return navigate("/");
+    if (result.role == "seller") {
+      navigate("/seller/products");
+    } else if (result.role == "buyer") {
+      navigate("/");
     }
+
     setFormData({
       email: "",
       password: "",

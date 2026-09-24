@@ -50,7 +50,7 @@ export const useAuth = () => {
     try {
       const data = await login({ email, password });
       setUser(data.user);
-      return true;
+      return data.user;
     } catch (err) {
       const message =
         err?.response?.data?.message ||
