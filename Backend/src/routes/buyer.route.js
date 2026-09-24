@@ -1,7 +1,11 @@
 import { Router } from "express";
 import {
+  addToCartController,
+  decreaseOneController,
   getProductController,
   getProductDetailsController,
+  increaseOneController,
+  removeCartItemController,
 } from "../controllers/buyer.controller.js";
 
 const BuyerRouter = Router();
@@ -9,15 +13,59 @@ const BuyerRouter = Router();
 /**
   @access - public
   @desc - to fetch all product
-  @api - GET /api/products
+  @api - GET /api/buyer
  */
 BuyerRouter.get("/", getProductController);
 
 /**
   @access - public
   @desc - to fetch product details
-  @api - GET /api/products/:productId
+  @api - GET /api/buyer/:productId
  */
 BuyerRouter.get("/:productId", getProductDetailsController);
+
+/**
+ * @access - private
+ * @desc - to add product variant to cart
+ * @api - POST /api/buyer/cart/:productId/:variantId
+ */
+BuyerRouter.post(
+  "/cart/:productId/:variantId",
+  authMiddleware,
+  addToCartController
+);
+
+/**
+ * @access - private
+ * @desc - to increase cart item quantity
+ * @api - PATCH /api/buyer/cart/:productId/:variantId/increase
+ */
+BuyerRouter.patch(
+  "/cart/:productId/:variantId/increase",
+  authMiddleware,
+  increaseOneController
+);
+
+/**
+ * @access - private
+ * @desc - to decrease cart item quantity
+ * @api - PATCH /api/buyer/cart/:productId/:variantId/decrease
+ */
+BuyerRouter.patch(
+  "/cart/:productId/:variantId/decrease",
+  authMiddleware,
+  decreaseOneController
+);
+
+/**
+ * @access - private
+ * @desc - to remove product variant from cart
+ * @api - DELETE /api/buyer/cart/:productId/:variantId
+ */
+BuyerRouter.delete(
+  "/cart/:productId/:variantId",
+  authMiddleware,
+  removeCartItemController
+);
 
 export default BuyerRouter;

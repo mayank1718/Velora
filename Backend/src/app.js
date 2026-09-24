@@ -20,7 +20,7 @@ app.use(express.json());
 /* routes */
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
-app.use("/api/products", BuyerRouter);
+app.use("/api/buyer", BuyerRouter);
 
 /* Error Middleware */
 app.use(errorMiddleware);
