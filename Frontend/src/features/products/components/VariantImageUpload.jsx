@@ -17,11 +17,19 @@ const VariantImageUpload = ({
     if (!fileList || fileList.length === 0) return;
 
     const acceptedFiles = [];
-    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
+    const validTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+      "image/avif",
+    ];
 
     Array.from(fileList).forEach((file) => {
       if (!validTypes.includes(file.type)) {
-        setUploadNotice(`${file.name} is not a supported format (JPG, PNG, WEBP).`);
+        setUploadNotice(
+          `${file.name} is not a supported format (JPG, PNG, WEBP).`,
+        );
         return;
       }
       if (file.size > maxFileSizeMb * 1024 * 1024) {
@@ -35,7 +43,9 @@ const VariantImageUpload = ({
 
     const combined = [...images, ...acceptedFiles];
     if (combined.length > maxImages) {
-      setUploadNotice(`Maximum of ${maxImages} images allowed. First ${maxImages} selected.`);
+      setUploadNotice(
+        `Maximum of ${maxImages} images allowed. First ${maxImages} selected.`,
+      );
       onChange(combined.slice(0, maxImages));
     } else {
       onChange(combined);
@@ -108,23 +118,30 @@ const VariantImageUpload = ({
           onDrop={handleDrop}
           tabIndex={0}
           role="button"
-          onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && openFileDialog()}
+          onKeyDown={(e) =>
+            (e.key === "Enter" || e.key === " ") && openFileDialog()
+          }
           aria-label="Upload variant images"
           className={`relative border border-dashed transition-all duration-200 p-6 sm:p-8 text-center flex flex-col items-center justify-center cursor-pointer bg-[#FFFFFF] group focus:outline-none ${
             isDragging
               ? "border-[#171717] bg-[#FAFAF9] ring-2 ring-[#171717]/10"
               : error
-              ? "border-red-400 bg-red-50/20"
-              : "border-[#E5E5E5] hover:border-[#171717]"
-          }`}
-        >
+                ? "border-red-400 bg-red-50/20"
+                : "border-[#E5E5E5] hover:border-[#171717]"
+          }`}>
           {/* Upload Icon */}
           <div className="w-10 h-10 mb-3 bg-[#FAFAF9] border border-[#E5E5E5] flex items-center justify-center text-[#171717] group-hover:border-[#171717] transition-colors">
-            <Upload className="w-4 h-4 text-[#171717] transition-transform group-hover:-translate-y-0.5" strokeWidth={1.5} />
+            <Upload
+              className="w-4 h-4 text-[#171717] transition-transform group-hover:-translate-y-0.5"
+              strokeWidth={1.5}
+            />
           </div>
 
           <p className="text-xs uppercase tracking-[0.16em] font-medium text-[#171717] mb-1">
-            Drag & Drop or <span className="underline underline-offset-4 text-[#171717]">Browse Files</span>
+            Drag & Drop or{" "}
+            <span className="underline underline-offset-4 text-[#171717]">
+              Browse Files
+            </span>
           </p>
           <p className="text-[11px] text-[#737373] leading-relaxed max-w-xs mt-0.5">
             Add up to {maxImages} images specific to this variant.
@@ -140,14 +157,13 @@ const VariantImageUpload = ({
         <div className="space-y-2.5">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
             {images.map((file, index) => {
-              const previewUrl =
-                typeof file === "string" ? file : file?.url || "";
+              console.log(file.url);
+              const previewUrl = URL.createObjectURL(file);
 
               return (
                 <div
                   key={`${file.name || index}-${index}`}
-                  className="group relative aspect-square bg-[#FFFFFF] border border-[#E5E5E5] overflow-hidden transition-all hover:border-[#171717]"
-                >
+                  className="group relative aspect-square bg-[#FFFFFF] border border-[#E5E5E5] overflow-hidden transition-all hover:border-[#171717]">
                   <img
                     src={previewUrl}
                     alt={`Variant preview ${index + 1}`}
@@ -173,8 +189,7 @@ const VariantImageUpload = ({
                         onClick={(e) => handleRemove(index, e)}
                         className="w-5 h-5 bg-[#171717]/90 hover:bg-red-600 text-white flex items-center justify-center transition-colors cursor-pointer"
                         title="Remove image"
-                        aria-label="Remove image"
-                      >
+                        aria-label="Remove image">
                         <X className="w-3 h-3" strokeWidth={2} />
                       </button>
                     </div>
@@ -204,10 +219,12 @@ const VariantImageUpload = ({
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                className="aspect-square border border-dashed border-[#E5E5E5] hover:border-[#171717] bg-[#FFFFFF] hover:bg-[#FAFAF9] transition-all flex flex-col items-center justify-center p-2 text-center cursor-pointer group"
-              >
+                className="aspect-square border border-dashed border-[#E5E5E5] hover:border-[#171717] bg-[#FFFFFF] hover:bg-[#FAFAF9] transition-all flex flex-col items-center justify-center p-2 text-center cursor-pointer group">
                 <div className="w-6 h-6 rounded-full bg-[#FAFAF9] border border-[#E5E5E5] flex items-center justify-center mb-1 group-hover:border-[#171717] transition-colors">
-                  <Plus className="w-3.5 h-3.5 text-[#737373] group-hover:text-[#171717]" strokeWidth={1.5} />
+                  <Plus
+                    className="w-3.5 h-3.5 text-[#737373] group-hover:text-[#171717]"
+                    strokeWidth={1.5}
+                  />
                 </div>
                 <span className="text-[9px] uppercase tracking-[0.12em] font-medium text-[#737373] group-hover:text-[#171717]">
                   Add
@@ -228,8 +245,7 @@ const VariantImageUpload = ({
               <button
                 type="button"
                 onClick={openFileDialog}
-                className="text-[10px] uppercase tracking-[0.12em] underline underline-offset-4 text-[#171717] hover:text-[#D4AF37] transition-colors cursor-pointer"
-              >
+                className="text-[10px] uppercase tracking-[0.12em] underline underline-offset-4 text-[#171717] hover:text-[#D4AF37] transition-colors cursor-pointer">
                 Browse Files
               </button>
             )}
@@ -241,14 +257,16 @@ const VariantImageUpload = ({
       {uploadNotice && (
         <div className="p-2.5 bg-[#FAFAF9] border border-[#E5E5E5] text-[11px] text-[#737373] flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-3.5 h-3.5 text-[#D4AF37] flex-shrink-0" strokeWidth={1.5} />
+            <AlertCircle
+              className="w-3.5 h-3.5 text-[#D4AF37] flex-shrink-0"
+              strokeWidth={1.5}
+            />
             <span>{uploadNotice}</span>
           </div>
           <button
             type="button"
             onClick={() => setUploadNotice(null)}
-            className="text-[10px] uppercase tracking-[0.1em] text-[#171717] hover:underline"
-          >
+            className="text-[10px] uppercase tracking-[0.1em] text-[#171717] hover:underline">
             Dismiss
           </button>
         </div>

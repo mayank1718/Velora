@@ -31,7 +31,7 @@ const AddVariant = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
   const [apiError, setApiError] = useState(null);
-  const [editingVariant, setEditingVariant] = useState([]);
+  const [editingVariant, setEditingVariant] = useState(null);
 
   // 1. Fetch / resolve current product
   useEffect(() => {
