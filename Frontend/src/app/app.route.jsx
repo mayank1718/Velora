@@ -5,11 +5,12 @@ import Protected from "../features/auth/components/Protected";
 import CreateProduct from "../features/products/pages/CreateProduct";
 import SellerProduct from "../features/products/pages/SellerProduct";
 import AddVariant from "../features/products/pages/AddVariant";
+import Dashboard from "../features/dashboard/pages/Dashboard";
 
 export const routes = createBrowserRouter([
   {
     path: "/",
-    element: <h1>Welcome to velora</h1>,
+    element: <Dashboard />,
   },
   {
     path: "/login",
