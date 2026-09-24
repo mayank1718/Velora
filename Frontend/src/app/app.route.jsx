@@ -6,11 +6,16 @@ import CreateProduct from "../features/products/pages/CreateProduct";
 import SellerProduct from "../features/products/pages/SellerProduct";
 import AddVariant from "../features/products/pages/AddVariant";
 import Dashboard from "../features/dashboard/pages/Dashboard";
+import ProductDetails from "../features/dashboard/pages/ProductDetails";
 
 export const routes = createBrowserRouter([
   {
     path: "/",
     element: <Dashboard />,
+  },
+  {
+    path: "/products/:productId",
+    element : <ProductDetails />
   },
   {
     path: "/login",

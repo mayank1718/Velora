@@ -1,6 +1,6 @@
 import { useContext, useCallback } from "react";
 import { BuyerContext } from "../dashboard.context";
-import { getAllProducts } from "../services/buyer.api";
+import { getAllProducts, getProductDetails } from "../services/buyer.api";
 
 export const useBuyer = () => {
   const context = useContext(BuyerContext);
@@ -12,6 +12,8 @@ export const useBuyer = () => {
     setAllProducts,
     error,
     setError,
+    product,
+    setProduct,
   } = context;
 
   const handleGetAllProducts = useCallback(async () => {
@@ -19,12 +21,11 @@ export const useBuyer = () => {
     setError(null);
     try {
       const data = await getAllProducts();
-      // Handle both { success: true, products: [...] } and direct array
       const productList = Array.isArray(data?.products)
         ? data.products
         : Array.isArray(data)
-        ? data
-        : [];
+          ? data
+          : [];
       setAllProducts(productList);
       return productList;
     } catch (err) {
@@ -40,11 +41,26 @@ export const useBuyer = () => {
     }
   }, [setLoading, setError, setAllProducts]);
 
+  const handleGetProductDetails = async (productId) => {
+    setLoading(true);
+    try {
+      const data = await getProductDetails(productId);
+      setProduct(data.product);
+      return data.product;
+    } catch (error) {
+      console.log("failed to fetch product details", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     loading,
     error,
     setError,
     allProducts,
+    handleGetProductDetails,
     handleGetAllProducts,
+    product,
   };
 };

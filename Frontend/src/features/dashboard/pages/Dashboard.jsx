@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from "react";
-import { useBuyer } from "../hooks/useBuyer";
 import BuyerNavbar from "../components/BuyerNavbar";
 import DashboardHeader from "../components/DashboardHeader";
 import SearchBar from "../components/SearchBar";
@@ -10,6 +9,7 @@ import EmptyProductState from "../components/EmptyProductState";
 import ErrorState from "../components/ErrorState";
 import { ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useBuyer } from "../hooks/useBuyer";
 
 const Dashboard = () => {
   const { loading, error, allProducts, handleGetAllProducts } = useBuyer();
