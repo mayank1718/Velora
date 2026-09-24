@@ -9,3 +9,8 @@ export const getAllProducts = async () => {
   const response = await buyerApiInstance.get("/");
   return response.data;
 };
+
+export const getProductDetails = async (productId) => {
+  const response = await buyerApiInstance.get(`/${productId}`);
+  return response.data;
+};
