@@ -4,6 +4,7 @@ import {
   getAllProducts,
   getProductDetails,
   getRelatedProducts,
+  searchProducts,
 } from "../services/buyer.api";
 
 export const useProduct = () => {
@@ -105,6 +106,34 @@ export const useProduct = () => {
     [setRelatedLoading, setRelatedProducts, setRelatedError],
   );
 
+  const handleSearchProducts = useCallback(
+    async (searchQuery) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await searchProducts(searchQuery);
+        const productList = Array.isArray(data?.products)
+          ? data.products
+          : Array.isArray(data)
+            ? data
+            : [];
+        setAllProducts(productList);
+        return productList;
+      } catch (err) {
+        console.error("Failed to search products:", err);
+        const errorMessage =
+          err?.response?.data?.message ||
+          err?.message ||
+          "Unable to search products. Please try again.";
+        setError(errorMessage);
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [setLoading, setError, setAllProducts],
+  );
+
   return {
     loading,
     error,
@@ -118,5 +147,6 @@ export const useProduct = () => {
     relatedLoading,
     relatedError,
     setRelatedError,
+    handleSearchProducts,
   };
 };

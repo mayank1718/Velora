@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { useProduct } from "../hooks/useProduct";
 
 const Dashboard = () => {
-  const { loading, error, allProducts, handleGetAllProducts } = useProduct()
+  const { loading, error, allProducts, handleGetAllProducts, handleSearchProducts } = useProduct()
 
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");

@@ -61,5 +61,36 @@ export const getRelatedProductsController = async (req, res, next) => {
     });
   } catch (error) {
     console.log("failed to fetch related product", error);
+    next(error);
+  }
+};
+
+export const searchProductController = async (req, res, next) => {
+  try {
+    const search = req.query.search?.trim();
+
+    if (!search?.trim()) {
+      return res.status(400).json({
+        message: "Search query is required",
+        success: false,
+      });
+    }
+
+    const filter = {
+      $or: [
+        { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+        { category: { $regex: search, $options: "i" } },
+      ],
+    };
+    const products = await productModel.find(filter);
+    return res.status(200).json({
+      message: "Products searched successfully",
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.log("failed to search product", error);
+    next(error);
   }
 };

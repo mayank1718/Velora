@@ -26,6 +26,13 @@ export const getRelatedProducts = async (productId) => {
   return response.data;
 };
 
+export const searchProducts = async (searchQuery) => {
+  const response = await productApiInstanse.get(
+    `/search?search=${searchQuery}`,
+  );
+  return response.data;
+};
+
 //buyer api
 export const getCart = async () => {
   const response = await buyerApiInstance.get("/cart");

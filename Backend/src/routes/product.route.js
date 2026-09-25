@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getProductController, getProductDetailsController, getRelatedProductsController } from "../controllers/product.controller.js";
+import { getProductController, getProductDetailsController, getRelatedProductsController, searchProductController } from "../controllers/product.controller.js";
 
 const productRouter = Router();
 
@@ -25,6 +25,16 @@ productRouter.get("/:productId", getProductDetailsController);
 productRouter.get(
   "/:productId/related",
   getRelatedProductsController
+);
+
+/**
+ * @access - public
+ * @desc - to search products 
+ * @api - GET /api/products/search
+ */
+productRouter.get(
+  "/search",
+  searchProductController
 );
 
 export default productRouter;
