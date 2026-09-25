@@ -11,6 +11,16 @@ const productRouter = Router();
 productRouter.get("/", getProductController);
 
 /**
+ * @access - public
+ * @desc - to search products 
+ * @api - GET /api/products/search
+ */
+productRouter.get(
+  "/search",
+  searchProductController
+);
+
+/**
   @access - public
   @desc - to fetch product details
   @api - GET /api/buyer/:productId
@@ -27,14 +37,6 @@ productRouter.get(
   getRelatedProductsController
 );
 
-/**
- * @access - public
- * @desc - to search products 
- * @api - GET /api/products/search
- */
-productRouter.get(
-  "/search",
-  searchProductController
-);
+
 
 export default productRouter;
