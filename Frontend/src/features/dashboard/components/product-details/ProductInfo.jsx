@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import VariantList from "./VariantList";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, XCircle, ShoppingBag, Check, ArrowRight } from "lucide-react";
+import { useCart } from "../../hooks/useCart";
 
 const ProductInfo = ({
+  productId,
   title,
   category,
   description,
@@ -10,6 +13,10 @@ const ProductInfo = ({
   selectedVariant,
   onSelectVariant,
 }) => {
+  const navigate = useNavigate();
+  const { handleAddItemToCart, loading: cartLoading } = useCart();
+  const [added, setAdded] = useState(false);
+
   const variantList = Array.isArray(variants) ? variants : [];
 
   // Calculate pricing based on variants
@@ -30,6 +37,15 @@ const ProductInfo = ({
       : variantList[0]?.stock ?? 0;
 
   const isStockAvailable = activeStock > 0;
+
+  const handleAddToCart = async () => {
+    if (!productId || !selectedVariant?._id || !isStockAvailable) return;
+    const res = await handleAddItemToCart(productId, selectedVariant._id);
+    if (res) {
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2500);
+    }
+  };
 
   return (
     <div className="flex flex-col space-y-6">
@@ -127,6 +143,43 @@ const ProductInfo = ({
         selectedVariant={selectedVariant}
         onSelectVariant={onSelectVariant}
       />
+
+      {/* Action Buttons: Add to Cart / View Cart */}
+      <div className="pt-2 space-y-3">
+        <button
+          type="button"
+          onClick={handleAddToCart}
+          disabled={!selectedVariant || !isStockAvailable || cartLoading}
+          className={`w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full text-xs sm:text-sm font-medium uppercase tracking-[0.14em] transition-all duration-200 shadow-xs cursor-pointer ${
+            added
+              ? "bg-emerald-700 text-white"
+              : "bg-[#171717] text-white hover:bg-[#262626] active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed"
+          }`}
+        >
+          {added ? (
+            <>
+              <Check className="w-4 h-4" />
+              <span>Added to Cart!</span>
+            </>
+          ) : (
+            <>
+              <ShoppingBag className="w-4 h-4 text-[#D4AF37]" strokeWidth={2} />
+              <span>{isStockAvailable ? "Add to Cart" : "Out of Stock"}</span>
+            </>
+          )}
+        </button>
+
+        {added && (
+          <button
+            type="button"
+            onClick={() => navigate("/cart")}
+            className="w-full inline-flex items-center justify-center gap-2 py-3 px-6 rounded-full bg-white border border-[#171717] text-[#171717] text-xs font-medium uppercase tracking-[0.14em] hover:bg-stone-50 transition-all cursor-pointer"
+          >
+            <span>View Shopping Cart</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        )}
+      </div>
     </div>
   );
 };

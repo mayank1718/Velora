@@ -7,6 +7,7 @@ const productApiInstanse = axios.create({
 
 const buyerApiInstance = axios.create({
   baseURL: "http://localhost:3000/api/buyer",
+  withCredentials: true,
 });
 
 // products api

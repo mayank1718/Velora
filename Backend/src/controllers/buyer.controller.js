@@ -3,7 +3,9 @@ import cartModel from "../models/cart.model.js";
 
 export const getCartController = async (req, res, next) => {
   try {
-    const cartItem = await cartModel.find({ user: req.user.userId });
+    const cartItem = await cartModel
+      .find({ user: req.user.userId })
+      .populate("items.product");
     if (!cartItem) {
       return res.status(404).json({
         message: "item not found",
@@ -60,7 +62,8 @@ export const addToCartController = async (req, res, next) => {
           });
         }
         cart.items[existingItemIndex].quantity += 1;
-        cart.items[existingItemIndex].price = variant.price * cart.items[existingItemIndex].quantity;
+        cart.items[existingItemIndex].price =
+          variant.price * cart.items[existingItemIndex].quantity;
       } else {
         cart.items.push({
           product: productId,
@@ -232,7 +235,7 @@ export const removeCartItemController = async (req, res, next) => {
     }
 
     const cart = await cartModel.findOne({
-      user: req.user.Id,
+      user: req.user.userId,
     });
 
     if (!cart) {

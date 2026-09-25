@@ -1,6 +1,7 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../auth/hooks/useAuth";
+import { useCart } from "../hooks/useCart";
 import {
   Store,
   User,
@@ -13,16 +14,17 @@ import {
 
 const BuyerNavbar = () => {
   const { user, handleLogout } = useAuth();
-  const navigate = useNavigate();
-
+  const { cart, handleGetCart } = useCart();
+  useEffect(() => {
+    handleGetCart();
+  }, []);
   return (
     <header className="sticky top-0 z-40 w-full bg-[#FAFAF9]/90 backdrop-blur-md border-b border-[#E5E5E5]/70 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
         {/* Brand Wordmark */}
         <Link
           to="/"
-          className="flex items-center select-none group focus:outline-none"
-        >
+          className="flex items-center select-none group focus:outline-none">
           <span className="text-xl sm:text-2xl font-bold tracking-[0.25em] text-[#171717] uppercase transition-opacity group-hover:opacity-90">
             VELORA
           </span>
@@ -31,13 +33,34 @@ const BuyerNavbar = () => {
 
         {/* Navigation Actions */}
         <div className="flex items-center gap-3 sm:gap-5">
+          {/* Cart Link */}
+          <Link
+            to="/cart"
+            title="Shopping Cart"
+            className="relative inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-[#E5E5E5] text-[#171717] hover:border-[#171717] hover:bg-[#F5F5F4] transition-all shadow-xs">
+            <ShoppingBag
+              className="w-4 h-4 text-[#171717]"
+              strokeWidth={1.75}
+            />
+            {Array.isArray(cart) && cart[0]?.items.length > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-4.5 sm:h-4.5 bg-[#171717] text-white text-[9px] sm:text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
+                {cart[0]?.items.reduce(
+                  (acc, item) => acc + (item?.quantity || 1),
+                  0,
+                )}
+              </span>
+            )}
+          </Link>
+
           {/* Seller Atelier Link if Seller */}
           {user?.role === "seller" ? (
             <Link
               to="/seller/products"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#171717] bg-white border border-[#E5E5E5] rounded-full hover:border-[#171717] hover:bg-[#F5F5F4] transition-all shadow-xs"
-            >
-              <Store className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={1.75} />
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#171717] bg-white border border-[#E5E5E5] rounded-full hover:border-[#171717] hover:bg-[#F5F5F4] transition-all shadow-xs">
+              <Store
+                className="w-3.5 h-3.5 text-[#D4AF37]"
+                strokeWidth={1.75}
+              />
               <span className="hidden sm:inline">Seller Atelier</span>
               <span className="sm:hidden">Seller</span>
             </Link>
@@ -55,8 +78,7 @@ const BuyerNavbar = () => {
             <button
               onClick={handleLogout}
               title="Sign Out"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#737373] hover:text-[#171717] hover:bg-stone-100 rounded-full transition-colors cursor-pointer"
-            >
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#737373] hover:text-[#171717] hover:bg-stone-100 rounded-full transition-colors cursor-pointer">
               <LogOut className="w-3.5 h-3.5" strokeWidth={1.75} />
               <span className="hidden md:inline">Sign Out</span>
             </button>
@@ -64,14 +86,12 @@ const BuyerNavbar = () => {
             <div className="flex items-center gap-2">
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#171717] hover:text-black transition-colors"
-              >
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#171717] hover:text-black transition-colors">
                 <span>Sign In</span>
               </Link>
               <Link
                 to="/register"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-white bg-[#171717] hover:bg-[#262626] rounded-full transition-all shadow-xs"
-              >
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-white bg-[#171717] hover:bg-[#262626] rounded-full transition-all shadow-xs">
                 <span>Join</span>
                 <ArrowRight className="w-3 h-3" />
               </Link>

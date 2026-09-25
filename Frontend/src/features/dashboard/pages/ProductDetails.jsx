@@ -140,6 +140,7 @@ const ProductDetails = () => {
               {/* Right Column: Product Information & Variants */}
               <div className="lg:col-span-5">
                 <ProductInfo
+                  productId={productId || product?._id}
                   title={product.title}
                   category={product.category}
                   description={product.description}

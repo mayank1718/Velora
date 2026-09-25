@@ -7,6 +7,7 @@ import SellerProduct from "../features/products/pages/SellerProduct";
 import AddVariant from "../features/products/pages/AddVariant";
 import Dashboard from "../features/dashboard/pages/Dashboard";
 import ProductDetails from "../features/dashboard/pages/ProductDetails";
+import Cart from "../features/dashboard/pages/Cart";
 
 export const routes = createBrowserRouter([
   {
@@ -14,6 +15,14 @@ export const routes = createBrowserRouter([
     element: (
       <Protected role="buyer" authRequired={false}>
         <Dashboard />
+      </Protected>
+    ),
+  },
+  {
+    path: "/cart",
+    element: (
+      <Protected role="buyer" authRequired={false}>
+        <Cart />
       </Protected>
     ),
   },

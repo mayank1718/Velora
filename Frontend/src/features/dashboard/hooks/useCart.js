@@ -16,8 +16,13 @@ export const useCart = () => {
     setLoading(true);
     try {
       const data = await addToCart(productId, variantId);
+
       const cartData = Array.isArray(data?.cart) ? data.cart : [];
+
       setCart(cartData);
+
+      await handleGetCart();
+
       return cartData;
     } catch (error) {
       console.log("Failed to add item in cart:", error);
@@ -37,6 +42,8 @@ export const useCart = () => {
 
       setCart(cartData);
 
+      await handleGetCart();
+
       return cartData;
     } catch (error) {
       console.log("Failed to increase item:", error);
@@ -46,7 +53,7 @@ export const useCart = () => {
     }
   };
 
-  const handledecreaseItem = async (productId, variantId) => {
+  const handleDecreaseItem = async (productId, variantId) => {
     setLoading(true);
 
     try {
@@ -55,6 +62,8 @@ export const useCart = () => {
       const cartData = Array.isArray(data?.cart) ? data.cart : [];
 
       setCart(cartData);
+
+      await handleGetCart();
 
       return cartData;
     } catch (error) {
@@ -69,8 +78,13 @@ export const useCart = () => {
     setLoading(true);
     try {
       const data = await removeFromCart(productId, variantId);
+
       const cartData = Array.isArray(data?.cart) ? data.cart : [];
+
       setCart(cartData);
+
+      await handleGetCart();
+
       return cartData;
     } catch (error) {
       console.log("failed to remove item from cart", error);
@@ -84,8 +98,11 @@ export const useCart = () => {
     setLoading(true);
     try {
       const data = await getCart();
+
       const item = Array.isArray(data?.cart) ? data.cart : data;
+
       setCart(item);
+
       return item;
     } catch (error) {
       console.log("failed to fetch cart item", error);
@@ -99,8 +116,8 @@ export const useCart = () => {
     cart,
     handleAddItemToCart,
     handleIncreaseItem,
-    handledecreaseItem,
-    handleRemoveItemFromCart,
+    handleDecreaseItem,
+    handleRemoveItem: handleRemoveItemFromCart,
     handleGetCart,
   };
 };
