@@ -32,9 +32,10 @@ export const getCart = async () => {
   return response.data;
 };
 
-export const addToCart = async (productId, variantId) => {
+export const addToCart = async (productId, variantId, quantity = 1) => {
   const response = await buyerApiInstance.post(
     `/cart/${productId}/${variantId}`,
+    { quantity },
   );
   return response.data;
 };

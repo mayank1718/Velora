@@ -1,7 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import VariantList from "./VariantList";
-import { CheckCircle2, XCircle, ShoppingBag, Check, ArrowRight } from "lucide-react";
+import {
+  CheckCircle2,
+  XCircle,
+  ShoppingBag,
+  Check,
+  ArrowRight,
+  Plus,
+  Minus,
+} from "lucide-react";
 import { useCart } from "../../hooks/useCart";
 
 const ProductInfo = ({
@@ -16,8 +24,14 @@ const ProductInfo = ({
   const navigate = useNavigate();
   const { handleAddItemToCart, loading: cartLoading } = useCart();
   const [added, setAdded] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   const variantList = Array.isArray(variants) ? variants : [];
+
+  // Reset quantity to 1 when selected variant changes
+  useEffect(() => {
+    setQuantity(1);
+  }, [selectedVariant?._id]);
 
   // Calculate pricing based on variants
   const prices = variantList
@@ -40,7 +54,11 @@ const ProductInfo = ({
 
   const handleAddToCart = async () => {
     if (!productId || !selectedVariant?._id || !isStockAvailable) return;
-    const res = await handleAddItemToCart(productId, selectedVariant._id);
+    const res = await handleAddItemToCart(
+      productId,
+      selectedVariant._id,
+      quantity
+    );
     if (res) {
       setAdded(true);
       setTimeout(() => setAdded(false), 2500);
@@ -144,6 +162,62 @@ const ProductInfo = ({
         onSelectVariant={onSelectVariant}
       />
 
+      {/* Quantity Selector Section */}
+      {isStockAvailable && (
+        <div className="pt-2 space-y-2.5">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-semibold uppercase tracking-[0.14em] text-[#737373]">
+              Quantity
+            </span>
+            <span className="text-[11px] text-[#737373]">
+              Max available:{" "}
+              <strong className="text-[#171717]">{activeStock}</strong>
+            </span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {/* Quantity Stepper */}
+            <div className="inline-flex items-center border border-[#E5E5E5] rounded-xl bg-[#FAFAF9] p-1">
+              <button
+                type="button"
+                onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                disabled={quantity <= 1 || cartLoading}
+                aria-label="Decrease quantity"
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-[#E5E5E5] text-[#171717] hover:bg-stone-50 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs cursor-pointer"
+              >
+                <Minus className="w-3.5 h-3.5" />
+              </button>
+
+              <span className="w-12 text-center text-sm font-semibold text-[#171717] select-none">
+                {quantity}
+              </span>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setQuantity((prev) => Math.min(activeStock, prev + 1))
+                }
+                disabled={quantity >= activeStock || cartLoading}
+                aria-label="Increase quantity"
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-[#E5E5E5] text-[#171717] hover:bg-stone-50 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Total calculation indicator */}
+            {typeof activePrice === "number" && quantity > 1 && (
+              <div className="text-xs text-[#737373]">
+                <span>Total: </span>
+                <span className="font-bold text-[#171717]">
+                  ₹{(activePrice * quantity).toLocaleString("en-IN")}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Action Buttons: Add to Cart / View Cart */}
       <div className="pt-2 space-y-3">
         <button
@@ -159,12 +233,20 @@ const ProductInfo = ({
           {added ? (
             <>
               <Check className="w-4 h-4" />
-              <span>Added to Cart!</span>
+              <span>
+                Added {quantity} {quantity === 1 ? "Item" : "Items"} to Cart!
+              </span>
             </>
           ) : (
             <>
               <ShoppingBag className="w-4 h-4 text-[#D4AF37]" strokeWidth={2} />
-              <span>{isStockAvailable ? "Add to Cart" : "Out of Stock"}</span>
+              <span>
+                {isStockAvailable
+                  ? quantity > 1
+                    ? `Add ${quantity} to Cart`
+                    : "Add to Cart"
+                  : "Out of Stock"}
+              </span>
             </>
           )}
         </button>

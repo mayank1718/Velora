@@ -12,14 +12,12 @@ export const useCart = () => {
   const Context = useContext(CartContext);
   const { loading, setLoading, cart, setCart } = Context;
 
-  const handleAddItemToCart = async (productId, variantId) => {
+  const handleAddItemToCart = async (productId, variantId, quantity = 1) => {
     setLoading(true);
     try {
-      const data = await addToCart(productId, variantId);
+      const data = await addToCart(productId, variantId, quantity);
 
       const cartData = Array.isArray(data?.cart) ? data.cart : [];
-
-      setCart(cartData);
 
       await handleGetCart();
 
@@ -40,8 +38,6 @@ export const useCart = () => {
 
       const cartData = Array.isArray(data?.cart) ? data.cart : [];
 
-      setCart(cartData);
-
       await handleGetCart();
 
       return cartData;
@@ -61,8 +57,6 @@ export const useCart = () => {
 
       const cartData = Array.isArray(data?.cart) ? data.cart : [];
 
-      setCart(cartData);
-
       await handleGetCart();
 
       return cartData;
@@ -80,8 +74,6 @@ export const useCart = () => {
       const data = await removeFromCart(productId, variantId);
 
       const cartData = Array.isArray(data?.cart) ? data.cart : [];
-
-      setCart(cartData);
 
       await handleGetCart();
 

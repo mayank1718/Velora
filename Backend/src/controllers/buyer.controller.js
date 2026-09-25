@@ -26,61 +26,81 @@ export const getCartController = async (req, res, next) => {
 export const addToCartController = async (req, res, next) => {
   try {
     const { productId, variantId } = req.params;
+
     const product = await productModel.findOne({
       _id: productId,
       "variants._id": variantId,
     });
+
     if (!product) {
       return res.status(404).json({
-        message: "product not found",
+        message: "Product not found",
         success: false,
       });
     }
+
     const variant = product.variants.find(
       (v) => v._id.toString() === variantId,
     );
+
     if (!variant) {
       return res.status(404).json({
-        message: "product variant not found",
+        message: "Product variant not found",
         success: false,
       });
     }
-    let cart = await cartModel.findOne({ user: req.user.userId });
+
+    const { quantity = 1 } = req.body;
+
+    let cart = await cartModel.findOne({
+      user: req.user.userId,
+    });
+
     if (!cart) {
-      cart = await cartModel.create({ user: req.user.userId, items: [] });
-    } else {
-      const existingItemIndex = cart.items.findIndex(
-        (item) =>
-          item.product.toString() === productId &&
-          item.variant.toString() === variantId,
-      );
-      if (existingItemIndex !== -1) {
-        if (item.quantity >= variant.stock) {
-          return res.status(400).json({
-            message: "Maximum available stock reached",
-            success: false,
-          });
-        }
-        cart.items[existingItemIndex].quantity += 1;
-        cart.items[existingItemIndex].price =
-          variant.price * cart.items[existingItemIndex].quantity;
-      } else {
-        cart.items.push({
-          product: productId,
-          variant: variantId,
-          quantity: 1,
-          price: variant.price,
+      cart = await cartModel.create({
+        user: req.user.userId,
+        items: [],
+      });
+    }
+
+    const existingItemIndex = cart.items.findIndex(
+      (item) =>
+        item.product.toString() === productId &&
+        item.variant.toString() === variantId,
+    );
+
+    if (existingItemIndex !== -1) {
+      const existingItem = cart.items[existingItemIndex];
+
+      if (existingItem.quantity >= variant.stock) {
+        return res.status(400).json({
+          message: "Maximum available stock reached",
+          success: false,
         });
       }
+
+      existingItem.quantity += 1;
+
+      // Keep unit price
+      existingItem.price = variant.price;
+    } else {
+      cart.items.push({
+        product: productId,
+        variant: variantId,
+        quantity,
+        price: variant.price,
+      });
     }
+
     await cart.save();
+
     return res.status(200).json({
       message: "Product added to cart successfully",
       success: true,
       cart,
     });
   } catch (error) {
-    console.log("failed to add in cart", error);
+    console.log("Failed to add in cart", error);
     next(error);
   }
 };

@@ -29,8 +29,8 @@ const Cart = () => {
     handleGetCart();
   }, []);
   const cartItems = Array.isArray(cart) ? cart : [];
-  const itemCount = cartItems.reduce(
-    (acc, cart) => acc + (cart?.items?.quantity || 1),
+  const itemCount = cartItems[0]?.items.reduce(
+    (acc, item) => acc + (item?.quantity || 1),
     0,
   );
   return (
