@@ -3,6 +3,7 @@ import { CartContext } from "../cart.context";
 import {
   addToCart,
   decreaseOneFromCart,
+  getCart,
   increaseOneFromCart,
   removeFromCart,
 } from "../services/buyer.api";
@@ -79,6 +80,20 @@ export const useCart = () => {
     }
   };
 
+  const handleGetCart = async () => {
+    setLoading(true);
+    try {
+      const data = await getCart();
+      const item = Array.isArray(data?.cart) ? data.cart : data;
+      setCart(item);
+      return item;
+    } catch (error) {
+      console.log("failed to fetch cart item", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     loading,
     cart,
@@ -86,5 +101,6 @@ export const useCart = () => {
     handleIncreaseItem,
     handledecreaseItem,
     handleRemoveItemFromCart,
+    handleGetCart,
   };
 };

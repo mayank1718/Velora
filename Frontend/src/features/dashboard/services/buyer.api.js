@@ -26,6 +26,11 @@ export const getRelatedProducts = async (productId) => {
 };
 
 //buyer api
+export const getCart = async () => {
+  const response = await buyerApiInstance.get("/cart");
+  return response.data;
+};
+
 export const addToCart = async (productId, variantId) => {
   const response = await buyerApiInstance.post(
     `/cart/${productId}/${variantId}`,
@@ -53,4 +58,3 @@ export const removeFromCart = async (productId, variantId) => {
   );
   return response.data;
 };
-
