@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { AuthContext } from "../Auth.Context";
 import {
   getMe,
-  googleCallback,
   login,
   logout,
   register,
@@ -96,19 +95,6 @@ export const useAuth = () => {
     }
   };
 
-  const handleGoogleCallback = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await googleCallback();
-      setUser(data.user);
-      return true;
-    } catch (error) {
-      console.log("google auth failed", error);
-      setError(error);
-    }
-  };
-
   return {
     user,
     setUser,
@@ -119,6 +105,5 @@ export const useAuth = () => {
     handleLogin,
     handleRegister,
     handleLogout,
-    handleGoogleCallback,
   };
 };

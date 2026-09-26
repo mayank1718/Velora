@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../components/AuthLayout";
+import GoogleAuthButton from "../components/GoogleAuthButton";
 import { useAuth } from "../hooks/useAuth";
 import { Eye, EyeOff, Loader2, Check, Sparkles } from "lucide-react";
 
@@ -148,6 +149,10 @@ const Login = () => {
           </button>
         </div>
       </form>
+
+      <div className="pt-5">
+        <GoogleAuthButton />
+      </div>
 
       {/* Switcher to Register */}
       <div className="text-center pt-2 border-t border-[var(--border-subtle)]/60">

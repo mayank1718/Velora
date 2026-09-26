@@ -5,6 +5,8 @@ const authInstanceApi = axios.create({
   withCredentials: true,
 });
 
+export const googleAuthUrl = `${authInstanceApi.defaults.baseURL}/google`;
+
 export const register = async (userData) => {
   const { fullname, email, contact, password, role, isSeller } = userData;
   const response = await authInstanceApi.post("/register", {
@@ -33,10 +35,5 @@ export const getMe = async () => {
 
 export const logout = async () => {
   const response = await authInstanceApi.post("/logout");
-  return response.data;
-};
-
-export const googleCallback = async () => {
-  const response = await authInstanceApi.get("/google/callback");
   return response.data;
 };
