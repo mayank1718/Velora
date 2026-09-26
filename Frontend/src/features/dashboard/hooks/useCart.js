@@ -90,8 +90,8 @@ export const useCart = () => {
     setLoading(true);
     try {
       const data = await getCart();
-
-      const item = Array.isArray(data?.cart) ? data.cart : data;
+      
+      const item = data.cart;
 
       setCart(item);
 

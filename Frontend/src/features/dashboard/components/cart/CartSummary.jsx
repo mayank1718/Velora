@@ -6,18 +6,14 @@ const CartSummary = ({ cart = [], loading = false }) => {
   const navigate = useNavigate();
 
   // Compute subtotal from cart items stored price
-  const subtotal = cart[0]?.items.reduce((total, item) => {
-    const price = item?.price?.amount ?? 0;
-    const quantity = item?.quantity ?? 1;
-    return total + price * quantity;
-  }, 0);
+  const subtotal = cart.totalPrice
   // Derive currency from first item or default to INR
-  const currency = cart?.[0]?.price?.currency || "INR";
+  const currency = cart?.price?.currency || "INR";
 
   const formattedSubtotal =
     currency === "INR"
-      ? `₹${subtotal.toLocaleString("en-IN")}`
-      : `${currency} ${subtotal.toLocaleString()}`;
+      ? `₹${subtotal}`
+      : `${currency} ${subtotal}`;
 
   const formattedTotal = formattedSubtotal;
 
@@ -26,7 +22,7 @@ const CartSummary = ({ cart = [], loading = false }) => {
     navigate("/checkout");
   };
 
-  const isCartEmpty = !cart || cart.length === 0;
+  const isCartEmpty = !cart || cart?.items.length === 0;
 
   return (
     <div className="bg-white border border-[#E5E5E5] rounded-2xl p-5 sm:p-6 shadow-xs sticky top-24 space-y-6">

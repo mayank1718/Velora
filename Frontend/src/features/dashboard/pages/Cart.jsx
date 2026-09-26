@@ -28,8 +28,8 @@ const Cart = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     handleGetCart();
   }, []);
-  const cartItems = Array.isArray(cart) ? cart : [];
-  const itemCount = cartItems[0]?.items.reduce(
+  const cartItems = Array.isArray(cart?.items) ? cart.items : [];
+  const itemCount = cartItems?.reduce(
     (acc, item) => acc + (item?.quantity || 1),
     0,
   );
@@ -77,7 +77,7 @@ const Cart = () => {
         </div>
 
         {/* Dynamic Cart States */}
-        {loading && (!cart || cart.length === 0) ? (
+        {loading && (!cart || cart.items.length === 0) ? (
           <CartSkeleton />
         ) : cartItems.length === 0 ? (
           <EmptyCart />
@@ -85,7 +85,7 @@ const Cart = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             {/* Left Column: Cart Items List */}
             <div className="lg:col-span-8 space-y-3.5 sm:space-y-4">
-              {cartItems[0]?.items.map((item, index) => (
+              {cartItems?.map((item, index) => (
                 <CartItem
                   key={
                     item._id ||
@@ -102,7 +102,7 @@ const Cart = () => {
 
             {/* Right Column: Order Summary Card */}
             <div className="lg:col-span-4">
-              <CartSummary cart={cartItems} loading={loading} />
+              <CartSummary cart={cart} loading={loading} />
             </div>
           </div>
         )}

@@ -1,21 +1,106 @@
 import productModel from "../models/product.model.js";
 import cartModel from "../models/cart.model.js";
+import mongoose from "mongoose";
+
+const getCartDetails = async (userId) => {
+  const cart = (
+    await cartModel.aggregate([
+      // 1. Find user's cart
+      {
+        $match: {
+          user: new mongoose.Types.ObjectId(userId),
+        },
+      },
+
+      // 2. Convert items array into individual documents
+      {
+        $unwind: {
+          path: "$items",
+        },
+      },
+
+      // 3. Get product details
+      {
+        $lookup: {
+          from: "products",
+          localField: "items.product",
+          foreignField: "_id",
+          as: "items.product",
+        },
+      },
+
+      // 4. Convert product array into object
+      {
+        $unwind: {
+          path: "$items.product",
+        },
+      },
+
+      // 5. Convert variants array into individual documents
+      {
+        $unwind: {
+          path: "$items.product.variants",
+        },
+      },
+
+      // 6. Keep only selected variant
+      {
+        $match: {
+          $expr: {
+            $eq: ["$items.product.variants._id", "$items.variant"],
+          },
+        },
+      },
+
+      // 7. Calculate item total
+      {
+        $addFields: {
+          itemPrice: {
+            price: {
+              $multiply: [
+                "$items.product.variants.price.amount",
+                "$items.quantity",
+              ],
+            },
+            currency: "$items.product.variants.price.currency",
+          },
+        },
+      },
+
+      // 8. Put items back together
+      {
+        $group: {
+          _id: "$_id",
+
+          totalPrice: {
+            $sum: "$itemPrice.price",
+          },
+
+          currency: {
+            $first: "$itemPrice.currency",
+          },
+
+          items: {
+            $push: "$items",
+          },
+        },
+      },
+    ])
+  )[0];
+  return cart;
+};
 
 export const getCartController = async (req, res, next) => {
   try {
-    const cartItem = await cartModel
-      .find({ user: req.user.userId })
-      .populate("items.product");
-    if (!cartItem) {
-      return res.status(404).json({
-        message: "item not found",
-        success: false,
-      });
+    let cart = await getCartDetails(req.user.userId);
+    console.log(await getCartDetails(req.user.userId))
+    if (!cart) {
+      cart = await cartModel.create({ user: req.user.userId, items: [] });
     }
     return res.status(200).json({
       message: "cart item fetched successfully",
       success: true,
-      cart: cartItem,
+      cart,
     });
   } catch (error) {
     console.log("failed to fetch cart item", error);

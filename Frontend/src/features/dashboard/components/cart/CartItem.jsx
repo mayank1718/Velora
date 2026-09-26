@@ -12,9 +12,7 @@ const CartItem = ({
   if (!item) return null;
 
   // Safe string matching for variant ObjectId
-  const selectedVariant = item.product?.variants?.find(
-    (variant) => variant?._id?.toString() === item.variant?.toString()
-  );
+  const selectedVariant = item.product?.variants
 
   // Dynamic Image resolution (variant image first, then product image, then fallback)
   const imageUrl =
@@ -23,7 +21,7 @@ const CartItem = ({
   // Price calculations
   const unitPrice = item.price?.amount ?? 0;
   const currency = item.price?.currency || "INR";
-  const itemTotal = unitPrice * item.quantity;
+  const itemTotal = unitPrice * (item.quantity || 1);
 
   const formattedUnitPrice =
     currency === "INR"
