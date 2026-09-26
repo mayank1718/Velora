@@ -1,6 +1,12 @@
 import { useContext } from "react";
 import { AuthContext } from "../Auth.Context";
-import { getMe, login, logout, register } from "../services/auth.service";
+import {
+  getMe,
+  googleCallback,
+  login,
+  logout,
+  register,
+} from "../services/auth.service";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -64,20 +70,20 @@ export const useAuth = () => {
     }
   };
 
-   const handleGetMe = async () => {
-     setLoading(true);
-     try {
-       const data = await getMe();
-       setUser(data.user);
-       return data.user;
-     } catch (error) {
-       setError(error);
-       console.log(error);
-     } finally {
-       setLoading(false);
-     }
-   };
-  
+  const handleGetMe = async () => {
+    setLoading(true);
+    try {
+      const data = await getMe();
+      setUser(data.user);
+      return data.user;
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleLogout = async () => {
     setLoading(true);
     try {
@@ -87,6 +93,19 @@ export const useAuth = () => {
       console.error("Logout error:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleCallback = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await googleCallback();
+      setUser(data.user);
+      return true;
+    } catch (error) {
+      console.log("google auth failed", error);
+      setError(error);
     }
   };
 
@@ -100,5 +119,6 @@ export const useAuth = () => {
     handleLogin,
     handleRegister,
     handleLogout,
+    handleGoogleCallback,
   };
 };

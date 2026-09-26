@@ -1,20 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../components/AuthLayout";
 import { useAuth } from "../hooks/useAuth";
-import {
-  Eye,
-  EyeOff,
-  Check,
-  Loader2,
-  User,
-  Mail,
-  Phone,
-  Lock,
-  Sparkles,
-  Store,
-  ShoppingBag,
-} from "lucide-react";
+import { Eye, EyeOff, Check, Loader2, Store, ShoppingBag } from "lucide-react";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -244,16 +232,8 @@ const Register = () => {
                 )}
               </button>
             </div>
-          </div>
-
-          {/* Error Notice */}
-          {error && (
-            <div className="p-3 bg-red-50/60 border border-red-200/80 text-red-900 text-xs flex items-start gap-2.5">
-              <span className="text-red-500 font-bold">•</span>
-              <span className="flex-1">{error}</span>
             </div>
-          )}
-
+            
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {/* Full Name */}

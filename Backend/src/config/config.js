@@ -23,6 +23,15 @@ if (!process.env.REDIS_PASSWORD) {
 if (!process.env.IMAGEKIT_PRIVATE_KEY) {
   throw new Error("IMAGEKIT PRIVATE KEY not defined");
 }
+
+if (!process.env.GOOGLE_CLIENT_ID) {
+  throw new Error("GOOGLE CLIENT ID not defined");
+}
+
+if (!process.env.GOOGLE_CLIENT_SECRET) {
+  throw new Error("GOOGLE CLIENT SECRET not defined");
+}
+
 export const config = {
   MONGO_URI: process.env.MONGO_URI,
   JWT_SECRET: process.env.JWT_SECRET,
@@ -30,4 +39,6 @@ export const config = {
   REDIS_PORT: process.env.REDIS_PORT,
   REDIS_PASSWORD: process.env.REDIS_PASSWORD,
   IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 };

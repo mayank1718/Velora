@@ -21,8 +21,9 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
-    minlength: 6,
+    required: function () {
+      return !this.googleId;
+    },
     select: false,
   },
   role: {
@@ -30,6 +31,7 @@ const userSchema = new Schema({
     enum: ["buyer", "seller"],
     default: "buyer",
   },
+  googleId: String,
 });
 
 const userModel = model("users", userSchema);

@@ -2,12 +2,14 @@ import { Router } from "express";
 import { registerValidation } from "../validators/register.validate.js";
 import {
   getMeController,
+  googleCallback,
   loginController,
   logoutController,
   registerController,
 } from "../controllers/auth.controller.js";
 import { loginValidation } from "../validators/login.validate.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
+import passport from "passport";
 
 const authRouter = Router();
 
@@ -38,5 +40,25 @@ authRouter.get("/get-me", authMiddleware, getMeController);
  @API- POST /api/auth/logout
 */
 authRouter.post("/logout", authMiddleware, logoutController);
+
+/* 
+@access - public
+@desc - Login with google
+@API - GET /api/auth/google 
+*/
+authRouter.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] }),
+);
+
+/* GET /api/auth/google/callback */
+authRouter.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: "/login"
+  }),
+  googleCallback,
+);
 
 export default authRouter;

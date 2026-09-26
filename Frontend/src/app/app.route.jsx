@@ -28,7 +28,11 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/products/:productId",
-    element: <ProductDetails />,
+    element: (
+      <Protected role="buyer" authRequired={false}>
+        <ProductDetails />
+      </Protected>
+    ),
   },
   {
     path: "/login",

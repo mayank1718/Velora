@@ -123,3 +123,38 @@ export const logoutController = async (req, res, next) => {
     next(error);
   }
 };
+
+export const googleCallback = async (req, res, next) => {
+  try {
+    const { displayName, id, emails } = req.user;
+
+    const email = emails?.[0]?.value;
+
+    if (!email) {
+      return res.status(400).json({
+        message: "Google account email not found",
+      });
+    }
+
+    let user = await userModel.findOne({ email });
+
+    if (!user) {
+      user = await userModel.create({
+        email,
+        googleId: id,
+        fullname: displayName,
+        role: "buyer",
+      });
+    } else if (!user.googleId) {
+      user.googleId = id;
+      await user.save();
+    }
+
+    sendToken(user._id, res);
+
+    res.redirect("http://localhost:5173/");
+  } catch (error) {
+    console.log("Google login failed:", error);
+    next(error);
+  }
+};

@@ -35,3 +35,8 @@ export const logout = async () => {
   const response = await authInstanceApi.post("/logout");
   return response.data;
 };
+
+export const googleCallback = async () => {
+  const response = await authInstanceApi.get("/google/callback");
+  return response.data;
+};
