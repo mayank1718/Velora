@@ -228,29 +228,29 @@ const CreateProduct = () => {
       subtitle="Publish a new base product identity. Variants (price, sizes, colors, and stock) will be configured subsequently.">
       {createdProductSummary ? (
         /* Minimalist Luxury Success State */
-        <div className="max-w-2xl mx-auto bg-[#FFFFFF] border border-[#E5E5E5] p-6 sm:p-10 space-y-8 animate-fadeIn">
+        <div className="max-w-2xl mx-auto bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-6 sm:p-10 space-y-8 animate-fadeIn">
           {/* Header Icon */}
           <div className="text-center space-y-3">
-            <div className="w-12 h-12 mx-auto rounded-full bg-[#171717] text-[#FFFFFF] flex items-center justify-center">
-              <Check className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
+            <div className="w-12 h-12 mx-auto rounded-full bg-[var(--btn-primary)] text-[var(--btn-text)] flex items-center justify-center">
+              <Check className="w-5 h-5 text-[var(--accent-gold)]" strokeWidth={2} />
             </div>
-            <span className="text-[11px] uppercase tracking-[0.2em] text-[#D4AF37] font-semibold block">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--accent-gold)] font-semibold block">
               Product Registered
             </span>
-            <h2 className="text-2xl md:text-3xl font-light tracking-tight text-[#171717]">
+            <h2 className="text-2xl md:text-3xl font-light tracking-tight text-[var(--text-primary)]">
               {createdProductSummary.title}
             </h2>
-            <p className="text-xs text-[#737373] leading-relaxed max-w-md mx-auto">
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed max-w-md mx-auto">
               Base product created successfully. You can now proceed to attach
               sizing, colors, pricing, and SKU variants.
             </p>
           </div>
 
           {/* Product Summary Card */}
-          <div className="border border-[#E5E5E5] p-4 sm:p-6 bg-[#FAFAF9] space-y-4">
+          <div className="border border-[var(--border-subtle)] p-4 sm:p-6 bg-[var(--bg-muted)] space-y-4">
             <div className="flex flex-col sm:flex-row gap-4 items-start">
               {createdProductSummary.primaryImage && (
-                <div className="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 bg-white border border-[#E5E5E5] overflow-hidden">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 bg-[var(--bg-surface)] border border-[var(--border-subtle)] overflow-hidden">
                   <img
                     src={createdProductSummary.primaryImage}
                     alt={createdProductSummary.title}
@@ -260,23 +260,23 @@ const CreateProduct = () => {
               )}
               <div className="flex-1 space-y-2 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.14em] bg-[#FFFFFF] border border-[#E5E5E5] text-[#171717]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
+                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.14em] bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-primary)]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]"></span>
                     {PRODUCT_CATEGORIES.find(
                       (c) => c.value === createdProductSummary.category,
                     )?.label || createdProductSummary.category}
                   </span>
-                  <span className="text-[11px] text-[#737373]">
+                  <span className="text-[11px] text-[var(--text-secondary)]">
                     {createdProductSummary.imageCount}{" "}
                     {createdProductSummary.imageCount === 1
                       ? "image"
                       : "images"}
                   </span>
                 </div>
-                <h3 className="text-sm font-medium text-[#171717] truncate">
+                <h3 className="text-sm font-medium text-[var(--text-primary)] truncate">
                   {createdProductSummary.title}
                 </h3>
-                <p className="text-xs text-[#737373] line-clamp-2 leading-relaxed">
+                <p className="text-xs text-[var(--text-secondary)] line-clamp-2 leading-relaxed">
                   {createdProductSummary.description}
                 </p>
               </div>
@@ -290,14 +290,14 @@ const CreateProduct = () => {
               onClick={() =>
                 navigate(`/seller/products`)
               }
-              className="flex-1 h-12 bg-[#171717] hover:bg-[#262626] text-[#FFFFFF] text-xs font-medium tracking-[0.18em] uppercase transition-colors flex items-center justify-center gap-2 cursor-pointer py-2.5">
+              className="flex-1 h-12 bg-[var(--btn-primary)] hover:bg-[var(--text-primary)] text-[var(--btn-text)] text-xs font-medium tracking-[0.18em] uppercase transition-colors flex items-center justify-center gap-2 cursor-pointer py-2.5">
               <span>See your Products</span>
-              <ArrowRight className="w-4 h-4 text-[#D4AF37]" />
+              <ArrowRight className="w-4 h-4 text-[var(--accent-gold)]" />
             </button>
             <button
               type="button"
               onClick={handleReset}
-              className="h-12 px-6 border border-[#E5E5E5] bg-[#FFFFFF] hover:bg-[#FAFAF9] text-[#171717] text-xs font-medium tracking-[0.16em] uppercase transition-colors cursor-pointer">
+              className="h-12 px-6 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-muted)] text-[var(--text-primary)] text-xs font-medium tracking-[0.16em] uppercase transition-colors cursor-pointer">
               Add Another Product
             </button>
           </div>
@@ -308,17 +308,17 @@ const CreateProduct = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             {/* Left Column: Product Imagery Upload (5 Cols on Desktop) */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="bg-[#FFFFFF] border border-[#E5E5E5] p-5 sm:p-6 space-y-6">
+              <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-5 sm:p-6 space-y-6">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] uppercase tracking-[0.18em] text-[#D4AF37] font-semibold">
+                    <span className="text-[10px] uppercase tracking-[0.18em] text-[var(--accent-gold)] font-semibold">
                       Media Gallery
                     </span>
                   </div>
-                  <h2 className="text-base font-medium text-[#171717] tracking-tight">
+                  <h2 className="text-base font-medium text-[var(--text-primary)] tracking-tight">
                     Product Imagery
                   </h2>
-                  <p className="text-xs text-[#737373] mt-1 leading-relaxed">
+                  <p className="text-xs text-[var(--text-secondary)] mt-1 leading-relaxed">
                     Upload visual angles and high-resolution lookbook assets.
                   </p>
                 </div>
@@ -333,10 +333,10 @@ const CreateProduct = () => {
               </div>
 
               {/* Information Notice Card */}
-              <div className="bg-[#FAFAF9] border border-[#E5E5E5] p-4 space-y-2 text-xs text-[#737373] leading-relaxed">
-                <div className="flex items-center gap-1.5 text-[#171717] font-medium text-[11px] uppercase tracking-[0.14em]">
+              <div className="bg-[var(--bg-muted)] border border-[var(--border-subtle)] p-4 space-y-2 text-xs text-[var(--text-secondary)] leading-relaxed">
+                <div className="flex items-center gap-1.5 text-[var(--text-primary)] font-medium text-[11px] uppercase tracking-[0.14em]">
                   <Sparkles
-                    className="w-3.5 h-3.5 text-[#D4AF37]"
+                    className="w-3.5 h-3.5 text-[var(--accent-gold)]"
                     strokeWidth={1.5}
                   />
                   <span>Variant Architecture</span>
@@ -350,7 +350,7 @@ const CreateProduct = () => {
 
             {/* Right Column: Product Specifications (7 Cols on Desktop) */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="bg-[#FFFFFF] border border-[#E5E5E5] p-6 sm:p-8 space-y-6">
+              <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-6 sm:p-8 space-y-6">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-[10px] uppercase tracking-[0.18em] text-[#D4AF37] font-semibold">

@@ -75,7 +75,7 @@ const Dashboard = () => {
   }, [products, selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] text-[#171717] flex flex-col justify-between">
+    <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] flex flex-col justify-between dark:bg-[var(--bg-canvas)] dark:text-[var(--text-primary)]">
       <BuyerNavbar />
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">

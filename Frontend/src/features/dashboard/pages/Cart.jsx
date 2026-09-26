@@ -34,7 +34,7 @@ const Cart = () => {
     0,
   );
   return (
-    <div className="min-h-screen bg-[#FAFAF9] text-[#171717] flex flex-col justify-between selection:bg-[#171717] selection:text-white">
+    <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] flex flex-col justify-between selection:bg-[var(--text-primary)] selection:text-[var(--btn-text)] dark:bg-[var(--bg-canvas)] dark:text-[var(--text-primary)]">
       {/* 1. Header / Navbar */}
       <BuyerNavbar />
 
@@ -44,33 +44,33 @@ const Cart = () => {
         <div className="flex items-center justify-between gap-4 mb-6 sm:mb-8 text-xs">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-[#737373] hover:text-[#171717] font-medium transition-colors">
+            className="inline-flex items-center gap-1.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-medium transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Continue Shopping</span>
           </Link>
         </div>
 
         {/* Page Title & Item Count Header */}
-        <div className="flex items-baseline justify-between gap-4 mb-6 sm:mb-8 pb-4 border-b border-[#E5E5E5]/80">
+        <div className="flex items-baseline justify-between gap-4 mb-6 sm:mb-8 pb-4 border-b border-[var(--border-subtle)]/80">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white border border-[#E5E5E5] flex items-center justify-center shadow-2xs">
+            <div className="w-10 h-10 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] flex items-center justify-center shadow-2xs">
               <ShoppingBag
-                className="w-5 h-5 text-[#171717]"
+                className="w-5 h-5 text-[var(--text-primary)]"
                 strokeWidth={1.75}
               />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-[#171717]">
+              <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-[var(--text-primary)]">
                 Shopping Cart
               </h1>
-              <p className="text-xs text-[#737373] mt-0.5">
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5">
                 Review your items before proceeding to checkout
               </p>
             </div>
           </div>
 
           {!loading && cartItems.length > 0 && (
-            <span className="text-xs sm:text-sm font-medium text-[#737373] bg-white px-3 py-1.5 rounded-full border border-[#E5E5E5] shadow-2xs">
+            <span className="text-xs sm:text-sm font-medium text-[var(--text-secondary)] bg-[var(--bg-surface)] px-3 py-1.5 rounded-full border border-[var(--border-subtle)] shadow-2xs">
               {itemCount} {itemCount === 1 ? "item" : "items"}
             </span>
           )}
@@ -109,22 +109,22 @@ const Cart = () => {
       </main>
 
       {/* 3. Luxury Minimalist Footer */}
-      <footer className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 mt-12 border-t border-[#E5E5E5]/70 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] uppercase tracking-[0.16em] text-[#737373]">
+      <footer className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 mt-12 border-t border-[var(--border-subtle)]/70 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] uppercase tracking-[0.16em] text-[var(--text-secondary)]">
         <div className="flex items-center gap-2">
           <span>&copy; {new Date().getFullYear()} VELORA</span>
-          <span className="text-[#E5E5E5]">•</span>
+          <span className="text-[var(--border-subtle)]">•</span>
           <span>CURATED SHOPPING</span>
         </div>
 
         <div className="flex items-center gap-6">
           <Link
             to="/seller/products"
-            className="hover:text-[#171717] transition-colors">
+            className="hover:text-[var(--text-primary)] transition-colors">
             Seller Atelier
           </Link>
-          <div className="hidden sm:flex items-center gap-1.5 text-[#737373]/80">
+          <div className="hidden sm:flex items-center gap-1.5 text-[var(--text-secondary)]/80">
             <ShieldCheck
-              className="w-3.5 h-3.5 text-[#D4AF37]"
+              className="w-3.5 h-3.5 text-[var(--accent-gold)]"
               strokeWidth={1.5}
             />
             <span className="text-[10px]">Secure Experience</span>

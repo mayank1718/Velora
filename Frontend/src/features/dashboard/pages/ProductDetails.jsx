@@ -67,7 +67,7 @@ const ProductDetails = () => {
   }, [product, selectedVariant]);
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] text-[#171717] flex flex-col justify-between selection:bg-[#171717] selection:text-white">
+    <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] flex flex-col justify-between selection:bg-[var(--text-primary)] selection:text-[var(--btn-text)] dark:bg-[var(--bg-canvas)] dark:text-[var(--text-primary)]">
       {/* 1. Navbar */}
       <BuyerNavbar />
 
@@ -77,22 +77,22 @@ const ProductDetails = () => {
         <div className="flex items-center justify-between gap-4 mb-6 sm:mb-8 text-xs">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-[#737373] hover:text-[#171717] font-medium transition-colors">
+            className="inline-flex items-center gap-1.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-medium transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Products</span>
           </Link>
 
           {product && (
-            <div className="hidden sm:flex items-center gap-1.5 text-[#737373] overflow-hidden text-ellipsis whitespace-nowrap">
-              <Link to="/" className="hover:text-[#171717]">
+            <div className="hidden sm:flex items-center gap-1.5 text-[var(--text-secondary)] overflow-hidden text-ellipsis whitespace-nowrap">
+              <Link to="/" className="hover:text-[var(--text-primary)]">
                 Store
               </Link>
-              <ChevronRight className="w-3 h-3 text-stone-400" />
+              <ChevronRight className="w-3 h-3 text-[var(--border-strong)]" />
               <span className="capitalize">
                 {product.category || "Catalog"}
               </span>
-              <ChevronRight className="w-3 h-3 text-stone-400" />
-              <span className="text-[#171717] font-medium truncate max-w-[200px]">
+              <ChevronRight className="w-3 h-3 text-[var(--border-strong)]" />
+              <span className="text-[var(--text-primary)] font-medium truncate max-w-[200px]">
                 {product.title}
               </span>
             </div>
@@ -108,18 +108,18 @@ const ProductDetails = () => {
             onRetry={() => handleGetProductDetails(productId)}
           />
         ) : !product ? (
-          <div className="py-20 text-center bg-white border border-[#E5E5E5] rounded-2xl p-8 max-w-md mx-auto shadow-xs">
-            <PackageX className="w-12 h-12 text-stone-400 mx-auto mb-3 stroke-[1.5]" />
-            <h2 className="text-base font-medium text-[#171717] mb-1">
+          <div className="py-20 text-center bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-2xl p-8 max-w-md mx-auto shadow-xs">
+            <PackageX className="w-12 h-12 text-[var(--text-secondary)] mx-auto mb-3 stroke-[1.5]" />
+            <h2 className="text-base font-medium text-[var(--text-primary)] mb-1">
               Product Not Found
             </h2>
-            <p className="text-xs text-[#737373] mb-6">
+            <p className="text-xs text-[var(--text-secondary)] mb-6">
               The product you are looking for might have been moved or is no
               longer available.
             </p>
             <Link
               to="/"
-              className="inline-flex items-center justify-center px-5 py-2.5 bg-[#171717] text-white text-xs font-medium uppercase tracking-[0.14em] rounded-full hover:bg-[#262626] transition-all">
+              className="inline-flex items-center justify-center px-5 py-2.5 bg-[var(--btn-primary)] text-[var(--btn-text)] text-xs font-medium uppercase tracking-[0.14em] rounded-full hover:bg-[var(--text-primary)] transition-all">
               Browse Products
             </Link>
           </div>
@@ -159,13 +159,13 @@ const ProductDetails = () => {
             />
 
             {/* Related Products Section */}
-            <section className="mt-14 sm:mt-20 pt-10 sm:pt-14 border-t border-[#E5E5E5]/80">
+            <section className="mt-14 sm:mt-20 pt-10 sm:pt-14 border-t border-[var(--border-subtle)]/80">
               <div className="flex items-center justify-between mb-6 sm:mb-8">
                 <div>
-                  <h2 className="text-lg sm:text-xl font-medium tracking-tight text-[#171717]">
+                  <h2 className="text-lg sm:text-xl font-medium tracking-tight text-[var(--text-primary)]">
                     Related Products
                   </h2>
-                  <p className="text-xs text-[#737373] mt-0.5">
+                  <p className="text-xs text-[var(--text-secondary)] mt-0.5">
                     Discover complementary pieces from the same collection
                   </p>
                 </div>
@@ -174,18 +174,18 @@ const ProductDetails = () => {
               {relatedLoading ? (
                 <ProductSkeleton count={4} />
               ) : relatedError ? (
-                <div className="py-8 px-6 bg-white border border-[#E5E5E5] rounded-xl text-center shadow-xs max-w-lg mx-auto">
+                <div className="py-8 px-6 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-xl text-center shadow-xs max-w-lg mx-auto">
                   <p className="text-xs text-rose-600 mb-3">{relatedError}</p>
                   <button
                     onClick={() => handleGetRelatedProducts(productId)}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#171717] text-white text-xs font-medium uppercase tracking-[0.14em] rounded-full hover:bg-[#262626] transition-all">
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-[var(--btn-primary)] text-[var(--btn-text)] text-xs font-medium uppercase tracking-[0.14em] rounded-full hover:bg-[var(--text-primary)] transition-all">
                     <RefreshCw className="w-3 h-3" />
                     <span>Try Again</span>
                   </button>
                 </div>
               ) : !relatedProducts || relatedProducts.length === 0 ? (
-                <div className="py-12 px-6 text-center bg-white border border-[#E5E5E5] rounded-xl shadow-xs">
-                  <p className="text-xs text-[#737373] font-medium">
+                <div className="py-12 px-6 text-center bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-xl shadow-xs">
+                  <p className="text-xs text-[var(--text-secondary)] font-medium">
                     No related products found.
                   </p>
                 </div>
@@ -202,22 +202,22 @@ const ProductDetails = () => {
       </main>
 
       {/* 3. Luxury Minimalist Footer */}
-      <footer className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 mt-12 border-t border-[#E5E5E5]/70 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] uppercase tracking-[0.16em] text-[#737373]">
+      <footer className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 mt-12 border-t border-[var(--border-subtle)]/70 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] uppercase tracking-[0.16em] text-[var(--text-secondary)]">
         <div className="flex items-center gap-2">
           <span>&copy; {new Date().getFullYear()} VELORA</span>
-          <span className="text-[#E5E5E5]">•</span>
+          <span className="text-[var(--border-subtle)]">•</span>
           <span>CURATED SHOPPING</span>
         </div>
 
         <div className="flex items-center gap-6">
           <Link
             to="/seller/products"
-            className="hover:text-[#171717] transition-colors">
+            className="hover:text-[var(--text-primary)] transition-colors">
             Seller Atelier
           </Link>
-          <div className="hidden sm:flex items-center gap-1.5 text-[#737373]/80">
+          <div className="hidden sm:flex items-center gap-1.5 text-[var(--text-secondary)]/80">
             <ShieldCheck
-              className="w-3.5 h-3.5 text-[#D4AF37]"
+              className="w-3.5 h-3.5 text-[var(--accent-gold)]"
               strokeWidth={1.5}
             />
             <span className="text-[10px]">Secure Experience</span>

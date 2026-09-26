@@ -76,7 +76,7 @@ const Login = () => {
         {/* Email Field */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
+            <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
               Email Address
             </label>
           </div>
@@ -87,21 +87,20 @@ const Login = () => {
             onChange={handleChange}
             placeholder="name@domain.com"
             autoComplete="email"
-            className="w-full h-12 px-3.5 bg-[#FFFFFF] border text-xs text-[#171717] placeholder:text-[#737373]/50 transition-colors focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10 ${
-                  clientErrors.email border-red-400"
+            className="w-full h-12 px-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/60 transition-colors focus:border-[var(--border-strong)] focus:ring-1 focus:ring-[var(--accent-gold)]/10"
           />
         </div>
 
         {/* Password Field */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
+            <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
               Password
             </label>
             <a
               href="#forgot"
               onClick={(e) => e.preventDefault()}
-              className="text-[10px] uppercase tracking-[0.12em] text-[#737373] hover:text-[#171717] transition-colors">
+              className="text-[10px] uppercase tracking-[0.12em] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
               Forgot Password?
             </a>
           </div>
@@ -113,12 +112,12 @@ const Login = () => {
               onChange={handleChange}
               placeholder="Enter your password"
               autoComplete="current-password"
-              className="w-full h-12 pl-3.5 pr-10 bg-[#FFFFFF] border text-xs text-[#171717] placeholder:text-[#737373]/50 transition-colors focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10"
+              className="w-full h-12 pl-3.5 pr-10 bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/60 transition-colors focus:border-[var(--border-strong)] focus:ring-1 focus:ring-[var(--accent-gold)]/10"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#737373] hover:text-[#171717] transition-colors p-1 cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors p-1 cursor-pointer"
               tabIndex={-1}
               aria-label={showPassword ? "Hide password" : "Show password"}>
               {showPassword ? (
@@ -134,7 +133,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full h-12 bg-[#171717] hover:bg-[#262626] active:bg-[#000000] text-[#FFFFFF] text-xs font-medium tracking-[0.18em] uppercase transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-none">
+            className="w-full h-12 bg-[var(--btn-primary)] hover:bg-[var(--text-primary)] active:bg-[var(--btn-primary)] text-[var(--btn-text)] text-xs font-medium tracking-[0.18em] uppercase transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-none">
             {loading ? (
               <>
                 <Loader2
@@ -151,12 +150,12 @@ const Login = () => {
       </form>
 
       {/* Switcher to Register */}
-      <div className="text-center pt-2 border-t border-[#E5E5E5]/60">
-        <p className="text-xs text-[#737373]">
+      <div className="text-center pt-2 border-t border-[var(--border-subtle)]/60">
+        <p className="text-xs text-[var(--text-secondary)]">
           New to Snitch{" "}
           <Link
             to="/register"
-            className="text-[#171717] font-medium underline underline-offset-4 hover:text-[#D4AF37] transition-colors tracking-wide ml-1">
+            className="text-[var(--text-primary)] font-medium underline underline-offset-4 hover:text-[var(--accent-gold)] transition-colors tracking-wide ml-1">
             Create an account
           </Link>
         </p>

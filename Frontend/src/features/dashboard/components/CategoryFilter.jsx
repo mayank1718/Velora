@@ -26,8 +26,8 @@ const CategoryFilter = ({
               type="button"
               className={`shrink-0 px-4 py-2 rounded-full text-xs font-medium tracking-wide transition-all duration-200 cursor-pointer ${
                 isSelected
-                  ? "bg-[#171717] text-white shadow-xs"
-                  : "bg-white text-[#737373] border border-[#E5E5E5] hover:text-[#171717] hover:border-stone-400 hover:bg-stone-50/50"
+                  ? "bg-[var(--btn-primary)] text-[var(--btn-text)] shadow-xs"
+                  : "bg-[var(--bg-surface)] text-[var(--text-secondary)] border border-[var(--border-subtle)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] hover:bg-[var(--bg-muted)]"
               }`}
             >
               {category}

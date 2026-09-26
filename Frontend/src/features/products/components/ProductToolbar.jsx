@@ -51,7 +51,7 @@ const ProductToolbar = ({
       {/* Search Input */}
       <div className="relative flex-1 max-w-md">
         <Search
-          className="w-4 h-4 text-[#737373] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+          className="w-4 h-4 text-[var(--text-secondary)] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
           strokeWidth={1.75}
         />
         <input
@@ -59,13 +59,13 @@ const ProductToolbar = ({
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search products..."
-          className="w-full bg-white border border-[#E5E5E5] text-xs md:text-sm text-[#171717] placeholder:text-[#737373]/70 pl-9 pr-8 py-2.5 focus:border-[#171717] transition-colors"
+          className="w-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs md:text-sm text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/70 pl-9 pr-8 py-2.5 focus:border-[var(--border-strong)] transition-colors"
         />
         {searchQuery && (
           <button
             type="button"
             onClick={() => onSearchChange("")}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[#737373] hover:text-[#171717] transition-colors"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             title="Clear search"
           >
             <X className="w-3.5 h-3.5" />
@@ -80,7 +80,7 @@ const ProductToolbar = ({
           <select
             value={selectedCategory}
             onChange={(e) => onCategoryChange(e.target.value)}
-            className="w-full appearance-none bg-white border border-[#E5E5E5] text-xs text-[#171717] pl-3 pr-8 py-2.5 focus:border-[#171717] transition-colors cursor-pointer"
+            className="w-full appearance-none bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] pl-3 pr-8 py-2.5 focus:border-[var(--border-strong)] transition-colors cursor-pointer"
           >
             {categoryList.map((cat) => (
               <option key={cat.value} value={cat.value}>
@@ -99,7 +99,7 @@ const ProductToolbar = ({
           <select
             value={sortBy}
             onChange={(e) => onSortChange(e.target.value)}
-            className="w-full appearance-none bg-white border border-[#E5E5E5] text-xs text-[#171717] pl-3 pr-8 py-2.5 focus:border-[#171717] transition-colors cursor-pointer"
+            className="w-full appearance-none bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] pl-3 pr-8 py-2.5 focus:border-[var(--border-strong)] transition-colors cursor-pointer"
           >
             {SORT_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>

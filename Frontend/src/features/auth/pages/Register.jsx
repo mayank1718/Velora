@@ -119,53 +119,53 @@ const Register = () => {
           </div>
 
           <div className="space-y-2">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-[#D4AF37] font-semibold">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--accent-gold)] font-semibold">
               Account Created
             </span>
-            <h2 className="text-2xl font-light tracking-tight text-[#171717]">
+            <h2 className="text-2xl font-light tracking-tight text-[var(--text-primary)]">
               Welcome to the Atelier
             </h2>
-            <p className="text-xs text-[#737373] leading-relaxed max-w-xs mx-auto">
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
               Your registration is complete. Below is your confirmed membership
               profile.
             </p>
           </div>
 
           {/* Luxury Payload Data Display */}
-          <div className="text-left bg-[#FFFFFF] border border-[#E5E5E5] p-5 space-y-3">
-            <div className="flex items-center justify-between border-b border-[#E5E5E5]/60 pb-2">
-              <span className="text-[10px] uppercase tracking-[0.16em] text-[#737373]">
+          <div className="text-left bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-5 space-y-3">
+            <div className="flex items-center justify-between border-b border-[var(--border-subtle)]/60 pb-2">
+              <span className="text-[10px] uppercase tracking-[0.16em] text-[var(--text-secondary)]">
                 Full Name
               </span>
-              <span className="text-xs font-medium text-[#171717]">
+              <span className="text-xs font-medium text-[var(--text-primary)]">
                 {registeredData.user?.fullname}
               </span>
             </div>
 
-            <div className="flex items-center justify-between border-b border-[#E5E5E5]/60 pb-2">
-              <span className="text-[10px] uppercase tracking-[0.16em] text-[#737373]">
+            <div className="flex items-center justify-between border-b border-[var(--border-subtle)]/60 pb-2">
+              <span className="text-[10px] uppercase tracking-[0.16em] text-[var(--text-secondary)]">
                 Email Address
               </span>
-              <span className="text-xs font-medium text-[#171717]">
+              <span className="text-xs font-medium text-[var(--text-primary)]">
                 {registeredData.user?.email}
               </span>
             </div>
 
-            <div className="flex items-center justify-between border-b border-[#E5E5E5]/60 pb-2">
-              <span className="text-[10px] uppercase tracking-[0.16em] text-[#737373]">
+            <div className="flex items-center justify-between border-b border-[var(--border-subtle)]/60 pb-2">
+              <span className="text-[10px] uppercase tracking-[0.16em] text-[var(--text-secondary)]">
                 Contact
               </span>
-              <span className="text-xs font-medium text-[#171717]">
+              <span className="text-xs font-medium text-[var(--text-primary)]">
                 {registeredData.user?.contact}
               </span>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-[10px] uppercase tracking-[0.16em] text-[#737373]">
+              <span className="text-[10px] uppercase tracking-[0.16em] text-[var(--text-secondary)]">
                 Role
               </span>
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.1em] bg-[#FAFAF9] border border-[#E5E5E5] text-[#171717]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.1em] bg-[var(--bg-muted)] border border-[var(--border-subtle)] text-[var(--text-primary)]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]"></span>
                 {registeredData.user?.role}
               </span>
             </div>
@@ -175,7 +175,7 @@ const Register = () => {
           <div className="space-y-3 pt-2">
             <button
               onClick={() => navigate("/login")}
-              className="w-full h-12 bg-[#171717] hover:bg-[#262626] text-[#FFFFFF] text-xs font-medium tracking-[0.18em] uppercase transition-colors flex items-center justify-center gap-2 cursor-pointer">
+              className="w-full h-12 bg-[var(--btn-primary)] hover:bg-[var(--text-primary)] text-[var(--btn-text)] text-xs font-medium tracking-[0.18em] uppercase transition-colors flex items-center justify-center gap-2 cursor-pointer">
               Proceed to Sign In
             </button>
             <button
@@ -189,7 +189,7 @@ const Register = () => {
                   role: "seller",
                 });
               }}
-              className="w-full text-xs uppercase tracking-[0.14em] text-[#737373] hover:text-[#171717] transition-colors py-2">
+              className="w-full text-xs uppercase tracking-[0.14em] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors py-2">
               Create Another Account
             </button>
           </div>
@@ -199,10 +199,10 @@ const Register = () => {
         <div className="space-y-8">
           {/* Header Typography */}
           <div className="space-y-2 text-center">
-            <h1 className="text-2xl md:text-3xl font-light tracking-[-0.02em] text-[#171717]">
+            <h1 className="text-2xl md:text-3xl font-light tracking-[-0.02em] text-[var(--text-primary)]">
               Create Account
             </h1>
-            <p className="text-xs text-[#737373] font-normal leading-relaxed">
+            <p className="text-xs text-[var(--text-secondary)] font-normal leading-relaxed">
               Enter the atelier for exclusive seasonal collections and bespoke
               drops.
             </p>
@@ -211,19 +211,19 @@ const Register = () => {
           {/* Minimalist Role Selector */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
+              <label className="text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
                 Account Type
               </label>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 p-1 bg-[#FFFFFF] border border-[#E5E5E5]">
+            <div className="grid grid-cols-2 gap-2 p-1 bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
               <button
                 type="button"
                 onClick={() => setRole("buyer")}
                 className={`py-2.5 px-3 flex items-center justify-center gap-2 text-xs tracking-[0.08em] transition-all cursor-pointer ${
                   formData.role === "buyer"
-                    ? "bg-[#171717] text-[#FFFFFF] font-medium"
-                    : "text-[#737373] hover:text-[#171717] bg-transparent"
+                    ? "bg-[var(--btn-primary)] text-[var(--btn-text)] font-medium"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] bg-transparent"
                 }`}>
                 <ShoppingBag className="w-3.5 h-3.5" strokeWidth={1.5} />
                 <span>Customer</span>
@@ -234,13 +234,13 @@ const Register = () => {
                 onClick={() => setRole("seller")}
                 className={`py-2.5 px-3 flex items-center justify-center gap-2 text-xs tracking-[0.08em] transition-all cursor-pointer ${
                   formData.role === "seller"
-                    ? "bg-[#171717] text-[#FFFFFF] font-medium"
-                    : "text-[#737373] hover:text-[#171717] bg-transparent"
+                    ? "bg-[var(--btn-primary)] text-[var(--btn-text)] font-medium"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] bg-transparent"
                 }`}>
                 <Store className="w-3.5 h-3.5" strokeWidth={1.5} />
                 <span>Seller</span>
                 {formData.role === "seller" && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] ml-0.5"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)] ml-0.5"></span>
                 )}
               </button>
             </div>
@@ -258,7 +258,7 @@ const Register = () => {
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {/* Full Name */}
             <div className="space-y-1.5">
-              <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
+              <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
                 Full Name
               </label>
               <div className="relative">
@@ -268,14 +268,14 @@ const Register = () => {
                   value={formData.fullname}
                   onChange={handleChange}
                   placeholder="e.g. Marco"
-                  className="w-full h-12 px-3.5 bg-[#FFFFFF] border text-xs text-[#171717] placeholder:text-[#737373]/50 transition-colors focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10"
+                  className="w-full h-12 px-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/50 transition-colors focus:border-[var(--border-strong)] focus:ring-1 focus:ring-[var(--accent-gold)]/10"
                 />
               </div>
             </div>
 
             {/* Email Address */}
             <div className="space-y-1.5">
-              <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
+              <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
                 Email Address
               </label>
               <div className="relative">
@@ -286,18 +286,18 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="test_1@test.com"
                   autoComplete="email"
-                  className="w-full h-12 px-3.5 bg-[#FFFFFF] border text-xs text-[#171717] placeholder:text-[#737373]/50 transition-colors focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10"
+                  className="w-full h-12 px-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/50 transition-colors focus:border-[var(--border-strong)] focus:ring-1 focus:ring-[var(--accent-gold)]/10"
                 />
               </div>
             </div>
 
             {/* Contact Number */}
             <div className="space-y-1.5">
-              <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
+              <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
                 Contact Number
               </label>
               <div className="relative flex">
-                <span className="h-12 px-3 bg-[#FAFAF9] border-y border-l border-[#E5E5E5] text-xs text-[#737373] flex items-center justify-center font-mono select-none">
+                <span className="h-12 px-3 bg-[var(--bg-muted)] border-y border-l border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] flex items-center justify-center font-mono select-none">
                   +91
                 </span>
                 <input
@@ -306,14 +306,14 @@ const Register = () => {
                   value={formData.contact}
                   onChange={handleChange}
                   placeholder="7800961497"
-                  className="flex-1 h-12 px-3.5 bg-[#FFFFFF] border text-xs text-[#171717] placeholder:text-[#737373]/50 transition-colors focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10"
+                  className="flex-1 h-12 px-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/50 transition-colors focus:border-[var(--border-strong)] focus:ring-1 focus:ring-[var(--accent-gold)]/10"
                 />
               </div>
             </div>
 
             {/* Password */}
             <div className="space-y-1.5">
-              <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
+              <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
                 Password
               </label>
               <div className="relative">
@@ -324,12 +324,12 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="Create a secure password"
                   autoComplete="new-password"
-                  className="w-full h-12 pl-3.5 pr-10 bg-[#FFFFFF] border text-xs text-[#171717] placeholder:text-[#737373]/50 transition-colors focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10"
+                  className="w-full h-12 pl-3.5 pr-10 bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/50 transition-colors focus:border-[var(--border-strong)] focus:ring-1 focus:ring-[var(--accent-gold)]/10"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#737373] hover:text-[#171717] transition-colors p-1 cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors p-1 cursor-pointer"
                   tabIndex={-1}
                   aria-label={showPassword ? "Hide password" : "Show password"}>
                   {showPassword ? (
@@ -342,19 +342,19 @@ const Register = () => {
             </div>
 
             {/* Terms Microcopy */}
-            <p className="text-[11px] text-[#737373] leading-relaxed pt-1">
+            <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed pt-1">
               By creating an account, you agree to Snitch's{" "}
               <a
                 href="#terms"
                 onClick={(e) => e.preventDefault()}
-                className="text-[#171717] underline hover:text-[#D4AF37] transition-colors">
+                className="text-[var(--text-primary)] underline hover:text-[var(--accent-gold)] transition-colors">
                 Terms of Service
               </a>{" "}
               and{" "}
               <a
                 href="#privacy"
                 onClick={(e) => e.preventDefault()}
-                className="text-[#171717] underline hover:text-[#D4AF37] transition-colors">
+                className="text-[var(--text-primary)] underline hover:text-[var(--accent-gold)] transition-colors">
                 Privacy Policy
               </a>
               .
@@ -365,7 +365,7 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-[#171717] hover:bg-[#262626] active:bg-[#000000] text-[#FFFFFF] text-xs font-medium tracking-[0.18em] uppercase transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-none">
+                className="w-full h-12 bg-[var(--btn-primary)] hover:bg-[var(--text-primary)] active:bg-[var(--btn-primary)] text-[var(--btn-text)] text-xs font-medium tracking-[0.18em] uppercase transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-none">
                 {loading ? (
                   <>
                     <Loader2
@@ -382,12 +382,12 @@ const Register = () => {
           </form>
 
           {/* Switcher to Login */}
-          <div className="text-center pt-2 border-t border-[#E5E5E5]/60">
-            <p className="text-xs text-[#737373]">
+          <div className="text-center pt-2 border-t border-[var(--border-subtle)]/60">
+            <p className="text-xs text-[var(--text-secondary)]">
               Already a member?{" "}
               <Link
                 to="/login"
-                className="text-[#171717] font-medium underline underline-offset-4 hover:text-[#D4AF37] transition-colors tracking-wide ml-1">
+                className="text-[var(--text-primary)] font-medium underline underline-offset-4 hover:text-[var(--accent-gold)] transition-colors tracking-wide ml-1">
                 Sign In
               </Link>
             </p>

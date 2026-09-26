@@ -1,11 +1,32 @@
 <!doctype html>
-<html lang="en" class="light">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VELORA — Modern Luxury Fashion</title>
+  <meta name="description" content="Velora — Curated luxury fashion and modern shopping experience." />
+
+  <!--
+    Flash-prevention: runs synchronously before React, DOMContentLoaded,
+    or any stylesheet so the correct theme class is applied immediately.
+  -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (saved === "light") {
+          document.documentElement.classList.remove("dark");
+        } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) { /* localStorage unavailable */ }
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -13,8 +34,7 @@
     rel="stylesheet">
 </head>
 
-<body
-  class="bg-[#FAFAF9] text-[#171717] font-['Plus_Jakarta_Sans',sans-serif] antialiased selection:bg-neutral-900 selection:text-white min-h-screen">
+<body class="antialiased min-h-screen">
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
