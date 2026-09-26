@@ -93,7 +93,6 @@ const getCartDetails = async (userId) => {
 export const getCartController = async (req, res, next) => {
   try {
     let cart = await getCartDetails(req.user.userId);
-    console.log(await getCartDetails(req.user.userId))
     if (!cart) {
       cart = await cartModel.create({ user: req.user.userId, items: [] });
     }
