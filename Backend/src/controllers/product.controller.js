@@ -1,4 +1,5 @@
 ﻿import productModel from "../models/product.model.js";
+import ratingModel from "../models/rating.model.js";
 
 export const getProductController = async (req, res, next) => {
   try {
@@ -91,6 +92,142 @@ export const searchProductController = async (req, res, next) => {
     });
   } catch (error) {
     console.log("failed to search product", error);
+    next(error);
+  }
+};
+
+export const ratingController = async (req, res, next) => {
+  try {
+    const { review, rating } = req.body;
+    const { productId } = req.params;
+    const product = await productModel.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+    const rate = await ratingModel.create({
+      user: req.user.userId,
+      product: productId,
+      rating,
+      review,
+    });
+
+    return res.status(201).json({
+      message: "Review successfully sent",
+      success: true,
+      rate,
+    });
+  } catch (error) {
+    console.log("failed to send rate,error");
+    next(error);
+  }
+};
+
+export const getRatingController = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const product = await productModel.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+    const ratings = await ratingModel
+      .find({ product: productId })
+      .populate("user", "fullname");
+
+    return res.status(200).json({
+      message: "review data fetched successfully",
+      success: true,
+      ratings,
+    });
+  } catch (error) {
+    console.log("failed to fetch review data", error);
+    next(error);
+  }
+};
+
+export const editRatingController = async (req, res, next) => {
+  try {
+    const { productId, ratingId } = req.params;
+    const { review, rating } = req.body;
+
+    const product = await productModel.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    const rate = await ratingModel.findOneAndUpdate(
+      {
+        _id: ratingId,
+        product: productId,
+        user: req.user.userId,
+      },
+      {
+        review,
+        rating,
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    if (!rate) {
+      return res.status(404).json({
+        success: false,
+        message: "Review not found or you are not authorized to edit it",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Review updated successfully",
+      rate,
+    });
+  } catch (error) {
+    console.log("Failed to edit review:", error);
+    next(error);
+  }
+};
+
+export const deleteRatingController = async (req, res, next) => {
+  try {
+    const { productId, ratingId } = req.params;
+    const product = await productModel.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+    const rate = await ratingModel.findOneAndDelete({
+      user: req.user.userId,
+      product: productId,
+      _id: ratingId,
+    });
+    if (!rate) {
+      return res.status(404).json({
+        success: false,
+        message: "Review not found or you are not authorized to delete it",
+      });
+    }
+    return res.status(200).json({
+      message: "review deleted successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log("failed to delete review", error);
     next(error);
   }
 };
