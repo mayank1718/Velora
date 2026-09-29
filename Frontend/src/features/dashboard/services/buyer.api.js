@@ -33,6 +33,37 @@ export const searchProducts = async (searchQuery) => {
   return response.data;
 };
 
+export const createRating = async (productId, review, rating) => {
+  const response = await productApiInstanse.post(`/${productId}/rating`, {
+    review,
+    rating,
+  });
+  return response.data;
+};
+
+export const getRating = async (productId) => {
+  const response = await productApiInstanse.get(`/${productId}/rating`);
+  return response.data;
+};
+
+export const editRating = async (productId, ratingId, review, rating) => {
+  const response = await productApiInstanse.patch(
+    `/${productId}/rating/${ratingId}`,
+    {
+      review,
+      rating,
+    },
+  );
+  return response.data;
+};
+
+export const deleteRating = async (productId, ratingId) => {
+  const response = await productApiInstanse.patch(
+    `/${productId}/rating/${ratingId}`,
+  );
+  return response.data;
+};
+
 //buyer api
 export const getCart = async () => {
   const response = await buyerApiInstance.get("/cart");

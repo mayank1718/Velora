@@ -108,6 +108,12 @@ export const ratingController = async (req, res, next) => {
         message: "Product not found",
       });
     }
+    if (product.seller.toString() === req.user.userId.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "Seller cannot review their own product",
+      });
+    }
     const rate = await ratingModel.create({
       user: req.user.userId,
       product: productId,

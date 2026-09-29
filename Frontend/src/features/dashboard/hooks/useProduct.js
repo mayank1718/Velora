@@ -1,8 +1,12 @@
 import { useContext, useCallback } from "react";
 import { BuyerContext } from "../dashboard.context";
 import {
+  createRating,
+  deleteRating,
+  editRating,
   getAllProducts,
   getProductDetails,
+  getRating,
   getRelatedProducts,
   searchProducts,
 } from "../services/buyer.api";
@@ -25,6 +29,8 @@ export const useProduct = () => {
     setRelatedLoading,
     relatedError,
     setRelatedError,
+    reviews,
+    setReviews,
   } = context;
 
   const handleGetAllProducts = useCallback(async () => {
@@ -134,6 +140,46 @@ export const useProduct = () => {
     [setLoading, setError, setAllProducts],
   );
 
+  const handleRating = async (productId, review, rating) => {
+    try {
+      const data = await createRating(productId, review, rating);
+      await handleGetRating(productId);
+      return data.rate;
+    } catch (error) {
+      console.log("failed to send review", error);
+    }
+  };
+
+  const handleGetRating = async (productId) => {
+    try {
+      const data = await getRating(productId);
+      setReviews(data.ratings);
+      return data.ratings;
+    } catch (error) {
+      console.log("failed to fetch review", error);
+    }
+  };
+
+  const handleEditRating = async (productId, ratingId, review, rating) => {
+    try {
+      const data = await editRating(productId, ratingId, review, rating);
+      await handleGetRating(productId);
+      return data.rate;
+    } catch (error) {
+      console.log("failed to edit review", error);
+    }
+  };
+
+  const handleDeleteRating = async (productId, ratingId) => {
+    try {
+      const data = await deleteRating(productId, ratingId);
+      await handleGetRating(productId);
+      return data.success;
+    } catch (error) {
+      console.log("failed to delete rating", error);
+    }
+  };
+
   return {
     loading,
     error,
@@ -148,5 +194,10 @@ export const useProduct = () => {
     relatedError,
     setRelatedError,
     handleSearchProducts,
+    handleDeleteRating,
+    handleEditRating,
+    handleGetRating,
+    handleRating,
+    reviews,
   };
 };

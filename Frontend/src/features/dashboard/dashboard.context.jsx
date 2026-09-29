@@ -10,6 +10,7 @@ export const BuyerContextProvider = ({ children }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [relatedLoading, setRelatedLoading] = useState(false);
   const [relatedError, setRelatedError] = useState(null);
+  const [reviews, setReviews] = useState(null);
   return (
     <BuyerContext.Provider
       value={{
@@ -19,6 +20,8 @@ export const BuyerContextProvider = ({ children }) => {
         setAllProducts,
         error,
         setError,
+        reviews,
+        setReviews,
         product,
         setProduct,
         relatedProducts,
