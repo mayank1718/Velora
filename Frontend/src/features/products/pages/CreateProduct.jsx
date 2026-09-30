@@ -353,14 +353,14 @@ const CreateProduct = () => {
               <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-6 sm:p-8 space-y-6">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] uppercase tracking-[0.18em] text-[#D4AF37] font-semibold">
+                    <span className="text-[10px] uppercase tracking-[0.18em] text-[var(--accent-gold)] font-semibold">
                       General Information
                     </span>
                   </div>
-                  <h2 className="text-base font-medium text-[#171717] tracking-tight">
+                  <h2 className="text-base font-medium text-[var(--text-primary)] tracking-tight">
                     Product Specifications
                   </h2>
-                  <p className="text-xs text-[#737373] mt-1 leading-relaxed">
+                  <p className="text-xs text-[var(--text-secondary)] mt-1 leading-relaxed">
                     Define the core title, categorization, and editorial story
                     for this item.
                   </p>
@@ -371,10 +371,10 @@ const CreateProduct = () => {
                   <div className="flex items-center justify-between">
                     <label
                       htmlFor="product-title"
-                      className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
-                      Product Title <span className="text-[#D4AF37]">*</span>
+                      className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
+                      Product Title <span className="text-[var(--accent-gold)]">*</span>
                     </label>
-                    <span className="text-[10px] text-[#737373]/70">
+                    <span className="text-[10px] text-[var(--text-secondary)]/70">
                       {productInput.title.length}/100
                     </span>
                   </div>
@@ -387,10 +387,10 @@ const CreateProduct = () => {
                     onChange={handleChange}
                     onBlur={() => handleBlur("title")}
                     placeholder="Enter product title"
-                    className={`w-full h-12 px-3.5 bg-[#FFFFFF] border text-xs text-[#171717] placeholder:text-[#737373]/50 transition-colors focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10 ${
+                    className={`w-full h-12 px-3.5 bg-[#FFFFFF] border text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/50 transition-colors focus:border-[var(--text-primary)] focus:ring-1 focus:ring-[var(--text-primary)]/10 ${
                       (touched.title || errors.title) && errors.title
                         ? "border-red-400 focus:border-red-500 focus:ring-red-100"
-                        : "border-[#E5E5E5]"
+                        : "border-[var(--border-subtle)]"
                     }`}
                   />
                   {errors.title && (
@@ -405,8 +405,8 @@ const CreateProduct = () => {
                   <div className="flex items-center justify-between">
                     <label
                       htmlFor="product-category"
-                      className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
-                      Category <span className="text-[#D4AF37]">*</span>
+                      className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
+                      Category <span className="text-[var(--accent-gold)]">*</span>
                     </label>
                   </div>
                   <div className="relative">
@@ -416,14 +416,14 @@ const CreateProduct = () => {
                       value={productInput.category}
                       onChange={handleChange}
                       onBlur={() => handleBlur("category")}
-                      className={`w-full h-12 pl-3.5 pr-10 bg-[#FFFFFF] border text-xs text-[#171717] transition-colors appearance-none cursor-pointer focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10 ${
+                      className={`w-full h-12 pl-3.5 pr-10 bg-[#FFFFFF] border text-xs text-[var(--text-primary)] transition-colors appearance-none cursor-pointer focus:border-[var(--text-primary)] focus:ring-1 focus:ring-[var(--text-primary)]/10 ${
                         !productInput.category
-                          ? "text-[#737373]/60"
-                          : "text-[#171717]"
+                          ? "text-[var(--text-secondary)]/60"
+                          : "text-[var(--text-primary)]"
                       } ${
                         (touched.category || errors.category) && errors.category
                           ? "border-red-400 focus:border-red-500"
-                          : "border-[#E5E5E5]"
+                          : "border-[var(--border-subtle)]"
                       }`}>
                       <option value="" disabled>
                         Select category
@@ -432,12 +432,12 @@ const CreateProduct = () => {
                         <option
                           key={cat.value}
                           value={cat.value}
-                          className="text-[#171717] py-1">
+                          className="text-[var(--text-primary)] py-1">
                           {cat.label}
                         </option>
                       ))}
                     </select>
-                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#737373]">
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--text-secondary)]">
                       <ChevronDown className="w-4 h-4" strokeWidth={1.5} />
                     </div>
                   </div>
@@ -453,10 +453,10 @@ const CreateProduct = () => {
                   <div className="flex items-center justify-between">
                     <label
                       htmlFor="product-description"
-                      className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
-                      Description <span className="text-[#D4AF37]">*</span>
+                      className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
+                      Description <span className="text-[var(--accent-gold)]">*</span>
                     </label>
-                    <span className="text-[10px] text-[#737373]/70">
+                    <span className="text-[10px] text-[var(--text-secondary)]/70">
                       {productInput.description.length} chars
                     </span>
                   </div>
@@ -468,11 +468,11 @@ const CreateProduct = () => {
                     onChange={handleChange}
                     onBlur={() => handleBlur("description")}
                     placeholder="Describe your product..."
-                    className={`w-full p-3.5 bg-[#FFFFFF] border text-xs text-[#171717] placeholder:text-[#737373]/50 transition-colors resize-y min-h-[140px] focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10 ${
+                    className={`w-full p-3.5 bg-[#FFFFFF] border text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/50 transition-colors resize-y min-h-[140px] focus:border-[var(--text-primary)] focus:ring-1 focus:ring-[var(--text-primary)]/10 ${
                       (touched.description || errors.description) &&
                       errors.description
                         ? "border-red-400 focus:border-red-500 focus:ring-red-100"
-                        : "border-[#E5E5E5]"
+                        : "border-[var(--border-subtle)]"
                     }`}
                   />
                   {errors.description && (
@@ -483,19 +483,19 @@ const CreateProduct = () => {
                 </div>
 
                 {/* Action Buttons Section */}
-                <div className="pt-4 border-t border-[#E5E5E5]/60 flex flex-col sm:flex-row items-center justify-end gap-3">
+                <div className="pt-4 border-t border-[var(--border-subtle)]/60 flex flex-col sm:flex-row items-center justify-end gap-3">
                   <button
                     type="button"
                     onClick={() => navigate(-1)}
                     disabled={loading}
-                    className="w-full sm:w-auto px-6 h-12 border border-[#E5E5E5] bg-[#FFFFFF] hover:bg-[#FAFAF9] text-[#737373] hover:text-[#171717] text-xs font-medium tracking-[0.16em] uppercase transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50">
+                    className="w-full sm:w-auto px-6 h-12 border border-[var(--border-subtle)] bg-[#FFFFFF] hover:bg-[var(--bg-canvas)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium tracking-[0.16em] uppercase transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50">
                     Cancel
                   </button>
 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full sm:w-auto px-8 h-12 bg-[#171717] hover:bg-[#262626] active:bg-[#000000] text-[#FFFFFF] text-xs font-medium tracking-[0.18em] uppercase transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-none">
+                    className="w-full sm:w-auto px-8 h-12 bg-[var(--text-primary)] hover:bg-[#262626] active:bg-[#000000] text-[#FFFFFF] text-xs font-medium tracking-[0.18em] uppercase transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-none">
                     {loading ? (
                       <>
                         <Loader2

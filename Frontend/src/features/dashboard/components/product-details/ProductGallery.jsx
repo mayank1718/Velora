@@ -29,8 +29,8 @@ const ProductGallery = ({
                 aria-label={`View image ${index + 1}`}
                 className={`relative flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-white border transition-all cursor-pointer ${
                   isActive
-                    ? "border-[#171717] ring-1 ring-[#171717] shadow-xs"
-                    : "border-[#E5E5E5] hover:border-stone-400 opacity-75 hover:opacity-100"
+                    ? "border-[var(--text-primary)] ring-1 ring-[var(--text-primary)] shadow-xs"
+                    : "border-[var(--border-subtle)] hover:border-stone-400 opacity-75 hover:opacity-100"
                 }`}
               >
                 <img
@@ -46,7 +46,7 @@ const ProductGallery = ({
       )}
 
       {/* Main Showcase Image */}
-      <div className="flex-1 relative aspect-square sm:aspect-[4/4.5] max-h-[560px] bg-white border border-[#E5E5E5] rounded-2xl overflow-hidden flex items-center justify-center shadow-xs">
+      <div className="flex-1 relative aspect-square sm:aspect-[4/4.5] max-h-[560px] bg-white border border-[var(--border-subtle)] rounded-2xl overflow-hidden flex items-center justify-center shadow-xs">
         {currentImage ? (
           <img
             src={currentImage}

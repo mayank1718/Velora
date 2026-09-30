@@ -45,9 +45,9 @@ const VariantCard = ({
     : Object.entries(attributes || {});
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] hover:border-[#171717]/30 transition-all p-4 sm:p-5 flex flex-col sm:flex-row gap-4 items-start group">
+    <div className="bg-[#FFFFFF] border border-[var(--border-subtle)] hover:border-[var(--text-primary)]/30 transition-all p-4 sm:p-5 flex flex-col sm:flex-row gap-4 items-start group">
       {/* Thumbnail Image */}
-      <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 bg-[#FAFAF9] border border-[#E5E5E5] overflow-hidden relative self-center sm:self-start">
+      <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 bg-[var(--bg-canvas)] border border-[var(--border-subtle)] overflow-hidden relative self-center sm:self-start">
         {primaryImage && !imgError ? (
           <img
             src={primaryImage}
@@ -56,12 +56,12 @@ const VariantCard = ({
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center text-[#737373]/60 bg-[#FAFAF9]">
+          <div className="w-full h-full flex flex-col items-center justify-center text-[var(--text-secondary)]/60 bg-[var(--bg-canvas)]">
             <ImageIcon className="w-6 h-6 stroke-[1.25]" />
           </div>
         )}
         {images.length > 1 && (
-          <span className="absolute bottom-1 right-1 px-1 py-0.2 text-[8px] font-mono uppercase bg-[#171717]/90 text-white">
+          <span className="absolute bottom-1 right-1 px-1 py-0.2 text-[8px] font-mono uppercase bg-[var(--text-primary)]/90 text-white">
             {images.length} photos
           </span>
         )}
@@ -75,27 +75,27 @@ const VariantCard = ({
             attrEntries.map(([k, v], idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium bg-[#FAFAF9] border border-[#E5E5E5] text-[#171717]">
-                <span className="text-[#737373] capitalize">{k}:</span>
-                <span className="font-semibold text-[#171717]">{v}</span>
+                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium bg-[var(--bg-canvas)] border border-[var(--border-subtle)] text-[var(--text-primary)]">
+                <span className="text-[var(--text-secondary)] capitalize">{k}:</span>
+                <span className="font-semibold text-[var(--text-primary)]">{v}</span>
               </span>
             ))
           ) : (
-            <span className="text-xs text-[#737373] italic">
+            <span className="text-xs text-[var(--text-secondary)] italic">
               No attributes configured
             </span>
           )}
         </div>
 
         {/* Price & Stock Row */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-[#E5E5E5]/60">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-[var(--border-subtle)]/60">
           {/* Price */}
           <div className="flex items-baseline gap-1.5">
-            <span className="text-base sm:text-lg font-light tracking-tight text-[#171717]">
+            <span className="text-base sm:text-lg font-light tracking-tight text-[var(--text-primary)]">
               {symbol}
               {Number(price.amount || 0).toLocaleString()}
             </span>
-            <span className="text-[10px] font-mono uppercase text-[#737373] tracking-wider">
+            <span className="text-[10px] font-mono uppercase text-[var(--text-secondary)] tracking-wider">
               {price.currency}
             </span>
           </div>
@@ -107,10 +107,10 @@ const VariantCard = ({
                 Number(stock) > 0 ? "bg-emerald-500" : "bg-red-500"
               }`}
             />
-            <span className="font-medium text-[#171717]">
+            <span className="font-medium text-[var(--text-primary)]">
               Stock: {Number(stock || 0)}
             </span>
-            <span className="text-[#737373] text-[11px]">units</span>
+            <span className="text-[var(--text-secondary)] text-[11px]">units</span>
           </div>
         </div>
 
@@ -122,7 +122,7 @@ const VariantCard = ({
               handleEdit?.(variant);
             }}
             title="Edit variant"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] uppercase tracking-[0.14em] font-medium bg-[#FFFFFF] border border-[#E5E5E5] text-[#737373]  hover:bg-[#FFFFFF]">
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] uppercase tracking-[0.14em] font-medium bg-[#FFFFFF] border border-[var(--border-subtle)] text-[var(--text-secondary)]  hover:bg-[#FFFFFF]">
             <Edit2 className="w-3 h-3 stroke-[1.75]" />
             <span>Edit</span>
           </button>
@@ -132,7 +132,7 @@ const VariantCard = ({
               handleDelete(productId, _id);
             }}
             title="Delete variant"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] uppercase tracking-[0.14em] font-medium bg-[#FFFFFF] border border-[#E5E5E5] text-[#737373]  hover:bg-[#FFFFFF]">
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] uppercase tracking-[0.14em] font-medium bg-[#FFFFFF] border border-[var(--border-subtle)] text-[var(--text-secondary)]  hover:bg-[#FFFFFF]">
             <Trash2 className="w-3 h-3 stroke-[1.75]" />
             <span>Delete</span>
           </button>

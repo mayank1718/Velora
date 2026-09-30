@@ -144,29 +144,45 @@ export const useProduct = () => {
     try {
       const data = await createRating(productId, review, rating);
       await handleGetRating(productId);
-      return data.rate;
+      return data?.rate || data;
     } catch (error) {
-      console.log("failed to send review", error);
+      console.error("failed to send review", error);
+      throw error;
     }
   };
 
-  const handleGetRating = async (productId) => {
-    try {
-      const data = await getRating(productId);
-      setReviews(data.ratings);
-      return data.ratings;
-    } catch (error) {
-      console.log("failed to fetch review", error);
-    }
-  };
+  const handleGetRating = useCallback(
+    async (productId) => {
+      setLoading(true);
+      try {
+        const data = await getRating(productId);
+        const ratingList = Array.isArray(data?.ratings) ? data.ratings : [];
+        setReviews(ratingList);
+        return ratingList;
+      } catch (err) {
+        console.error("failed to fetch review", err);
+        setError(
+          err?.response?.data?.message ||
+            err?.message ||
+            "Unable to load reviews for this product.",
+        );
+        setReviews([]);
+        return [];
+      } finally {
+        setLoading(false);
+      }
+    },
+    [setReviews],
+  );
 
   const handleEditRating = async (productId, ratingId, review, rating) => {
     try {
       const data = await editRating(productId, ratingId, review, rating);
       await handleGetRating(productId);
-      return data.rate;
+      return data?.rate || data;
     } catch (error) {
-      console.log("failed to edit review", error);
+      console.error("failed to edit review", error);
+      throw error;
     }
   };
 
@@ -174,9 +190,10 @@ export const useProduct = () => {
     try {
       const data = await deleteRating(productId, ratingId);
       await handleGetRating(productId);
-      return data.success;
+      return data?.success ?? true;
     } catch (error) {
-      console.log("failed to delete rating", error);
+      console.error("failed to delete rating", error);
+      throw error;
     }
   };
 

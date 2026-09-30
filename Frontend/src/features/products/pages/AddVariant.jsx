@@ -13,6 +13,8 @@ import ProductInfo from "../components/ProductInfo";
 import VariantForm from "../components/VariantForm";
 import VariantList from "../components/VariantList";
 import { useSeller } from "../hooks/useSeller";
+import ThemeToggle from "../../../components/ThemeToggle";
+import ReviewSection from "../../dashboard/components/reviews/ReviewSection";
 
 const AddVariant = () => {
   const { productId } = useParams();
@@ -233,8 +235,9 @@ const AddVariant = () => {
           <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)] ml-0.5 mb-2 self-end inline-block"></span>
         </Link>
 
-        {/* Seller Status Badge */}
-        <div className="flex items-center gap-2">
+        {/* Seller Status Badge & Theme Toggle */}
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] font-medium bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-primary)]">
             <Store className="w-3 h-3 text-[var(--accent-gold)]" strokeWidth={1.5} />
             <span className="hidden sm:inline">Seller Atelier</span>
@@ -265,12 +268,12 @@ const AddVariant = () => {
           <div
             className={`p-3.5 sm:p-4 border flex items-center justify-between gap-3 transition-all ${
               toastMessage.type === "success"
-                ? "bg-[#FFFFFF] border-[#171717] text-[#171717]"
+                ? "bg-[#FFFFFF] border-[var(--text-primary)] text-[var(--text-primary)]"
                 : "bg-red-50/40 border-red-300 text-red-700"
             }`}>
             <div className="flex items-center gap-2.5">
               {toastMessage.type === "success" ? (
-                <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[var(--accent-gold)] shrink-0" />
               ) : (
                 <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
               )}
@@ -281,7 +284,7 @@ const AddVariant = () => {
             <button
               type="button"
               onClick={() => setToastMessage(null)}
-              className="text-[#737373] hover:text-[#171717] p-1 cursor-pointer"
+              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-1 cursor-pointer"
               title="Close notification">
               <X className="w-3.5 h-3.5" />
             </button>
@@ -307,10 +310,10 @@ const AddVariant = () => {
         {pageLoading ? (
           /* Loading Skeleton State */
           <div className="space-y-6 animate-pulse">
-            <div className="h-24 bg-[#FFFFFF] border border-[#E5E5E5] w-full" />
+            <div className="h-24 bg-[#FFFFFF] border border-[var(--border-subtle)] w-full" />
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-              <div className="lg:col-span-7 h-96 bg-[#FFFFFF] border border-[#E5E5E5]" />
-              <div className="lg:col-span-5 h-96 bg-[#FFFFFF] border border-[#E5E5E5]" />
+              <div className="lg:col-span-7 h-96 bg-[#FFFFFF] border border-[var(--border-subtle)]" />
+              <div className="lg:col-span-5 h-96 bg-[#FFFFFF] border border-[var(--border-subtle)]" />
             </div>
           </div>
         ) : (
@@ -347,6 +350,13 @@ const AddVariant = () => {
                 />
               </div>
             </div>
+
+            {/* 3. Product Ratings & Reviews (Read-only for Seller) */}
+            <ReviewSection
+              productId={productId || localProduct?._id}
+              product={localProduct}
+              isReadOnly={true}
+            />
           </>
         )}
       </main>

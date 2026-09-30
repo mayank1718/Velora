@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ShieldCheck, Sparkles, Store } from "lucide-react";
+import ThemeToggle from "../../../components/ThemeToggle";
 
 const SellerLayout = ({
   children,
@@ -34,8 +35,9 @@ const SellerLayout = ({
           <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)] ml-0.5 mb-2 self-end inline-block"></span>
         </Link>
 
-        {/* Seller Status Badge */}
-        <div className="flex items-center gap-2">
+        {/* Seller Status Badge & Theme Toggle */}
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] font-medium bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-primary)]">
             <Store className="w-3 h-3 text-[var(--accent-gold)]" strokeWidth={1.5} />
             <span className="hidden sm:inline">Seller Atelier</span>

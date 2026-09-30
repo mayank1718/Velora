@@ -3,14 +3,11 @@ import { Sun, Moon } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
 
 /**
- * ThemeToggle — Accessible Sun / Moon button.
+ * ThemeToggle — Accessible, Luxury Sun / Moon toggle button.
  *
  * Variants:
- *   - default  : round icon button (used inside navbars)
- *   - pill     : icon + label pill (optional extended usage)
- *
- * The icon swap is animated with a subtle rotation + scale + opacity
- * transition using pure CSS (Tailwind). No extra libraries needed.
+ *   - default  : round icon button (for navbars and headers)
+ *   - pill     : icon + label pill
  */
 const ThemeToggle = ({ variant = "default", className = "" }) => {
   const { theme, toggleTheme } = useTheme();
@@ -24,13 +21,12 @@ const ThemeToggle = ({ variant = "default", className = "" }) => {
       title={isDark ? "Switch to light theme" : "Switch to dark theme"}
       className={`
         relative inline-flex items-center justify-center
-        transition-all duration-200
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2
-        dark:focus-visible:ring-offset-gray-950
+        transition-all duration-300 cursor-pointer
+        focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--accent-gold)] focus-visible:ring-offset-2
         ${
           variant === "pill"
-            ? "gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] rounded-full border border-[#E5E5E5] bg-white text-[#737373] hover:text-[#171717] hover:border-[#171717] dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:border-gray-500 shadow-xs"
-            : "w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-[#E5E5E5] text-[#171717] hover:border-[#171717] hover:bg-[#F5F5F4] dark:bg-gray-900 dark:border-gray-700 dark:text-gray-200 dark:hover:border-gray-500 dark:hover:bg-gray-800 shadow-xs"
+            ? "gap-2 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.16em] rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-gold)] hover:shadow-[0_0_14px_rgba(212,175,55,0.18)] shadow-xs"
+            : "w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-primary)] hover:border-[var(--accent-gold)] hover:bg-[var(--bg-muted)] hover:shadow-[0_0_14px_rgba(212,175,55,0.18)] shadow-xs"
         }
         ${className}
       `}
@@ -39,36 +35,36 @@ const ThemeToggle = ({ variant = "default", className = "" }) => {
       <span
         className={`
           absolute inset-0 flex items-center justify-center
-          transition-all duration-300
+          transition-all duration-400 ease-out
           ${isDark
-            ? "opacity-100 rotate-0 scale-100"
-            : "opacity-0 rotate-90 scale-75 pointer-events-none"
+            ? "opacity-100 rotate-0 scale-100 text-[var(--accent-gold)] drop-shadow-[0_0_6px_rgba(212,175,55,0.5)]"
+            : "opacity-0 rotate-90 scale-50 pointer-events-none"
           }
         `}
         aria-hidden="true"
       >
-        <Sun className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.75} />
+        <Sun className="w-4 h-4" strokeWidth={1.85} />
       </span>
 
       {/* Moon icon — visible in light mode (click to go dark) */}
       <span
         className={`
           absolute inset-0 flex items-center justify-center
-          transition-all duration-300
+          transition-all duration-400 ease-out
           ${!isDark
-            ? "opacity-100 rotate-0 scale-100"
-            : "opacity-0 -rotate-90 scale-75 pointer-events-none"
+            ? "opacity-100 rotate-0 scale-100 text-[var(--text-primary)]"
+            : "opacity-0 -rotate-90 scale-50 pointer-events-none"
           }
         `}
         aria-hidden="true"
       >
-        <Moon className="w-4 h-4 text-[#525252] dark:text-gray-300" strokeWidth={1.75} />
+        <Moon className="w-4 h-4" strokeWidth={1.85} />
       </span>
 
       {/* Pill label (only rendered in pill variant) */}
       {variant === "pill" && (
-        <span className="ml-5 select-none">
-          {isDark ? "Light" : "Dark"}
+        <span className="ml-5 select-none font-medium">
+          {isDark ? "Light Mode" : "Dark Mode"}
         </span>
       )}
     </button>

@@ -37,19 +37,19 @@ const AttributeFields = ({
       {/* Header and Add Action */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
-            Attributes <span className="text-[#D4AF37]">*</span>
+          <label className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
+            Attributes <span className="text-[var(--accent-gold)]">*</span>
           </label>
         </div>
-        <span className="text-[10px] uppercase tracking-[0.14em] text-[#737373]">
+        <span className="text-[10px] uppercase tracking-[0.14em] text-[var(--text-secondary)]">
           {attributes.length} {attributes.length === 1 ? "Pair" : "Pairs"}
         </span>
       </div>
 
       {/* Suggested Quick Tags */}
       <div className="flex items-center flex-wrap gap-1.5 pb-1">
-        <span className="text-[10px] uppercase tracking-[0.14em] text-[#737373]/80 mr-1 flex items-center gap-1">
-          <Sparkles className="w-2.5 h-2.5 text-[#D4AF37]" /> Suggestions:
+        <span className="text-[10px] uppercase tracking-[0.14em] text-[var(--text-secondary)]/80 mr-1 flex items-center gap-1">
+          <Sparkles className="w-2.5 h-2.5 text-[var(--accent-gold)]" /> Suggestions:
         </span>
         {SUGGESTED_KEYS.map((sugKey) => {
           const alreadyUsed = attributes.some(
@@ -63,8 +63,8 @@ const AttributeFields = ({
               onClick={() => handleAddPair(sugKey)}
               className={`px-2 py-0.5 text-[10px] uppercase tracking-[0.12em] transition-colors ${
                 alreadyUsed
-                  ? "bg-[#FAFAF9] text-[#737373]/40 border border-[#E5E5E5] cursor-not-allowed line-through"
-                  : "bg-[#FFFFFF] hover:bg-[#FAFAF9] text-[#171717] border border-[#E5E5E5] hover:border-[#171717] cursor-pointer"
+                  ? "bg-[var(--bg-canvas)] text-[var(--text-secondary)]/40 border border-[var(--border-subtle)] cursor-not-allowed line-through"
+                  : "bg-[#FFFFFF] hover:bg-[var(--bg-canvas)] text-[var(--text-primary)] border border-[var(--border-subtle)] hover:border-[var(--text-primary)] cursor-pointer"
               }`}
             >
               + {sugKey}
@@ -78,7 +78,7 @@ const AttributeFields = ({
         {attributes.map((attr, index) => (
           <div
             key={index}
-            className="flex items-center gap-2 sm:gap-3 bg-[#FAFAF9] p-2.5 sm:p-3 border border-[#E5E5E5]"
+            className="flex items-center gap-2 sm:gap-3 bg-[var(--bg-canvas)] p-2.5 sm:p-3 border border-[var(--border-subtle)]"
           >
             {/* Key Input */}
             <div className="flex-1 min-w-0">
@@ -94,12 +94,12 @@ const AttributeFields = ({
                 placeholder="Key (e.g. Size, Color)"
                 value={attr.key}
                 onChange={(e) => handleFieldChange(index, "key", e.target.value)}
-                className="w-full h-10 px-3 bg-[#FFFFFF] border border-[#E5E5E5] text-xs text-[#171717] placeholder:text-[#737373]/50 focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10 transition-colors"
+                className="w-full h-10 px-3 bg-[#FFFFFF] border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/50 focus:border-[var(--text-primary)] focus:ring-1 focus:ring-[var(--text-primary)]/10 transition-colors"
               />
             </div>
 
             {/* Separator Arrow or Colon */}
-            <span className="text-xs text-[#737373]/60 font-mono select-none">
+            <span className="text-xs text-[var(--text-secondary)]/60 font-mono select-none">
               →
             </span>
 
@@ -119,7 +119,7 @@ const AttributeFields = ({
                 onChange={(e) =>
                   handleFieldChange(index, "value", e.target.value)
                 }
-                className="w-full h-10 px-3 bg-[#FFFFFF] border border-[#E5E5E5] text-xs text-[#171717] placeholder:text-[#737373]/50 focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10 transition-colors"
+                className="w-full h-10 px-3 bg-[#FFFFFF] border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/50 focus:border-[var(--text-primary)] focus:ring-1 focus:ring-[var(--text-primary)]/10 transition-colors"
               />
             </div>
 
@@ -127,7 +127,7 @@ const AttributeFields = ({
             <button
               type="button"
               onClick={() => handleRemovePair(index)}
-              className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-[#FFFFFF] border border-[#E5E5E5] text-[#737373] hover:text-red-600 hover:border-red-300 hover:bg-red-50/20 transition-colors cursor-pointer"
+              className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-[#FFFFFF] border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-red-600 hover:border-red-300 hover:bg-red-50/20 transition-colors cursor-pointer"
               title="Remove attribute"
               aria-label={`Remove attribute ${attr.key || index + 1}`}
             >
@@ -141,9 +141,9 @@ const AttributeFields = ({
       <button
         type="button"
         onClick={() => handleAddPair("")}
-        className="w-full h-10 px-4 border border-dashed border-[#E5E5E5] hover:border-[#171717] bg-[#FFFFFF] hover:bg-[#FAFAF9] text-[#171717] text-xs uppercase tracking-[0.14em] font-medium transition-colors flex items-center justify-center gap-2 cursor-pointer"
+        className="w-full h-10 px-4 border border-dashed border-[var(--border-subtle)] hover:border-[var(--text-primary)] bg-[#FFFFFF] hover:bg-[var(--bg-canvas)] text-[var(--text-primary)] text-xs uppercase tracking-[0.14em] font-medium transition-colors flex items-center justify-center gap-2 cursor-pointer"
       >
-        <Plus className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={2} />
+        <Plus className="w-3.5 h-3.5 text-[var(--accent-gold)]" strokeWidth={2} />
         <span>Add Attribute</span>
       </button>
 

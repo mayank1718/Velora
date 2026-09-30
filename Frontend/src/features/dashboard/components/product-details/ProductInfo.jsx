@@ -11,6 +11,9 @@ import {
   Minus,
 } from "lucide-react";
 import { useCart } from "../../hooks/useCart";
+import { useProduct } from "../../hooks/useProduct";
+import { calculateRatingStats } from "../reviews/ratingUtils";
+import RatingStars from "../reviews/RatingStars";
 
 const ProductInfo = ({
   productId,
@@ -23,6 +26,8 @@ const ProductInfo = ({
 }) => {
   const navigate = useNavigate();
   const { handleAddItemToCart, loading: cartLoading } = useCart();
+  const { reviews } = useProduct();
+  const ratingStats = calculateRatingStats(reviews);
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
@@ -70,51 +75,87 @@ const ProductInfo = ({
       {/* Category & Title */}
       <div className="space-y-2">
         {category && (
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#737373]">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--text-secondary)]">
             {category}
           </p>
         )}
-        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#171717] leading-tight">
+        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[var(--text-primary)] dark:text-[#F5F5F5] leading-tight">
           {title || "Untitled Product"}
         </h1>
+
+        {/* Rating Summary Link */}
+        <div className="pt-1 flex items-center gap-2">
+          {ratingStats.hasReviews ? (
+            <button
+              type="button"
+              onClick={() => {
+                document
+                  .getElementById("product-reviews-section")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="inline-flex items-center gap-2 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer group"
+            >
+              <RatingStars value={ratingStats.averageRating} size="xs" readOnly />
+              <span className="font-semibold text-[var(--text-primary)]">
+                {ratingStats.formattedRating}
+              </span>
+              <span className="text-[var(--text-secondary)] group-hover:underline">
+                ({ratingStats.reviewCount} {ratingStats.reviewCount === 1 ? "review" : "reviews"})
+              </span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                document
+                  .getElementById("product-reviews-section")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="inline-flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+            >
+              <RatingStars value={0} size="xs" readOnly />
+              <span className="text-[11px] underline">Be the first to review</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Price Display */}
-      <div className="py-3 px-4 bg-[#F5F5F4]/60 border border-[#E5E5E5] rounded-xl flex items-center justify-between">
+      <div className="py-3 px-4 bg-[var(--bg-muted)]/60 border border-[var(--border-subtle)] rounded-xl flex items-center justify-between">
         <div>
-          <span className="text-[10px] uppercase tracking-[0.14em] text-[#737373] block mb-0.5">
+          <span className="text-[10px] uppercase tracking-[0.14em] text-[var(--text-secondary)] block mb-0.5">
             {selectedVariant ? "Selected Variant Price" : "Price"}
           </span>
           <div className="flex items-baseline gap-2">
             {selectedVariant && typeof activePrice === "number" ? (
               <>
-                <span className="text-2xl sm:text-3xl font-bold tracking-tight text-[#171717]">
+                <span className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
                   ₹{activePrice.toLocaleString("en-IN")}
                 </span>
-                <span className="text-xs font-medium text-[#737373]">
+                <span className="text-xs font-medium text-[var(--text-secondary)]">
                   {activeCurrency}
                 </span>
               </>
             ) : isUniformPrice && minPrice !== null ? (
               <>
-                <span className="text-2xl sm:text-3xl font-bold tracking-tight text-[#171717]">
+                <span className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
                   ₹{minPrice.toLocaleString("en-IN")}
                 </span>
-                <span className="text-xs font-medium text-[#737373]">
+                <span className="text-xs font-medium text-[var(--text-secondary)]">
                   {variantList[0]?.price?.currency || "INR"}
                 </span>
               </>
             ) : minPrice !== null ? (
               <>
-                <span className="text-xs font-medium uppercase text-[#737373]">
+                <span className="text-xs font-medium uppercase text-[var(--text-secondary)]">
                   From
                 </span>
-                <span className="text-2xl sm:text-3xl font-bold tracking-tight text-[#171717]">
+                <span className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
                   ₹{minPrice.toLocaleString("en-IN")}
                 </span>
               </>
             ) : (
-              <span className="text-sm text-[#737373] italic">
+              <span className="text-sm text-[var(--text-secondary)] italic">
                 Price upon selection
               </span>
             )}
@@ -136,7 +177,7 @@ const ProductInfo = ({
               </div>
             )
           ) : (
-            <div className="text-xs text-[#737373]">
+            <div className="text-xs text-[var(--text-secondary)]">
               {variantList.length > 0 ? "Select a variant" : "No variants"}
             </div>
           )}
@@ -146,10 +187,10 @@ const ProductInfo = ({
       {/* Description */}
       {description && (
         <div className="space-y-1.5">
-          <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-[#737373]">
+          <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--text-secondary)]">
             About This Item
           </h3>
-          <p className="text-sm text-[#525252] leading-relaxed font-normal whitespace-pre-line">
+          <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-normal whitespace-pre-line">
             {description}
           </p>
         </div>
@@ -166,29 +207,29 @@ const ProductInfo = ({
       {isStockAvailable && (
         <div className="pt-2 space-y-2.5">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold uppercase tracking-[0.14em] text-[#737373]">
+            <span className="font-semibold uppercase tracking-[0.14em] text-[var(--text-secondary)]">
               Quantity
             </span>
-            <span className="text-[11px] text-[#737373]">
+            <span className="text-[11px] text-[var(--text-secondary)]">
               Max available:{" "}
-              <strong className="text-[#171717]">{activeStock}</strong>
+              <strong className="text-[var(--text-primary)]">{activeStock}</strong>
             </span>
           </div>
 
           <div className="flex items-center gap-4">
             {/* Quantity Stepper */}
-            <div className="inline-flex items-center border border-[#E5E5E5] rounded-xl bg-[#FAFAF9] p-1">
+            <div className="inline-flex items-center border border-[var(--border-subtle)] rounded-xl bg-[var(--bg-canvas)] p-1">
               <button
                 type="button"
                 onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
                 disabled={quantity <= 1 || cartLoading}
                 aria-label="Decrease quantity"
-                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-[#E5E5E5] text-[#171717] hover:bg-stone-50 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-[var(--border-subtle)] text-[var(--text-primary)] hover:bg-stone-50 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs cursor-pointer"
               >
                 <Minus className="w-3.5 h-3.5" />
               </button>
 
-              <span className="w-12 text-center text-sm font-semibold text-[#171717] select-none">
+              <span className="w-12 text-center text-sm font-semibold text-[var(--text-primary)] select-none">
                 {quantity}
               </span>
 
@@ -199,7 +240,7 @@ const ProductInfo = ({
                 }
                 disabled={quantity >= activeStock || cartLoading}
                 aria-label="Increase quantity"
-                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-[#E5E5E5] text-[#171717] hover:bg-stone-50 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-[var(--border-subtle)] text-[var(--text-primary)] hover:bg-stone-50 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
               </button>
@@ -207,9 +248,9 @@ const ProductInfo = ({
 
             {/* Total calculation indicator */}
             {typeof activePrice === "number" && quantity > 1 && (
-              <div className="text-xs text-[#737373]">
+              <div className="text-xs text-[var(--text-secondary)]">
                 <span>Total: </span>
-                <span className="font-bold text-[#171717]">
+                <span className="font-bold text-[var(--text-primary)]">
                   ₹{(activePrice * quantity).toLocaleString("en-IN")}
                 </span>
               </div>
@@ -227,7 +268,7 @@ const ProductInfo = ({
           className={`w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full text-xs sm:text-sm font-medium uppercase tracking-[0.14em] transition-all duration-200 shadow-xs cursor-pointer ${
             added
               ? "bg-emerald-700 text-white"
-              : "bg-[#171717] text-white hover:bg-[#262626] active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed"
+              : "bg-[var(--text-primary)] text-[var(--text-secondary)] hover:bg-[#262626] active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed"
           }`}
         >
           {added ? (
@@ -239,7 +280,7 @@ const ProductInfo = ({
             </>
           ) : (
             <>
-              <ShoppingBag className="w-4 h-4 text-[#D4AF37]" strokeWidth={2} />
+              <ShoppingBag className="w-4 h-4 text-[var(--accent-gold)]" strokeWidth={2} />
               <span>
                 {isStockAvailable
                   ? quantity > 1
@@ -255,7 +296,7 @@ const ProductInfo = ({
           <button
             type="button"
             onClick={() => navigate("/cart")}
-            className="w-full inline-flex items-center justify-center gap-2 py-3 px-6 rounded-full bg-white border border-[#171717] text-[#171717] text-xs font-medium uppercase tracking-[0.14em] hover:bg-stone-50 transition-all cursor-pointer"
+            className="w-full inline-flex items-center justify-center gap-2 py-3 px-6 rounded-full bg-white border border-[var(--text-primary)] text-[var(--text-primary)] text-xs font-medium uppercase tracking-[0.14em] hover:bg-stone-50 transition-all cursor-pointer"
           >
             <span>View Shopping Cart</span>
             <ArrowRight className="w-4 h-4" />

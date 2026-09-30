@@ -261,18 +261,18 @@ const VariantForm = ({
   };
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] p-5 sm:p-7 space-y-6">
+    <div className="bg-[#FFFFFF] border border-[var(--border-subtle)] p-5 sm:p-7 space-y-6">
       {/* Form Card Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-[10px] uppercase tracking-[0.18em] text-[#D4AF37] font-semibold">
+          <span className="text-[10px] uppercase tracking-[0.18em] text-[var(--accent-gold)] font-semibold">
             Variant Configuration
           </span>
         </div>
-        <h2 className="text-base font-medium text-[#171717] tracking-tight">
+        <h2 className="text-base font-medium text-[var(--text-primary)] tracking-tight">
           {isEditing ? "Edit Variant" : "Add New Variant"}
         </h2>
-        <p className="text-xs text-[#737373] mt-1 leading-relaxed">
+        <p className="text-xs text-[var(--text-secondary)] mt-1 leading-relaxed">
           Set up pricing, stock availability, dynamic specification attributes, and imagery for this variant.
         </p>
       </div>
@@ -281,8 +281,8 @@ const VariantForm = ({
         {/* Price & Currency Section */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
-              Pricing & Currency <span className="text-[#D4AF37]">*</span>
+            <span className="text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
+              Pricing & Currency <span className="text-[var(--accent-gold)]">*</span>
             </span>
           </div>
 
@@ -291,7 +291,7 @@ const VariantForm = ({
             <div className="sm:col-span-7 space-y-1">
               <label
                 htmlFor="variant-price"
-                className="block text-[10px] uppercase tracking-[0.14em] text-[#737373]"
+                className="block text-[10px] uppercase tracking-[0.14em] text-[var(--text-secondary)]"
               >
                 Price Amount
               </label>
@@ -306,10 +306,10 @@ const VariantForm = ({
                   value={formData.priceAmount}
                   onChange={handleInputChange}
                   onBlur={() => handleBlur("priceAmount")}
-                  className={`w-full h-11 px-3.5 bg-[#FFFFFF] border text-xs text-[#171717] placeholder:text-[#737373]/50 focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10 transition-colors ${
+                  className={`w-full h-11 px-3.5 bg-[#FFFFFF] border text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/50 focus:border-[var(--text-primary)] focus:ring-1 focus:ring-[var(--text-primary)]/10 transition-colors ${
                     (touched.priceAmount || errors.priceAmount) && errors.priceAmount
                       ? "border-red-400 focus:border-red-500"
-                      : "border-[#E5E5E5]"
+                      : "border-[var(--border-subtle)]"
                   }`}
                 />
               </div>
@@ -324,7 +324,7 @@ const VariantForm = ({
             <div className="sm:col-span-5 space-y-1">
               <label
                 htmlFor="variant-currency"
-                className="block text-[10px] uppercase tracking-[0.14em] text-[#737373]"
+                className="block text-[10px] uppercase tracking-[0.14em] text-[var(--text-secondary)]"
               >
                 Currency
               </label>
@@ -335,10 +335,10 @@ const VariantForm = ({
                   value={formData.currency}
                   onChange={handleInputChange}
                   onBlur={() => handleBlur("currency")}
-                  className={`w-full h-11 pl-3.5 pr-9 bg-[#FFFFFF] border text-xs text-[#171717] appearance-none cursor-pointer focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10 transition-colors ${
+                  className={`w-full h-11 pl-3.5 pr-9 bg-[#FFFFFF] border text-xs text-[var(--text-primary)] appearance-none cursor-pointer focus:border-[var(--text-primary)] focus:ring-1 focus:ring-[var(--text-primary)]/10 transition-colors ${
                     (touched.currency || errors.currency) && errors.currency
                       ? "border-red-400 focus:border-red-500"
-                      : "border-[#E5E5E5]"
+                      : "border-[var(--border-subtle)]"
                   }`}
                 >
                   {CURRENCY_OPTIONS.map((opt) => (
@@ -347,7 +347,7 @@ const VariantForm = ({
                     </option>
                   ))}
                 </select>
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#737373]">
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--text-secondary)]">
                   <ChevronDown className="w-4 h-4" strokeWidth={1.5} />
                 </div>
               </div>
@@ -365,10 +365,10 @@ const VariantForm = ({
           <div className="flex items-center justify-between">
             <label
               htmlFor="variant-stock"
-              className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[#737373]">
-              Inventory Stock <span className="text-[#D4AF37]">*</span>
+              className="block text-[10px] uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
+              Inventory Stock <span className="text-[var(--accent-gold)]">*</span>
             </label>
-            <span className="text-[10px] text-[#737373]/70">Units in Atelier</span>
+            <span className="text-[10px] text-[var(--text-secondary)]/70">Units in Atelier</span>
           </div>
           <input
             id="variant-stock"
@@ -380,10 +380,10 @@ const VariantForm = ({
             value={formData.stock}
             onChange={handleInputChange}
             onBlur={() => handleBlur("stock")}
-            className={`w-full h-11 px-3.5 bg-[#FFFFFF] border text-xs text-[#171717] placeholder:text-[#737373]/50 focus:border-[#171717] focus:ring-1 focus:ring-[#171717]/10 transition-colors ${
+            className={`w-full h-11 px-3.5 bg-[#FFFFFF] border text-xs text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/50 focus:border-[var(--text-primary)] focus:ring-1 focus:ring-[var(--text-primary)]/10 transition-colors ${
               (touched.stock || errors.stock) && errors.stock
                 ? "border-red-400 focus:border-red-500"
-                : "border-[#E5E5E5]"
+                : "border-[var(--border-subtle)]"
             }`}
           />
           {errors.stock && (
@@ -394,7 +394,7 @@ const VariantForm = ({
         </div>
 
         {/* Dynamic Attributes Section */}
-        <div className="pt-2 border-t border-[#E5E5E5]/60">
+        <div className="pt-2 border-t border-[var(--border-subtle)]/60">
           <AttributeFields
             attributes={formData.attributes}
             onChange={handleAttributesChange}
@@ -403,7 +403,7 @@ const VariantForm = ({
         </div>
 
         {/* Variant Images Section */}
-        <div className="pt-2 border-t border-[#E5E5E5]/60">
+        <div className="pt-2 border-t border-[var(--border-subtle)]/60">
           <VariantImageUpload
             images={formData.images}
             onChange={handleImagesChange}
@@ -414,12 +414,12 @@ const VariantForm = ({
         </div>
 
         {/* Form Actions Footer */}
-        <div className="pt-4 border-t border-[#E5E5E5]/60 flex flex-col sm:flex-row items-center justify-end gap-3">
+        <div className="pt-4 border-t border-[var(--border-subtle)]/60 flex flex-col sm:flex-row items-center justify-end gap-3">
           <button
             type="button"
             onClick={handleResetForm}
             disabled={isSubmitting}
-            className="w-full sm:w-auto px-5 h-11 border border-[#E5E5E5] bg-[#FFFFFF] hover:bg-[#FAFAF9] text-[#737373] hover:text-[#171717] text-xs font-medium tracking-[0.16em] uppercase transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50"
+            className="w-full sm:w-auto px-5 h-11 border border-[var(--border-subtle)] bg-[#FFFFFF] hover:bg-[var(--bg-canvas)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium tracking-[0.16em] uppercase transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50"
           >
             Cancel
           </button>
@@ -427,17 +427,17 @@ const VariantForm = ({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full sm:w-auto px-7 h-11 bg-[#171717] hover:bg-[#262626] active:bg-[#000000] text-[#FFFFFF] text-xs font-medium tracking-[0.18em] uppercase transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full sm:w-auto px-7 h-11 bg-[var(--text-primary)] hover:bg-[#262626] active:bg-[#000000] text-[#FFFFFF] text-xs font-medium tracking-[0.18em] uppercase transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin text-[#D4AF37]" strokeWidth={2} />
+                <Loader2 className="w-4 h-4 animate-spin text-[var(--accent-gold)]" strokeWidth={2} />
                 <span>{isEditing ? "Saving Variant..." : "Adding Variant..."}</span>
               </>
             ) : (
               <>
                 {!isEditing && (
-                  <Plus className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={2} />
+                  <Plus className="w-3.5 h-3.5 text-[var(--accent-gold)]" strokeWidth={2} />
                 )}
                 <span>{isEditing ? "Save Variant" : "Add Variant"}</span>
               </>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { useCart } from "../hooks/useCart";
@@ -11,6 +11,7 @@ import {
   LogIn,
 } from "lucide-react";
 import ThemeToggle from "../../../components/ThemeToggle";
+import { useEffect } from "react";
 
 const BuyerNavbar = () => {
   const { user, handleLogout } = useAuth();
@@ -18,17 +19,19 @@ const BuyerNavbar = () => {
   useEffect(() => {
     handleGetCart();
   }, []);
+
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#FAFAF9]/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-[#E5E5E5]/70 dark:border-gray-800/70 transition-all">
+    <header className="sticky top-0 z-40 w-full bg-[var(--bg-canvas)]/90 backdrop-blur-md border-b border-[var(--border-subtle)]/70 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
         {/* Brand Wordmark */}
         <Link
           to="/"
-          className="flex items-center select-none group focus:outline-none">
-          <span className="text-xl sm:text-2xl font-bold tracking-[0.25em] text-[#171717] dark:text-white uppercase transition-opacity group-hover:opacity-90">
+          className="flex items-center select-none group focus:outline-none"
+        >
+          <span className="text-xl sm:text-2xl font-bold tracking-[0.25em] text-[var(--text-primary)] uppercase transition-opacity group-hover:opacity-80">
             VELORA
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] ml-0.5 mb-2 self-end inline-block"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)] ml-0.5 mb-2 self-end inline-block"></span>
         </Link>
 
         {/* Navigation Actions */}
@@ -37,13 +40,14 @@ const BuyerNavbar = () => {
           <Link
             to="/cart"
             title="Shopping Cart"
-            className="relative inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white dark:bg-gray-900 border border-[#E5E5E5] dark:border-gray-700 text-[#171717] dark:text-gray-200 hover:border-[#171717] dark:hover:border-gray-500 hover:bg-[#F5F5F4] dark:hover:bg-gray-800 transition-all shadow-xs">
+            className="relative inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-primary)] hover:border-[var(--accent-gold)] hover:shadow-[0_0_14px_rgba(212,175,55,0.18)] transition-all"
+          >
             <ShoppingBag
-              className="w-4 h-4 text-[#171717] dark:text-gray-200"
+              className="w-4 h-4 text-[var(--text-primary)]"
               strokeWidth={1.75}
             />
             {Array.isArray(cart) && cart[0]?.items.length > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-4.5 sm:h-4.5 bg-[#171717] dark:bg-white text-white dark:text-gray-900 text-[9px] sm:text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white dark:ring-gray-950">
+              <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-4.5 sm:h-4.5 bg-[var(--btn-primary)] text-[var(--btn-text)] text-[9px] sm:text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-[var(--bg-canvas)]">
                 {cart[0]?.items.reduce(
                   (acc, item) => acc + (item?.quantity || 1),
                   0,
@@ -59,17 +63,18 @@ const BuyerNavbar = () => {
           {user?.role === "seller" ? (
             <Link
               to="/seller/products"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#171717] dark:text-gray-200 bg-white dark:bg-gray-900 border border-[#E5E5E5] dark:border-gray-700 rounded-full hover:border-[#171717] dark:hover:border-gray-500 hover:bg-[#F5F5F4] dark:hover:bg-gray-800 transition-all shadow-xs">
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-primary)] bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-full hover:border-[var(--accent-gold)] hover:shadow-[0_0_14px_rgba(212,175,55,0.18)] transition-all"
+            >
               <Store
-                className="w-3.5 h-3.5 text-[#D4AF37]"
+                className="w-3.5 h-3.5 text-[var(--accent-gold)]"
                 strokeWidth={1.75}
               />
               <span className="hidden sm:inline">Seller Atelier</span>
               <span className="sm:hidden">Seller</span>
             </Link>
           ) : user ? (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#737373] dark:text-gray-400 bg-stone-100/70 dark:bg-gray-800/70 rounded-full border border-stone-200/60 dark:border-gray-700/60">
-              <User className="w-3.5 h-3.5 text-[#171717] dark:text-gray-300" strokeWidth={1.75} />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)] bg-[var(--bg-muted)] rounded-full border border-[var(--border-subtle)]">
+              <User className="w-3.5 h-3.5 text-[var(--text-primary)]" strokeWidth={1.75} />
               <span className="truncate max-w-[120px]">
                 {user.fullname || user.name || "Member"}
               </span>
@@ -81,7 +86,8 @@ const BuyerNavbar = () => {
             <button
               onClick={handleLogout}
               title="Sign Out"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#737373] dark:text-gray-400 hover:text-[#171717] dark:hover:text-white hover:bg-stone-100 dark:hover:bg-gray-800 rounded-full transition-colors cursor-pointer">
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-muted)] rounded-full transition-colors cursor-pointer"
+            >
               <LogOut className="w-3.5 h-3.5" strokeWidth={1.75} />
               <span className="hidden md:inline">Sign Out</span>
             </button>
@@ -89,12 +95,14 @@ const BuyerNavbar = () => {
             <div className="flex items-center gap-2">
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#171717] dark:text-gray-200 hover:text-black dark:hover:text-white transition-colors">
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-primary)] hover:opacity-70 transition-opacity"
+              >
                 <span>Sign In</span>
               </Link>
               <Link
                 to="/register"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-white bg-[#171717] dark:bg-white dark:text-gray-900 hover:bg-[#262626] dark:hover:bg-gray-100 rounded-full transition-all shadow-xs">
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] bg-[var(--btn-primary)] text-[var(--btn-text)] hover:opacity-80 rounded-full transition-all"
+              >
                 <span>Join</span>
                 <ArrowRight className="w-3 h-3" />
               </Link>

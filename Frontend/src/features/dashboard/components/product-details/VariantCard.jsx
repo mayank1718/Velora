@@ -29,8 +29,8 @@ const VariantCard = ({ variant, isSelected, onSelect }) => {
       }}
       className={`relative p-3.5 sm:p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between select-none ${
         isSelected
-          ? "border-[#171717] bg-white ring-1 ring-[#171717] shadow-sm"
-          : "border-[#E5E5E5] bg-white/70 hover:border-stone-400 hover:bg-white"
+          ? "border-[var(--text-primary)] bg-white ring-1 ring-[var(--text-primary)] shadow-sm"
+          : "border-[var(--border-subtle)] bg-white/70 hover:border-stone-400 hover:bg-white"
       }`}
     >
       {/* Top Header: Attributes & Thumbnail */}
@@ -40,16 +40,16 @@ const VariantCard = ({ variant, isSelected, onSelect }) => {
             entries.map(([key, value]) => (
               <div
                 key={key}
-                className="text-xs sm:text-sm text-[#171717] font-medium flex items-center gap-1.5"
+                className="text-xs sm:text-sm text-[var(--text-primary)] font-medium flex items-center gap-1.5"
               >
-                <span className="text-[#737373] capitalize font-normal">
+                <span className="text-[var(--text-secondary)] capitalize font-normal">
                   {key}:
                 </span>
                 <span>{String(value)}</span>
               </div>
             ))
           ) : (
-            <span className="text-xs text-[#737373] italic">Default Option</span>
+            <span className="text-xs text-[var(--text-secondary)] italic">Default Option</span>
           )}
         </div>
 
@@ -63,7 +63,7 @@ const VariantCard = ({ variant, isSelected, onSelect }) => {
             />
           </div>
         ) : isSelected ? (
-          <div className="w-5 h-5 rounded-full bg-[#171717] text-white flex items-center justify-center flex-shrink-0">
+          <div className="w-5 h-5 rounded-full bg-[var(--text-primary)] text-white flex items-center justify-center flex-shrink-0">
             <Check className="w-3 h-3 stroke-[2.5]" />
           </div>
         ) : null}
@@ -71,9 +71,9 @@ const VariantCard = ({ variant, isSelected, onSelect }) => {
 
       {/* Bottom Footer: Price & Stock */}
       <div className="pt-2.5 border-t border-stone-100 flex items-center justify-between gap-2 text-xs">
-        <div className="font-semibold text-[#171717]">
+        <div className="font-semibold text-[var(--text-primary)]">
           <span>{formattedPrice}</span>{" "}
-          <span className="text-[10px] font-normal text-[#737373]">
+          <span className="text-[10px] font-normal text-[var(--text-secondary)]">
             {currency}
           </span>
         </div>

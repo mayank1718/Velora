@@ -89,7 +89,7 @@ const ProductToolbar = ({
             ))}
           </select>
           <ChevronDown
-            className="w-3.5 h-3.5 text-[#737373] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
+            className="w-3.5 h-3.5 text-[var(--text-secondary)] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
             strokeWidth={1.75}
           />
         </div>
@@ -108,7 +108,7 @@ const ProductToolbar = ({
             ))}
           </select>
           <ChevronDown
-            className="w-3.5 h-3.5 text-[#737373] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
+            className="w-3.5 h-3.5 text-[var(--text-secondary)] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
             strokeWidth={1.75}
           />
         </div>

@@ -8,18 +8,18 @@ const VariantList = ({ variants = [], handleDelete, handleEdit,setEditingVariant
   return (
     <div className="space-y-4">
       {/* Section Header */}
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] p-4 sm:p-5 flex items-center justify-between">
+      <div className="bg-[#FFFFFF] border border-[var(--border-subtle)] p-4 sm:p-5 flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] uppercase tracking-[0.18em] text-[#D4AF37] font-semibold">
+            <span className="text-[10px] uppercase tracking-[0.18em] text-[var(--accent-gold)] font-semibold">
               Catalogue Variations
             </span>
           </div>
-          <h2 className="text-base font-medium text-[#171717] tracking-tight">
+          <h2 className="text-base font-medium text-[var(--text-primary)] tracking-tight">
             Existing Variants
           </h2>
         </div>
-        <span className="px-2.5 py-1 text-xs font-mono font-medium bg-[#FAFAF9] border border-[#E5E5E5] text-[#171717]">
+        <span className="px-2.5 py-1 text-xs font-mono font-medium bg-[var(--bg-canvas)] border border-[var(--border-subtle)] text-[var(--text-primary)]">
           {count} {count === 1 ? "variant" : "variants"}
         </span>
       </div>

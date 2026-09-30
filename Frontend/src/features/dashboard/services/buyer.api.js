@@ -58,7 +58,7 @@ export const editRating = async (productId, ratingId, review, rating) => {
 };
 
 export const deleteRating = async (productId, ratingId) => {
-  const response = await productApiInstanse.patch(
+  const response = await productApiInstanse.delete(
     `/${productId}/rating/${ratingId}`,
   );
   return response.data;

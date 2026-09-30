@@ -1,9 +1,10 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Package, ArrowRight, Layers } from "lucide-react";
+import { Package, ArrowRight, Layers, Star } from "lucide-react";
+import { getProductRatingSummary } from "./reviews/ratingUtils";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+  const ratingSummary = getProductRatingSummary(product);
 
   // Primary image fallback handling
   const primaryImageUrl = product?.images?.[0]?.url;
@@ -69,9 +70,32 @@ const ProductCard = ({ product }) => {
           )}
 
           {/* Title */}
-          <h3 className="text-xs sm:text-sm font-medium text-[var(--text-primary)] group-hover:text-[var(--text-primary)] line-clamp-2 leading-snug tracking-tight mb-2">
+          <h3 className="text-xs sm:text-sm font-medium text-[var(--text-primary)] group-hover:text-[var(--text-primary)] line-clamp-2 leading-snug tracking-tight mb-1.5">
             {product.title}
           </h3>
+
+          {/* Rating Summary */}
+          <div className="flex items-center gap-1.5 text-xs mb-2">
+            {ratingSummary.hasReviews ? (
+              <div className="flex items-center gap-1">
+                <Star
+                  className="w-3.5 h-3.5 fill-[var(--accent-gold)] text-[var(--accent-gold)] shrink-0"
+                  strokeWidth={1.5}
+                />
+                <span className="font-semibold text-xs text-[var(--text-primary)]">
+                  {ratingSummary.formattedRating}
+                </span>
+                <span className="text-[11px] text-[var(--text-secondary)]">
+                  ({ratingSummary.reviewCount} {ratingSummary.reviewCount === 1 ? "review" : "reviews"})
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1 text-[11px] text-[var(--text-muted)]">
+                <Star className="w-3 h-3 text-[var(--border-strong)]" strokeWidth={1.5} />
+                <span>No ratings</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Price & Action */}

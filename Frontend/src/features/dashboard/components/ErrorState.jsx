@@ -7,17 +7,17 @@ const ErrorState = ({ message = "Unable to load products.", onRetry }) => {
       <div className="w-14 h-14 rounded-full bg-red-50 text-red-500 flex items-center justify-center mb-4">
         <AlertCircle className="w-7 h-7 stroke-[1.5]" />
       </div>
-      <h3 className="text-base sm:text-lg font-medium text-[#171717] tracking-tight mb-1">
+      <h3 className="text-base sm:text-lg font-medium text-[var(--text-primary)] tracking-tight mb-1">
         {message}
       </h3>
-      <p className="text-xs sm:text-sm text-[#737373] max-w-sm mb-6 leading-relaxed">
+      <p className="text-xs sm:text-sm text-[var(--text-secondary)] max-w-sm mb-6 leading-relaxed">
         Please check your connection and try again.
       </p>
       {onRetry && (
         <button
           onClick={onRetry}
           type="button"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#171717] hover:bg-[#262626] text-white text-xs font-medium uppercase tracking-[0.14em] rounded-full transition-all cursor-pointer shadow-xs"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--text-primary)] hover:bg-[#262626] text-white text-xs font-medium uppercase tracking-[0.14em] rounded-full transition-all cursor-pointer shadow-xs"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           <span>Retry</span>

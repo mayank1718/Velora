@@ -6,7 +6,7 @@ const ProductSkeleton = ({ count = 8 }) => {
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
-          className="bg-white border border-[#E5E5E5] rounded-xl overflow-hidden animate-pulse shadow-xs flex flex-col h-full"
+          className="bg-white border border-[var(--border-subtle)] rounded-xl overflow-hidden animate-pulse shadow-xs flex flex-col h-full"
         >
           {/* Image Skeleton */}
           <div className="w-full aspect-square bg-stone-200/70"></div>

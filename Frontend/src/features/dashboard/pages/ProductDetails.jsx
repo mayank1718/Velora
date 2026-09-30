@@ -10,6 +10,7 @@ import ProductCard from "../components/ProductCard";
 import ProductSkeleton from "../components/ProductSkeleton";
 import { ChevronRight, ArrowLeft, ShieldCheck, PackageX, RefreshCw } from "lucide-react";
 import { useProduct } from "../hooks/useProduct";
+import ReviewSection from "../components/reviews/ReviewSection";
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -156,6 +157,13 @@ const ProductDetails = () => {
               category={product.category}
               variantsCount={product.variants?.length || 0}
               description={product.description}
+              seller={product.seller}
+            />
+
+            {/* Ratings & Reviews Section */}
+            <ReviewSection
+              productId={productId || product?._id}
+              product={product}
             />
 
             {/* Related Products Section */}

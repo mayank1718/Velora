@@ -17,12 +17,12 @@ const VariantList = ({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Layers className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.75} />
-          <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-[#171717]">
+          <Layers className="w-4 h-4 text-[var(--accent-gold)]" strokeWidth={1.75} />
+          <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--text-primary)]">
             Available Variants
           </h3>
         </div>
-        <span className="text-[11px] text-[#737373]">
+        <span className="text-[11px] text-[var(--text-secondary)]">
           {variantArray.length} {variantArray.length === 1 ? "option" : "options"}
         </span>
       </div>

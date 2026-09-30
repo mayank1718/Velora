@@ -8,7 +8,7 @@ const CartSkeleton = () => {
         {[1, 2, 3].map((item) => (
           <div
             key={item}
-            className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 sm:p-5 bg-white border border-[#E5E5E5] rounded-2xl animate-pulse"
+            className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 sm:p-5 bg-white border border-[var(--border-subtle)] rounded-2xl animate-pulse"
           >
             <div className="flex items-start gap-4 w-full sm:w-auto flex-1">
               <div className="w-20 h-20 sm:w-24 sm:h-24 bg-stone-200 rounded-xl flex-shrink-0" />
@@ -31,7 +31,7 @@ const CartSkeleton = () => {
 
       {/* Summary Skeleton */}
       <div className="lg:col-span-4">
-        <div className="bg-white border border-[#E5E5E5] rounded-2xl p-5 sm:p-6 shadow-xs space-y-5 animate-pulse">
+        <div className="bg-white border border-[var(--border-subtle)] rounded-2xl p-5 sm:p-6 shadow-xs space-y-5 animate-pulse">
           <div className="h-5 bg-stone-200 rounded w-32 pb-3" />
           <div className="space-y-3">
             <div className="flex justify-between">
