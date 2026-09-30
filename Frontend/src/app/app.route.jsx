@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Login from "../features/auth/pages/Login";
 import Register from "../features/auth/pages/Register";
+import Profile from "../features/auth/pages/Profile";
 import Protected from "../features/auth/components/Protected";
 import CreateProduct from "../features/products/pages/CreateProduct";
 import SellerProduct from "../features/products/pages/SellerProduct";
@@ -41,6 +42,14 @@ export const routes = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/profile",
+    element: (
+      <Protected>
+        <Profile />
+      </Protected>
+    ),
   },
   {
     path: "/seller",

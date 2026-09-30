@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { useCart } from "../hooks/useCart";
 import {
@@ -8,7 +8,6 @@ import {
   LogOut,
   ShoppingBag,
   ArrowRight,
-  LogIn,
 } from "lucide-react";
 import ThemeToggle from "../../../components/ThemeToggle";
 import { useEffect } from "react";
@@ -20,14 +19,15 @@ const BuyerNavbar = () => {
     handleGetCart();
   }, []);
 
+  const navigate = useNavigate();
+
   return (
     <header className="sticky top-0 z-40 w-full bg-[var(--bg-canvas)]/90 backdrop-blur-md border-b border-[var(--border-subtle)]/70 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
         {/* Brand Wordmark */}
         <Link
           to="/"
-          className="flex items-center select-none group focus:outline-none"
-        >
+          className="flex items-center select-none group focus:outline-none">
           <span className="text-xl sm:text-2xl font-bold tracking-[0.25em] text-[var(--text-primary)] uppercase transition-opacity group-hover:opacity-80">
             VELORA
           </span>
@@ -40,8 +40,7 @@ const BuyerNavbar = () => {
           <Link
             to="/cart"
             title="Shopping Cart"
-            className="relative inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-primary)] hover:border-[var(--accent-gold)] hover:shadow-[0_0_14px_rgba(212,175,55,0.18)] transition-all"
-          >
+            className="relative inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-primary)] hover:border-[var(--accent-gold)] hover:shadow-[0_0_14px_rgba(212,175,55,0.18)] transition-all">
             <ShoppingBag
               className="w-4 h-4 text-[var(--text-primary)]"
               strokeWidth={1.75}
@@ -63,8 +62,7 @@ const BuyerNavbar = () => {
           {user?.role === "seller" ? (
             <Link
               to="/seller/products"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-primary)] bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-full hover:border-[var(--accent-gold)] hover:shadow-[0_0_14px_rgba(212,175,55,0.18)] transition-all"
-            >
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-primary)] bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-full hover:border-[var(--accent-gold)] hover:shadow-[0_0_14px_rgba(212,175,55,0.18)] transition-all">
               <Store
                 className="w-3.5 h-3.5 text-[var(--accent-gold)]"
                 strokeWidth={1.75}
@@ -73,8 +71,15 @@ const BuyerNavbar = () => {
               <span className="sm:hidden">Seller</span>
             </Link>
           ) : user ? (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)] bg-[var(--bg-muted)] rounded-full border border-[var(--border-subtle)]">
-              <User className="w-3.5 h-3.5 text-[var(--text-primary)]" strokeWidth={1.75} />
+            <span
+              onClick={() => {
+                navigate("/profile");
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)] bg-[var(--bg-muted)] rounded-full border border-[var(--border-subtle)]">
+              <User
+                className="w-3.5 h-3.5 text-[var(--text-primary)]"
+                strokeWidth={1.75}
+              />
               <span className="truncate max-w-[120px]">
                 {user.fullname || user.name || "Member"}
               </span>
@@ -86,8 +91,7 @@ const BuyerNavbar = () => {
             <button
               onClick={handleLogout}
               title="Sign Out"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-muted)] rounded-full transition-colors cursor-pointer"
-            >
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-muted)] rounded-full transition-colors cursor-pointer">
               <LogOut className="w-3.5 h-3.5" strokeWidth={1.75} />
               <span className="hidden md:inline">Sign Out</span>
             </button>
@@ -95,14 +99,12 @@ const BuyerNavbar = () => {
             <div className="flex items-center gap-2">
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-primary)] hover:opacity-70 transition-opacity"
-              >
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-primary)] hover:opacity-70 transition-opacity">
                 <span>Sign In</span>
               </Link>
               <Link
                 to="/register"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] bg-[var(--btn-primary)] text-[var(--btn-text)] hover:opacity-80 rounded-full transition-all"
-              >
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] bg-[var(--btn-primary)] text-[var(--btn-text)] hover:opacity-80 rounded-full transition-all">
                 <span>Join</span>
                 <ArrowRight className="w-3 h-3" />
               </Link>
