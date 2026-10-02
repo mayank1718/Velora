@@ -4,7 +4,9 @@ import {
   decreaseOneController,
   getCartController,
   increaseOneController,
+  paymentController,
   removeCartItemController,
+  verifyPaymentController,
 } from "../controllers/buyer.controller.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
 
@@ -15,11 +17,7 @@ const BuyerRouter = Router();
  * @desc - to fetch user's cart
  * @api - GET /api/buyer/cart
  */
-BuyerRouter.get(
-  "/cart",
-  authMiddleware,
-  getCartController
-);
+BuyerRouter.get("/cart", authMiddleware, getCartController);
 
 /**
  * @access - private
@@ -29,7 +27,7 @@ BuyerRouter.get(
 BuyerRouter.post(
   "/cart/:productId/:variantId",
   authMiddleware,
-  addToCartController
+  addToCartController,
 );
 
 /**
@@ -40,7 +38,7 @@ BuyerRouter.post(
 BuyerRouter.patch(
   "/cart/:productId/:variantId/increase",
   authMiddleware,
-  increaseOneController
+  increaseOneController,
 );
 
 /**
@@ -51,7 +49,7 @@ BuyerRouter.patch(
 BuyerRouter.patch(
   "/cart/:productId/:variantId/decrease",
   authMiddleware,
-  decreaseOneController
+  decreaseOneController,
 );
 
 /**
@@ -62,7 +60,27 @@ BuyerRouter.patch(
 BuyerRouter.delete(
   "/cart/:productId/:variantId",
   authMiddleware,
-  removeCartItemController
+  removeCartItemController,
+);
+
+
+/**
+ * @access - private
+ * @desc - to create payment order
+ * @api - POST /api/buyer/ppayment/create/order
+ */
+BuyerRouter.post("/payment/create/order", authMiddleware, paymentController);
+
+
+/**
+ * @access - private
+ * @desc - to verify user payment
+ * @api - POST /api/buyer/payment/varify/order
+ */
+BuyerRouter.post(
+  "/payment/verify/order",
+  authMiddleware,
+  verifyPaymentController,
 );
 
 export default BuyerRouter;

@@ -1,6 +1,7 @@
 import productModel from "../models/product.model.js";
 import cartModel from "../models/cart.model.js";
 import mongoose from "mongoose";
+import { createOrder } from "../services/payment.service.js";
 
 const getCartDetails = async (userId) => {
   const cart = (
@@ -377,4 +378,97 @@ export const removeCartItemController = async (req, res, next) => {
   }
 };
 
+export const paymentController = async (req, res, next) => {
+  try {
+    const cart = await getCartDetails(req.user.userId);
+    if (!cart) {
+      return res.status(400).json({
+        message: "Cart is empty",
+        success: false,
+      });
+    }
+    const order = await createOrder({
+      amount: cart.totalPrice,
+      currency: cart.currency,
+    });
 
+      const payment = await paymentModel.create({
+        user: req.user.userId,
+        razorpay: {
+          orderId: order.id,
+        },
+        price: {
+          amount: cart.totalPrice,
+          currency: cart.currency,
+        },
+        orderItems: cart.item.map((item) => ({
+          title: item.product.title,
+          productId: item.product._id,
+          variantId: item.variant,
+          quantity: item.quantity,
+          images: item.product.variants.images || item.product.images,
+          description: item.product.description,
+          price: {
+            amount:
+              item.product.variants.price.amount || item.product.price.amount,
+            currency:
+              item.product.variants.price.currency ||
+              item.product.price.currency,
+          },
+        })),
+      });
+
+
+  } catch (error) {
+    console.log("payment failed", error);
+    next(error);
+  }
+};
+
+export const verifyPaymentController = async (req, res) => {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+    req.body;
+
+  const payment = await paymentModel.findOne({
+    "razorpay.orderId": razorpay_order_id,
+    status: "pending",
+  });
+
+  if (!payment) {
+    return res.status(400).json({
+      message: "Payment not found",
+      success: false,
+    });
+  }
+
+  const isPaymentValid = validatePaymentVerification(
+    {
+      order_id: razorpay_order_id,
+      payment_id: razorpay_payment_id,
+    },
+    razorpay_signature,
+    config_type.RAZORPAY_KEY_SECRET,
+  );
+
+  if (!isPaymentValid) {
+    payment.status = "failed";
+    await payment.save();
+
+    return res.status(400).json({
+      message: "Payment verification failed",
+      success: false,
+    });
+  }
+
+  payment.status = "paid";
+
+  payment.razorpay.paymentId = razorpay_payment_id;
+  payment.razorpay.signature = razorpay_signature;
+
+  await payment.save();
+
+  return res.status(200).json({
+    message: "Payment verified successfully",
+    success: true,
+  });
+};
