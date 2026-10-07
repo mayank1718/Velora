@@ -6,7 +6,6 @@ import {
   editRating,
   getAllProducts,
   getProductDetails,
-  getRating,
   getRelatedProducts,
   searchProducts,
 } from "../services/buyer.api";
@@ -143,7 +142,6 @@ export const useProduct = () => {
   const handleRating = async (productId, review, rating) => {
     try {
       const data = await createRating(productId, review, rating);
-      await handleGetRating(productId);
       return data?.rate || data;
     } catch (error) {
       console.error("failed to send review", error);
@@ -151,34 +149,9 @@ export const useProduct = () => {
     }
   };
 
-  const handleGetRating = useCallback(
-    async (productId) => {
-      setLoading(true);
-      try {
-        const data = await getRating(productId);
-        const ratingList = Array.isArray(data?.ratings) ? data.ratings : [];
-        setReviews(ratingList);
-        return ratingList;
-      } catch (err) {
-        console.error("failed to fetch review", err);
-        setError(
-          err?.response?.data?.message ||
-            err?.message ||
-            "Unable to load reviews for this product.",
-        );
-        setReviews([]);
-        return [];
-      } finally {
-        setLoading(false);
-      }
-    },
-    [setReviews],
-  );
-
   const handleEditRating = async (productId, ratingId, review, rating) => {
     try {
       const data = await editRating(productId, ratingId, review, rating);
-      await handleGetRating(productId);
       return data?.rate || data;
     } catch (error) {
       console.error("failed to edit review", error);
@@ -189,7 +162,6 @@ export const useProduct = () => {
   const handleDeleteRating = async (productId, ratingId) => {
     try {
       const data = await deleteRating(productId, ratingId);
-      await handleGetRating(productId);
       return data?.success ?? true;
     } catch (error) {
       console.error("failed to delete rating", error);
@@ -213,8 +185,8 @@ export const useProduct = () => {
     handleSearchProducts,
     handleDeleteRating,
     handleEditRating,
-    handleGetRating,
     handleRating,
     reviews,
+    setReviews,
   };
 };

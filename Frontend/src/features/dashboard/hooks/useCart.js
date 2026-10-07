@@ -2,10 +2,12 @@ import { useContext } from "react";
 import { CartContext } from "../cart.context";
 import {
   addToCart,
+  createOrder,
   decreaseOneFromCart,
   getCart,
   increaseOneFromCart,
   removeFromCart,
+  verifyOrder,
 } from "../services/buyer.api";
 
 export const useCart = () => {
@@ -68,7 +70,7 @@ export const useCart = () => {
     }
   };
 
-  const handleRemoveItemFromCart = async (productId, variantId) => {
+  const handleRemoveItem = async (productId, variantId) => {
     setLoading(true);
     try {
       const data = await removeFromCart(productId, variantId);
@@ -90,7 +92,7 @@ export const useCart = () => {
     setLoading(true);
     try {
       const data = await getCart();
-      
+
       const item = data.cart;
 
       setCart(item);
@@ -103,13 +105,41 @@ export const useCart = () => {
     }
   };
 
+  const handleCreateOrder = async () => {
+    try {
+      const result = await createOrder();
+      return result.order;
+    } catch (error) {
+      console.log("failed to create order", error);
+    }
+  };
+
+  const handleVerifyOrder = async (
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+  ) => {
+    try {
+      const result = await verifyOrder(
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+      );
+      return result.success;
+    } catch (error) {
+      console.log("failed to verify payment", error);
+    }
+  };
+
   return {
     loading,
     cart,
     handleAddItemToCart,
     handleIncreaseItem,
     handleDecreaseItem,
-    handleRemoveItem: handleRemoveItemFromCart,
+    handleRemoveItem,
     handleGetCart,
+    handleCreateOrder,
+    handleVerifyOrder,
   };
 };

@@ -10,7 +10,6 @@ import {
   Trash2,
   AlertTriangle,
   Loader2,
-  CheckCircle,
 } from "lucide-react";
 import RatingStars from "./RatingStars";
 import ReviewForm from "./ReviewForm";
@@ -18,6 +17,7 @@ import ReviewList from "./ReviewList";
 import { calculateRatingStats } from "./ratingUtils";
 import { useAuth } from "../../../auth/hooks/useAuth";
 import { useProduct } from "../../hooks/useProduct";
+import { getRating } from "../../services/buyer.api";
 
 /**
  * ReviewSection Component
@@ -31,19 +31,21 @@ const ReviewSection = ({
 }) => {
   const { user } = useAuth();
   const {
-    handleGetRating,
     handleRating,
     handleEditRating,
     handleDeleteRating,
-    loading,
-    error,
     reviews,
+    setReviews,
   } = useProduct();
 
   // Form & Interaction states
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingReview, setEditingReview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loadedProductId, setLoadedProductId] = useState(null);
+  const [isRefreshingReviews, setIsRefreshingReviews] = useState(false);
+  const [reviewError, setReviewError] = useState(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   // Delete Confirmation Modal state
   const [deletingId, setDeletingId] = useState(null);
@@ -51,15 +53,54 @@ const ReviewSection = ({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const currentUserId = user?._id || user?.id;
+  const reviewsLoading = Boolean(
+    productId && (loadedProductId !== productId || isRefreshingReviews),
+  );
+  const reviewsError =
+    reviewError?.productId === productId ? reviewError.message : null;
+
+  const refreshReviews = () => {
+    setIsRefreshingReviews(true);
+    setReviewError(null);
+    setRefreshKey((key) => key + 1);
+  };
 
   // 1. Fetch reviews on mount or productId change
-  const fetchReviews = async () => {
-    if (!productId) return;
-    await handleGetRating(productId);
-  };
   useEffect(() => {
-    fetchReviews();
-  }, []);
+    if (!productId) return undefined;
+
+    let isCurrentRequest = true;
+
+    getRating(productId)
+      .then((data) => {
+        if (isCurrentRequest) {
+          setReviews(Array.isArray(data?.ratings) ? data.ratings : []);
+        }
+      })
+      .catch((err) => {
+        console.error("failed to fetch review", err);
+        if (isCurrentRequest) {
+          setReviewError({
+            productId,
+            message:
+              err?.response?.data?.message ||
+              err?.message ||
+              "Unable to load reviews for this product.",
+          });
+          setReviews([]);
+        }
+      })
+      .finally(() => {
+        if (isCurrentRequest) {
+          setLoadedProductId(productId);
+          setIsRefreshingReviews(false);
+        }
+      });
+
+    return () => {
+      isCurrentRequest = false;
+    };
+  }, [productId, refreshKey, setReviews]);
 
   // 2. Calculate aggregated statistics
   const stats = useMemo(() => {
@@ -89,7 +130,7 @@ const ReviewSection = ({
     setIsSubmitting(true);
     try {
       await handleRating(productId, review, rating);
-      await fetchReviews();
+      refreshReviews();
       setShowCreateForm(false);
     } finally {
       setIsSubmitting(false);
@@ -102,7 +143,7 @@ const ReviewSection = ({
     setIsSubmitting(true);
     try {
       await handleEditRating(productId, editingReview._id, review, rating);
-      await fetchReviews();
+      refreshReviews();
       setEditingReview(null);
     } finally {
       setIsSubmitting(false);
@@ -115,7 +156,7 @@ const ReviewSection = ({
     setIsDeleting(true);
     try {
       await handleDeleteRating(productId, deletingId);
-      await fetchReviews();
+      refreshReviews();
       setShowDeleteModal(false);
       setDeletingId(null);
       if (editingReview?._id === deletingId) {
@@ -371,8 +412,8 @@ const ReviewSection = ({
 
         <ReviewList
           reviews={reviews}
-          loading={loading}
-          error={error}
+          loading={reviewsLoading}
+          error={reviewsError}
           currentUserId={currentUserId}
           isReadOnly={isReadOnly}
           onEdit={(r) => {
@@ -386,7 +427,7 @@ const ReviewSection = ({
             });
           }}
           onDelete={openDeleteModal}
-          onRetry={fetchReviews}
+          onRetry={refreshReviews}
           deletingId={deletingId}
         />
       </div>

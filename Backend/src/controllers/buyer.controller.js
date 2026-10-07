@@ -2,6 +2,9 @@ import productModel from "../models/product.model.js";
 import cartModel from "../models/cart.model.js";
 import mongoose from "mongoose";
 import { createOrder } from "../services/payment.service.js";
+import paymentModel from "../models/payment.model.js";
+import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.js";
+import { config } from "../config/config.js";
 
 const getCartDetails = async (userId) => {
   const cart = (
@@ -392,33 +395,36 @@ export const paymentController = async (req, res, next) => {
       currency: cart.currency,
     });
 
-      const payment = await paymentModel.create({
-        user: req.user.userId,
-        razorpay: {
-          orderId: order.id,
-        },
+    const payment = await paymentModel.create({
+      user: req.user.userId,
+      razorpay: {
+        orderId: order.id,
+      },
+      price: {
+        amount: cart.totalPrice,
+        currency: cart.currency,
+      },
+      orderItems: cart.item.map((item) => ({
+        title: item.product.title,
+        productId: item.product._id,
+        variantId: item.variant,
+        quantity: item.quantity,
+        images: item.product.variants.images || item.product.images,
+        description: item.product.description,
         price: {
-          amount: cart.totalPrice,
-          currency: cart.currency,
+          amount:
+            item.product.variants.price.amount || item.product.price.amount,
+          currency:
+            item.product.variants.price.currency || item.product.price.currency,
         },
-        orderItems: cart.item.map((item) => ({
-          title: item.product.title,
-          productId: item.product._id,
-          variantId: item.variant,
-          quantity: item.quantity,
-          images: item.product.variants.images || item.product.images,
-          description: item.product.description,
-          price: {
-            amount:
-              item.product.variants.price.amount || item.product.price.amount,
-            currency:
-              item.product.variants.price.currency ||
-              item.product.price.currency,
-          },
-        })),
-      });
+      })),
+    });
 
-
+    return res.status(200).json({
+      message: "Order created successfully",
+      success: true,
+      order,
+    });
   } catch (error) {
     console.log("payment failed", error);
     next(error);
@@ -447,7 +453,7 @@ export const verifyPaymentController = async (req, res) => {
       payment_id: razorpay_payment_id,
     },
     razorpay_signature,
-    config_type.RAZORPAY_KEY_SECRET,
+    config.RAZORPAY_SECRET_KEY,
   );
 
   if (!isPaymentValid) {
