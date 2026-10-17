@@ -1,5 +1,4 @@
-import React from "react";
-import { MessageSquareDashed, AlertCircle, RefreshCw, Star } from "lucide-react";
+import { AlertCircle, RefreshCw, Star } from "lucide-react";
 import ReviewCard from "./ReviewCard";
 
 /**
