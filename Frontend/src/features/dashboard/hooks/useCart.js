@@ -125,9 +125,10 @@ export const useCart = () => {
         razorpay_payment_id,
         razorpay_signature,
       );
-      return result.success;
+      return result;
     } catch (error) {
       console.log("failed to verify payment", error);
+      return { success: false, error };
     }
   };
 

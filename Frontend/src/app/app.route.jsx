@@ -9,6 +9,7 @@ import AddVariant from "../features/products/pages/AddVariant";
 import Dashboard from "../features/dashboard/pages/Dashboard";
 import ProductDetails from "../features/dashboard/pages/ProductDetails";
 import Cart from "../features/dashboard/pages/Cart";
+import OrderSuccess from "../features/dashboard/pages/OrderSuccess";
 
 export const routes = createBrowserRouter([
   {
@@ -24,6 +25,14 @@ export const routes = createBrowserRouter([
     element: (
       <Protected role="buyer" authRequired={false}>
         <Cart />
+      </Protected>
+    ),
+  },
+  {
+    path: "/order-success",
+    element: (
+      <Protected role="buyer" authRequired={true}>
+        <OrderSuccess />
       </Protected>
     ),
   },

@@ -51,13 +51,21 @@ const Cart = () => {
       description: "Test Transaction",
       order_id: order.id, // Generate order_id on server
       handler: async (response) => {
-        const isValid = await handleVerifyOrder(
+        const verifyResult = await handleVerifyOrder(
           response.razorpay_order_id,
           response.razorpay_payment_id,
           response.razorpay_signature,
         );
-        if (isValid) {
-          navigate(`/order-success?order_id=${response.razorpay_order_id}`);
+        if (verifyResult && (verifyResult.success || verifyResult === true)) {
+          navigate(`/order-success?order_id=${response.razorpay_order_id}`, {
+            state: {
+              verified: true,
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              orderData: verifyResult.order || verifyResult.data || null,
+              cartSnapshot: cart,
+            },
+          });
         }
       },
       prefill: {

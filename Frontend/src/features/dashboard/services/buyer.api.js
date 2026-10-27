@@ -102,7 +102,7 @@ export const removeFromCart = async (productId, variantId) => {
 export const createOrder = async () => {
   const response = await buyerApiInstance.post("/payment/create/order");
   return response.data;
-}
+};
 
 export const verifyOrder = async (
   razorpay_order_id,
@@ -114,5 +114,10 @@ export const verifyOrder = async (
     razorpay_payment_id,
     razorpay_signature,
   });
+  return response.data;
+};
+
+export const getOrderDetails = async (orderId) => {
+  const response = await buyerApiInstance.get(`/order/${orderId}`);
   return response.data;
 };

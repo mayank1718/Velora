@@ -479,3 +479,30 @@ export const verifyPaymentController = async (req, res) => {
     success: true,
   });
 };
+
+export const getOrder = async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+
+    const order = await orderModel
+      .findOne({
+        _id: orderId,
+        user: req.user.userId,
+      })
+      .populate("items.product");
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: order,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

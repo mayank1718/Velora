@@ -3,6 +3,7 @@ import {
   addToCartController,
   decreaseOneController,
   getCartController,
+  getOrder,
   increaseOneController,
   paymentController,
   removeCartItemController,
@@ -82,5 +83,13 @@ BuyerRouter.post(
   authMiddleware,
   verifyPaymentController,
 );
+
+/**
+ * @access - private
+ * @desc - to get order details
+ * @api - GET /api/buyer/order/:orderId
+ */
+BuyerRouter.get("/order/:orderId",authMiddleware,getOrder)
+
 
 export default BuyerRouter;
