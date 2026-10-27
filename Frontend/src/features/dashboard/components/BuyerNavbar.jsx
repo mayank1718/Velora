@@ -20,7 +20,6 @@ const BuyerNavbar = () => {
   }, []);
 
   const navigate = useNavigate();
-
   return (
     <header className="sticky top-0 z-40 w-full bg-[var(--bg-canvas)]/90 backdrop-blur-md border-b border-[var(--border-subtle)]/70 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
@@ -45,12 +44,9 @@ const BuyerNavbar = () => {
               className="w-4 h-4 text-[var(--text-primary)]"
               strokeWidth={1.75}
             />
-            {Array.isArray(cart) && cart[0]?.items.length > 0 && (
+            {cart?.items.length > 0 && (
               <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-4.5 sm:h-4.5 bg-[var(--btn-primary)] text-[var(--btn-text)] text-[9px] sm:text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-[var(--bg-canvas)]">
-                {cart[0]?.items.reduce(
-                  (acc, item) => acc + (item?.quantity || 1),
-                  0,
-                )}
+               {cart?.items.length}
               </span>
             )}
           </Link>

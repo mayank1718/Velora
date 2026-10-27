@@ -1,25 +1,18 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
 import { ArrowRight, ShieldCheck, Lock, Truck } from "lucide-react";
 
-const CartSummary = ({ cart = [], loading = false }) => {
-  const navigate = useNavigate();
-
+const CartSummary = ({ cart = [], loading = false, checkOut }) => {
   // Compute subtotal from cart items stored price
   const subtotal = cart.totalPrice;
   // Derive currency from first item or default to INR
   const currency = cart?.price?.currency || "INR";
 
   const formattedSubtotal =
-    currency === "INR"
-      ? `₹${subtotal}`
-      : `${currency} ${subtotal}`;
+    currency === "INR" ? `₹${subtotal}` : `${currency} ${subtotal}`;
 
   const formattedTotal = formattedSubtotal;
 
   const handleCheckout = () => {
-    // Navigate to checkout route
-    navigate("/checkout");
+    checkOut();
   };
 
   const isCartEmpty = !cart || cart?.items.length === 0;
@@ -69,8 +62,7 @@ const CartSummary = ({ cart = [], loading = false }) => {
         type="button"
         onClick={handleCheckout}
         disabled={loading || isCartEmpty}
-        className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-[var(--btn-primary)] text-[var(--btn-text)] text-xs sm:text-sm font-medium uppercase tracking-[0.14em] hover:opacity-80 active:scale-[0.99] transition-all duration-200 shadow-xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-      >
+        className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-[var(--btn-primary)] text-[var(--btn-text)] text-xs sm:text-sm font-medium uppercase tracking-[0.14em] hover:opacity-80 active:scale-[0.99] transition-all duration-200 shadow-xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
         <Lock className="w-4 h-4 text-[var(--accent-gold)]" strokeWidth={2} />
         <span>Proceed to Checkout</span>
         <ArrowRight className="w-4 h-4 ml-0.5" />

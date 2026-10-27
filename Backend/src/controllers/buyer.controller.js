@@ -404,7 +404,7 @@ export const paymentController = async (req, res, next) => {
         amount: cart.totalPrice,
         currency: cart.currency,
       },
-      orderItems: cart.item.map((item) => ({
+      orderItems: cart.items.map((item) => ({
         title: item.product.title,
         productId: item.product._id,
         variantId: item.variant,
@@ -434,7 +434,6 @@ export const paymentController = async (req, res, next) => {
 export const verifyPaymentController = async (req, res) => {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
     req.body;
-
   const payment = await paymentModel.findOne({
     "razorpay.orderId": razorpay_order_id,
     status: "pending",
@@ -472,6 +471,8 @@ export const verifyPaymentController = async (req, res) => {
   payment.razorpay.signature = razorpay_signature;
 
   await payment.save();
+
+  await cartModel.findOneAndDelete({ user: req.user.userId });
 
   return res.status(200).json({
     message: "Payment verified successfully",

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ShoppingBag, ShieldCheck } from "lucide-react";
 import BuyerNavbar from "../components/BuyerNavbar";
 import CartItem from "../components/cart/CartItem";
@@ -7,6 +7,8 @@ import CartSummary from "../components/cart/CartSummary";
 import EmptyCart from "../components/cart/EmptyCart";
 import CartSkeleton from "../components/cart/CartSkeleton";
 import { useCart } from "../hooks/useCart";
+import { useAuth } from "../../auth/hooks/useAuth";
+import { useRazorpay } from "react-razorpay";
 
 const Cart = () => {
   const {
@@ -18,12 +20,17 @@ const Cart = () => {
     handleDecreaseItem,
     handleRemoveItemFromCart,
     handleRemoveItem,
+    handleCreateOrder,
+    handleVerifyOrder,
   } = useCart();
+
+  const { user } = useAuth();
+  const { Razorpay } = useRazorpay();
   // Prefer standard handler names with fallback to existing internal names
   const onIncrease = handleIncreaseItem;
   const onDecrease = handleDecreaseItem || handledecreaseItem;
   const onRemove = handleRemoveItem || handleRemoveItemFromCart;
-
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     handleGetCart();
@@ -33,6 +40,40 @@ const Cart = () => {
     (acc, item) => acc + (item?.quantity || 1),
     0,
   );
+
+  async function handlePaymentCheckout() {
+    const order = await handleCreateOrder();
+    const options = {
+      key: "rzp_test_TiNDxUD9iPtO2q",
+      amount: order.amount, // Amount in paise
+      currency: order.currency,
+      name: "Velora",
+      description: "Test Transaction",
+      order_id: order.id, // Generate order_id on server
+      handler: async (response) => {
+        const isValid = await handleVerifyOrder(
+          response.razorpay_order_id,
+          response.razorpay_payment_id,
+          response.razorpay_signature,
+        );
+        if (isValid) {
+          navigate(`/order-success?order_id=${response.razorpay_order_id}`);
+        }
+      },
+      prefill: {
+        name: user?.fullName,
+        email: user?.email,
+        contact: user?.contact,
+      },
+      theme: {
+        color: "#F37254", //theme,
+      },
+    };
+
+    const razorpayInstance = new Razorpay(options);
+    razorpayInstance.open();
+  }
+
   return (
     <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] flex flex-col justify-between selection:bg-[var(--text-primary)] selection:text-[var(--btn-text)] dark:bg-[var(--bg-canvas)] dark:text-[var(--text-primary)]">
       {/* 1. Header / Navbar */}
@@ -102,7 +143,11 @@ const Cart = () => {
 
             {/* Right Column: Order Summary Card */}
             <div className="lg:col-span-4">
-              <CartSummary cart={cart} loading={loading} />
+              <CartSummary
+                checkOut={handlePaymentCheckout}
+                cart={cart}
+                loading={loading}
+              />
             </div>
           </div>
         )}
