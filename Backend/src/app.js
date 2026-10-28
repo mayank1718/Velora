@@ -10,6 +10,7 @@ import productRouter from "./routes/product.route.js";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { config } from "./config/config.js";
+import helmet from "helmet";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(helmet());
 
 app.use(passport.initialize());
 
@@ -37,7 +39,6 @@ passport.use(
     },
   ),
 );
-
 
 /* routes */
 app.use("/api/auth", authRouter);
