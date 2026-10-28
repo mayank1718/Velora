@@ -431,61 +431,113 @@ export const paymentController = async (req, res, next) => {
   }
 };
 
-export const verifyPaymentController = async (req, res) => {
+export const verifyPaymentController = async (req, res, next) => {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
     req.body;
-  const payment = await paymentModel.findOne({
-    "razorpay.orderId": razorpay_order_id,
-    status: "pending",
-  });
 
-  if (!payment) {
-    return res.status(400).json({
-      message: "Payment not found",
-      success: false,
+  try {
+    const payment = await paymentModel.findOne({
+      "razorpay.orderId": razorpay_order_id,
+      user: req.user.userId,
     });
-  }
 
-  const isPaymentValid = validatePaymentVerification(
-    {
-      order_id: razorpay_order_id,
-      payment_id: razorpay_payment_id,
-    },
-    razorpay_signature,
-    config.RAZORPAY_SECRET_KEY,
-  );
+    if (!payment) {
+      return res.status(404).json({
+        success: false,
+        message: "Payment not found",
+      });
+    }
 
-  if (!isPaymentValid) {
-    payment.status = "failed";
-    await payment.save();
+    // Prevent duplicate stock deductions
+    if (payment.status === "paid") {
+      return res.status(200).json({
+        success: true,
+        message: "Payment already verified",
+      });
+    }
 
-    return res.status(400).json({
-      message: "Payment verification failed",
-      success: false,
-    });
-  }
+    if (payment.status !== "pending") {
+      return res.status(400).json({
+        success: false,
+        message: "Payment is not pending",
+      });
+    }
 
-  payment.status = "paid";
-
-  payment.razorpay.paymentId = razorpay_payment_id;
-  payment.razorpay.signature = razorpay_signature;
-
-  await payment.save();
-
-  await cartModel.findOneAndDelete({ user: req.user.userId });
-
-  for (const item of payment.orderItems) {
-    await productModel.findByIdAndUpdate(item.product, {
-      $inc: {
-        stock: -item.quantity,
+    const isPaymentValid = validatePaymentVerification(
+      {
+        order_id: razorpay_order_id,
+        payment_id: razorpay_payment_id,
       },
-    });
-  }
+      razorpay_signature,
+      config.RAZORPAY_SECRET_KEY,
+    );
 
-  return res.status(200).json({
-    message: "Payment verified successfully",
-    success: true,
-  });
+    if (!isPaymentValid) {
+      payment.status = "failed";
+      await payment.save();
+
+      return res.status(400).json({
+        success: false,
+        message: "Payment verification failed",
+      });
+    }
+
+    const session = await mongoose.startSession();
+
+    try {
+      await session.withTransaction(async () => {
+        // Atomically claim this pending payment.
+        const claimedPayment = await paymentModel.findOneAndUpdate(
+          {
+            _id: payment._id,
+            status: "pending",
+          },
+          {
+            $set: {
+              status: "paid",
+              "razorpay.paymentId": razorpay_payment_id,
+              "razorpay.signature": razorpay_signature,
+            },
+          },
+          { new: true, session },
+        );
+
+        if (!claimedPayment) {
+          throw new Error("Payment has already been processed");
+        }
+
+        for (const item of claimedPayment.orderItems) {
+          const updatedProduct = await productModel.findOneAndUpdate(
+            {
+              _id: item.productId,
+              stock: { $gte: item.quantity },
+            },
+            {
+              $inc: { stock: -item.quantity },
+            },
+            { new: true, session },
+          );
+
+          if (!updatedProduct) {
+            throw new Error(
+              `Product ${item.productId} not found or insufficient stock`,
+            );
+          }
+        }
+
+        await cartModel.deleteOne({ user: req.user.userId }, { session });
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "Payment verified successfully",
+      });
+    } finally {
+      await session.endSession();
+    }
+  } catch (error) {
+    return next(error);
+  }
 };
 
 export const getOrder = async (req, res, next) => {
