@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(helmet());
-
+app.use(express.static("./public"))
 app.use(passport.initialize());
 
 passport.use(
