@@ -435,7 +435,16 @@ export const verifyPaymentController = async (req, res, next) => {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
     req.body;
 
+  let session;
+
   try {
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing payment verification details",
+      });
+    }
+
     const payment = await paymentModel.findOne({
       "razorpay.orderId": razorpay_order_id,
       user: req.user.userId,
@@ -445,21 +454,6 @@ export const verifyPaymentController = async (req, res, next) => {
       return res.status(404).json({
         success: false,
         message: "Payment not found",
-      });
-    }
-
-    // Prevent duplicate stock deductions
-    if (payment.status === "paid") {
-      return res.status(200).json({
-        success: true,
-        message: "Payment already verified",
-      });
-    }
-
-    if (payment.status !== "pending") {
-      return res.status(400).json({
-        success: false,
-        message: "Payment is not pending",
       });
     }
 
@@ -473,8 +467,10 @@ export const verifyPaymentController = async (req, res, next) => {
     );
 
     if (!isPaymentValid) {
-      payment.status = "failed";
-      await payment.save();
+      if (payment.status === "pending") {
+        payment.status = "failed";
+        await payment.save();
+      }
 
       return res.status(400).json({
         success: false,
@@ -482,61 +478,89 @@ export const verifyPaymentController = async (req, res, next) => {
       });
     }
 
-    const session = await mongoose.startSession();
-
-    try {
-      await session.withTransaction(async () => {
-        // Atomically claim this pending payment.
-        const claimedPayment = await paymentModel.findOneAndUpdate(
-          {
-            _id: payment._id,
-            status: "pending",
-          },
-          {
-            $set: {
-              status: "paid",
-              "razorpay.paymentId": razorpay_payment_id,
-              "razorpay.signature": razorpay_signature,
-            },
-          },
-          { new: true, session },
-        );
-
-        if (!claimedPayment) {
-          throw new Error("Payment has already been processed");
-        }
-
-        for (const item of claimedPayment.orderItems) {
-          const updatedProduct = await productModel.findOneAndUpdate(
-            {
-              _id: item.productId,
-              stock: { $gte: item.quantity },
-            },
-            {
-              $inc: { stock: -item.quantity },
-            },
-            { new: true, session },
-          );
-
-          if (!updatedProduct) {
-            throw new Error(
-              `Product ${item.productId} not found or insufficient stock`,
-            );
-          }
-        }
-
-        await cartModel.deleteOne({ user: req.user.userId }, { session });
-      });
+    // Do not deduct stock twice.
+    if (payment.status === "paid") {
+      // Retry cart cleanup in case an earlier request left it behind.
+      await cartModel.deleteOne({ user: req.user.userId });
 
       return res.status(200).json({
         success: true,
-        message: "Payment verified successfully",
+        message: "Payment already verified",
       });
-    } finally {
-      await session.endSession();
     }
+
+    if (payment.status !== "pending") {
+      return res.status(400).json({
+        success: false,
+        message: "Payment is not pending",
+      });
+    }
+
+    session = await mongoose.startSession();
+
+    await session.withTransaction(async () => {
+      // Claim the payment only if it is still pending.
+      const claimedPayment = await paymentModel.findOneAndUpdate(
+        {
+          _id: payment._id,
+          status: "pending",
+        },
+        {
+          $set: {
+            status: "paid",
+            "razorpay.paymentId": razorpay_payment_id,
+            "razorpay.signature": razorpay_signature,
+          },
+        },
+        {
+          new: true,
+          session,
+        },
+      );
+
+      if (!claimedPayment) {
+        throw new Error("Payment was already processed. Retry verification.");
+      }
+
+      for (const item of claimedPayment.orderItems) {
+        if (!item.productId || !item.quantity || item.quantity < 1) {
+          throw new Error("Invalid product or quantity in order");
+        }
+
+        const updatedProduct = await productModel.findOneAndUpdate(
+          {
+            _id: item.productId,
+            stock: { $gte: item.quantity },
+          },
+          {
+            $inc: { stock: -item.quantity },
+          },
+          {
+            session,
+          },
+        );
+
+        if (!updatedProduct) {
+          throw new Error(
+            `Product ${item.productId} not found or insufficient stock`,
+          );
+        }
+      }
+
+      // Clear the cart only after all stock updates succeed.
+      await cartModel.deleteOne({ user: req.user.userId }, { session });
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Payment verified successfully",
+    });
   } catch (error) {
     return next(error);
+  } finally {
+    if (session) {
+      await session.endSession();
+    }
   }
 };
 
