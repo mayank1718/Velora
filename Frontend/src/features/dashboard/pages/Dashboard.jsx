@@ -26,6 +26,7 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+
   // Initial products + live backend search
   useEffect(() => {
     const timer = setTimeout(() => {
