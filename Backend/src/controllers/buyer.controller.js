@@ -474,6 +474,14 @@ export const verifyPaymentController = async (req, res) => {
 
   await cartModel.findOneAndDelete({ user: req.user.userId });
 
+  for (const item of payment.items) {
+    await productModel.findByIdAndUpdate(item.product, {
+      $inc: {
+        stock: -items.quantity,
+      },
+    });
+  }
+
   return res.status(200).json({
     message: "Payment verified successfully",
     success: true,
