@@ -472,6 +472,31 @@ export const verifyPaymentController = async (req, res) => {
 
   await payment.save();
 
+  for (const item of payment.orderItems) {
+    const stockUpdate = await productModel.updateOne(
+      {
+        _id: item.productId,
+        variants: {
+          $elemMatch: {
+            _id: item.variantId,
+            stock: { $gte: item.quantity },
+          },
+        },
+      },
+      {
+        $inc: {
+          "variants.$.stock": -item.quantity,
+        },
+      },
+    );
+
+    if (stockUpdate.matchedCount !== 1) {
+      throw new Error(
+        `Unable to reduce stock for product ${item.productId} variant ${item.variantId}`,
+      );
+    }
+  }
+
   await cartModel.findOneAndDelete({ user: req.user.userId });
 
   return res.status(200).json({
