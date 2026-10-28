@@ -59,7 +59,7 @@ productRouter.post(
  * @desc - fetch review data
  * @api - GET /api/products/:productId/rating
  */
-productRouter.get("/:productId/rating", authMiddleware, getRatingController);
+productRouter.get("/:productId/rating", getRatingController);
 
 /**
  * @access - private
@@ -81,7 +81,7 @@ productRouter.patch(
 productRouter.delete(
   "/:productId/rating/:ratingId",
   authMiddleware,
-  deleteRatingController
+  deleteRatingController,
 );
 
 export default productRouter;
