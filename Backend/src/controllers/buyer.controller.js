@@ -474,10 +474,10 @@ export const verifyPaymentController = async (req, res) => {
 
   await cartModel.findOneAndDelete({ user: req.user.userId });
 
-  for (const item of payment.items) {
+  for (const item of payment.orderItems) {
     await productModel.findByIdAndUpdate(item.product, {
       $inc: {
-        stock: -items.quantity,
+        stock: -item.quantity,
       },
     });
   }
