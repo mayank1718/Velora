@@ -1,12 +1,12 @@
 import axios from "axios";
 
 const productApiInstanse = axios.create({
-  baseURL: "https://velora-nmrh.onrender.com/api/products",
+  baseURL: "http://localhost:3000/api/products",
   withCredentials: true,
 });
 
 const buyerApiInstance = axios.create({
-  baseURL: "https://velora-nmrh.onrender.com/api/buyer",
+  baseURL: "http://localhost:3000/api/buyer",
   withCredentials: true,
 });
 
