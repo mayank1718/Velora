@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const authInstanceApi = axios.create({
-  baseURL: "http://localhost:3000/api/auth",
+  baseURL: "https://velora-nmrh.onrender.com/api/auth",
   withCredentials: true,
 });
 

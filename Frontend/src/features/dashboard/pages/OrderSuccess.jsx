@@ -3,7 +3,6 @@ import {
   Link,
   useLocation,
   useSearchParams,
-  useNavigate,
 } from "react-router-dom";
 import {
   CheckCircle2,
@@ -18,8 +17,6 @@ import {
   AlertCircle,
   Loader2,
   ChevronRight,
-  User,
-  ExternalLink,
 } from "lucide-react";
 import BuyerNavbar from "../components/BuyerNavbar";
 import Footer from "../components/Footer";

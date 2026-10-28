@@ -14,17 +14,12 @@ import helmet from "helmet";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  }),
-);
+app.use(cors());
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(helmet());
-app.use(express.static("./public"))
+app.use(express.static("./public"));
 app.use(passport.initialize());
 
 passport.use(
